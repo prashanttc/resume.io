@@ -1,0 +1,144 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DIRECT_URL")
+}
+
+model User {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  name           String?
+  resumes        Resume[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Resume {
+  id              String       @id @default(uuid())
+  userId          String
+  title           String
+  isDefault       Boolean      @default(false)
+  template        String       @default("modern")
+  views           Int          @default(0)
+  downloads       Int          @default(0)
+  shares          Int          @default(0)
+  sectionOrder    sectionOrder[]
+  personalInfo    PersonalInfo?
+  experiences     Experience[]
+  education       Education[]
+  skills          SkillCategory[]
+  customSections  CustomSection[]
+  aiOptimizations AIOptimization[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  user            User         @relation(fields: [userId], references: [id])
+}
+
+model PersonalInfo {
+  id        String  @id @default(uuid())
+  resumeId  String  @unique
+  fullName  String
+  email     String
+  phone     String
+  address   String
+  linkedin  String? 
+  github    String?
+  website   String?
+  summary   String
+  jobTitle  String
+  resume    Resume  @relation(fields: [resumeId], references: [id])
+}
+
+model Experience {
+  id          String   @id @default(uuid())
+  resumeId    String
+  company     String
+  position    String
+  startDate   DateTime
+  current     Boolean  @default(false)
+  endDate     DateTime?
+  location    String?
+  description String?
+
+  resume      Resume   @relation(fields: [resumeId], references: [id])
+}
+
+model Education {
+  id          String   @id @default(uuid())
+  resumeId    String
+  institution String
+  degree      String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+
+  resume      Resume   @relation(fields: [resumeId], references: [id])
+}
+
+model SkillCategory {
+  id        String @id @default(uuid())
+  resumeId  String
+  name      String
+  skills    Skills[] // 🆕 Add this line
+  resume    Resume @relation(fields: [resumeId], references: [id])
+}
+
+model Skills{
+  id         String @id @default(uuid())
+  skillId    String
+  name       String
+  level      String
+  skills     SkillCategory @relation( fields: [skillId], references: [id], onDelete: Cascade)
+
+}
+model CustomSection {
+  id        String         @id @default(uuid())
+  resumeId  String
+  title     String
+  entries   CustomEntry[]  @relation("SectionEntries")
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  resume    Resume         @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+}
+
+model CustomEntry {
+  id          String   @id @default(uuid())
+  sectionId   String
+  title       String?
+  description String?
+  date        String?
+  link        String?  // optional
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  section     CustomSection @relation("SectionEntries", fields: [sectionId], references: [id], onDelete: Cascade)
+}
+
+
+model AIOptimization {
+  id          String   @id @default(uuid())
+  resumeId    String
+  suggestion  String
+  applied     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  resume      Resume   @relation(fields: [resumeId], references: [id])
+}
+model sectionOrder {
+   id         String  @id @default(uuid())
+   title      String
+   resumeId   String
+   type       String
+   order      Int
+   isActive   Boolean @default(true)
+   resume     Resume         @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+}
