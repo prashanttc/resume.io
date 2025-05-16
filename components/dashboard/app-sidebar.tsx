@@ -35,7 +35,6 @@ export function AppSidebar() {
           <FileText className="h-5 w-5" />
           <span className="text-lg font-medium">ResumeOS</span>
         </Link>
-        <SidebarTrigger />
       </SidebarHeader>
 
       <SidebarContent>

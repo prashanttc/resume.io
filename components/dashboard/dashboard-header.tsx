@@ -9,30 +9,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 import NewResume from "../NewResume";
+import { SidebarTrigger } from "../ui/sidebar";
 
 export function DashboardHeader() {
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur-sm px-4 md:px-6">
-      <div className="flex flex-1 items-center gap-4 md:gap-8">
-        <form className="hidden flex-1 sm:flex">
-          <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className={cn(
-                "w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3",
-                "transition-all duration-200 focus-visible:w-full md:focus-visible:w-3/4 lg:focus-visible:w-1/2"
-              )}
-            />
-          </div>
-        </form>
-        <Button variant="outline" size="sm" className="h-8 gap-1 md:hidden">
-          <Search className="h-4 w-4" />
-        </Button>
-      </div>
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur-sm px-4 md:px-6 justify-between">
+      <SidebarTrigger/>
       <div className="flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

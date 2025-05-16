@@ -15,8 +15,10 @@ export type resume = {
   downloads: number;
   shares: number;
   isDefault: boolean;
+  template:string;
   updatedAt: Date;
 };
+
 
 export type ResumeData = {
   personalInfo: PersonalInfo | null;

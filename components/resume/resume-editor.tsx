@@ -77,7 +77,6 @@ export type ResumeData = {
 export function ResumeEditor() {
   const params = useParams();
   const id = params.id as string;
-
   const { mutate, isPending, isError, error } = useSaveResume();
   const { data, isPending: datafetching } = useGetResumebyId(id);
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);

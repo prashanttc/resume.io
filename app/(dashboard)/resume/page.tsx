@@ -1,20 +1,20 @@
+import { ResumeManagementClient } from "@/components/resume/resume-management"
 import type { Metadata } from "next"
-import { ResumeEditor } from "@/components/resume/resume-editor"
-
+  
 export const metadata: Metadata = {
-  title: "Resume Editor - ResumeOS",
-  description: "Create and edit your professional resume",
+  title: "Resumes - ResumeOS",
+  description: "Manage your professional resumes",
 }
 
-export default function ResumePage() {
+export default function ResumesPage() {
   return (
     <div className="flex flex-col gap-6 animate-in">
       <div>
-        <h1 className="text-2xl font-medium">Resume Editor</h1>
-        <p className="text-muted-foreground">Create and customize your professional resume</p>
+        <h1 className="text-2xl font-medium">My Resumes</h1>
+        <p className="text-muted-foreground">Manage and edit your professional resumes</p>
       </div>
 
-      <ResumeEditor />
+      <ResumeManagementClient />
     </div>
   )
 }
