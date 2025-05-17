@@ -8,25 +8,18 @@ import { Label } from "@/components/ui/label"
 import { Plus, Save, Trash2 } from "lucide-react"
 import { v4 as uuidv4 } from "uuid"
 import { useToast } from "@/hooks/use-toast"
-import { EntryType } from "@/types/resume"
+import { CustomSections, EntryType } from "@/types/resume"
 import { SectionEntries } from "@/components/resume/custom-section-entries"
 
 
-
-export type SectionType = {
-  id: string
-  title: string;
-  entries: EntryType[]
-}
-
 interface CustomSectionBuilderProps {
-  initialSections?: SectionType[]
-  onSave?: (sections: SectionType[]) => void
+  initialSections?: CustomSections[]
+  onSave?: (sections: CustomSections[]) => void
   isLoading?: boolean
 }
 
 export function CustomSectionBuilder({ initialSections = [], onSave, isLoading = false }: CustomSectionBuilderProps) {
-  const [sections, setSections] = useState<SectionType[]>(initialSections.length > 0 ? initialSections : [])
+  const [sections, setSections] = useState<CustomSections[]>(initialSections.length > 0 ? initialSections : [])
   const [newSectionTitle, setNewSectionTitle] = useState("")
   const { toast } = useToast()
 
@@ -47,7 +40,7 @@ export function CustomSectionBuilder({ initialSections = [], onSave, isLoading =
       return
     }
 
-    const newSection: SectionType = {
+    const newSection: CustomSections = {
       id: uuidv4(),
       title: newSectionTitle,
       entries: [],

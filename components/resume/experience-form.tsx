@@ -263,6 +263,21 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
               )}
             />
             <div className="space-y-4">
+               {!form.watch("current") && (
+                <FormField
+                  control={form.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>End Date</FormLabel>
+                      <FormControl>
+                        <Input type="month" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
               <FormField
                 control={form.control}
                 name="current"
@@ -285,21 +300,7 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
                   </FormItem>
                 )}
               />
-              {!form.watch("current") && (
-                <FormField
-                  control={form.control}
-                  name="endDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>End Date</FormLabel>
-                      <FormControl>
-                        <Input type="month" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+             
             </div>
           </div>
           <FormField

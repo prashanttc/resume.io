@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 export type ResumeSection = {
-  id: string
   title: string
   type: string
   isActive: boolean
@@ -35,15 +34,15 @@ export function SectionReorder({ sections, onReorder, onToggleSection }: Section
     onReorder(items)
   }
 
-  const toggleSection = (id: string) => {
+  const toggleSection = (title: string) => {
     const updatedSections = sectionList.map((section) =>
-      section.id === id ? { ...section, isActive: !section.isActive } : section,
+      section.title === title ? { ...section, isActive: !section.isActive } : section,
     )
     setSectionList(updatedSections)
 
-    const section = sectionList.find((s) => s.id === id)
+    const section = sectionList.find((s) => s.title === title)
     if (section) {
-      onToggleSection(id, !section.isActive)
+      onToggleSection(title, !section.isActive)
     }
   }
 
@@ -59,7 +58,7 @@ export function SectionReorder({ sections, onReorder, onToggleSection }: Section
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-2">
               {sectionList.map((section, index) => (
-                <Draggable key={section.id} draggableId={section.id} index={index}>
+                <Draggable key={section.title} draggableId={section.title} index={index}>
                   {(provided, snapshot) => (
                     <Card
                       ref={provided.innerRef}
@@ -85,7 +84,7 @@ export function SectionReorder({ sections, onReorder, onToggleSection }: Section
                         <Button
                           variant={section.isActive ? "default" : "outline"}
                           size="sm"
-                          onClick={() => toggleSection(section.id)}
+                          onClick={() => toggleSection(section.title)}
                           className="min-w-[80px]"
                         >
                           {section.isActive ? (

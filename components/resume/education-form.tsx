@@ -23,7 +23,7 @@ const educationSchema = z.object({
     message: "Start date is required.",
   }),
   endDate: z.string().optional(),
-  description: z.string().optional(),
+  description: z.string().nullable(),
 })
 
 export type EducationFormValues = z.infer<typeof educationSchema>
@@ -267,6 +267,8 @@ export function EducationForm({ defaultValues = [], onSubmit }: EducationFormPro
                     placeholder="Relevant coursework, achievements, activities..."
                     className="min-h-[100px] resize-none"
                     {...field}
+                   value={field.value ?? ""}
+
                   />
                 </FormControl>
                 <FormMessage />

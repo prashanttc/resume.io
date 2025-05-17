@@ -1,83 +1,7 @@
-import type { ResumeData } from "@/components/resume/resume-editor"
-import type { ResumeSection } from "@/components/resume/section-reorder"
-import type { ContentBlock } from "@/components/resume/custom-content-block"
+import { TemplateProps } from "@/types/resume"
 
-interface CreativeTemplateProps {
-  resumeData?: ResumeData
-  sectionOrder?: ResumeSection[]
-}
 
-export function CreativeTemplate({ resumeData, sectionOrder }: CreativeTemplateProps) {
-  // Use default data if no resume data is provided
-  const personal = resumeData?.personal || {
-    fullName: "John Doe",
-    jobTitle: "Software Engineer",
-    email: "john@example.com",
-    phone: "(123) 456-7890",
-    location: "San Francisco, CA",
-    website: "johndoe.com",
-    linkedin: "linkedin.com/in/johndoe",
-    summary:
-      "Experienced software engineer with a passion for building scalable web applications and solving complex problems. Proficient in JavaScript, TypeScript, React, and Node.js with a strong focus on creating responsive and user-friendly interfaces.",
-  }
-
-  const experiences = resumeData?.experience || [
-    {
-      jobTitle: "Senior Software Engineer",
-      company: "Tech Solutions Inc.",
-      location: "San Francisco, CA",
-      startDate: "2020-01",
-      endDate: "",
-      current: true,
-      description:
-        "Led development of cloud-based applications using React, Node.js, and AWS. Managed a team of 5 developers and implemented CI/CD pipelines that reduced deployment time by 40%.",
-    },
-    {
-      jobTitle: "Software Engineer",
-      company: "Digital Innovations",
-      location: "Seattle, WA",
-      startDate: "2017-03",
-      endDate: "2019-12",
-      current: false,
-      description:
-        "Developed and maintained web applications using JavaScript, React, and Node.js. Collaborated with UX designers to implement responsive designs and improve user experience.",
-    },
-  ]
-
-  const education = resumeData?.education || [
-    {
-      degree: "Bachelor of Science in Computer Science",
-      school: "University of California, Berkeley",
-      location: "Berkeley, CA",
-      startDate: "2013-09",
-      endDate: "2017-05",
-      description:
-        "Graduated with honors. Relevant coursework: Data Structures, Algorithms, Database Systems, Software Engineering.",
-    },
-  ]
-
-  const skills = resumeData?.skills || [
-    {
-      name: "Programming Languages",
-      skills: [
-        { name: "JavaScript", level: "Expert" },
-        { name: "TypeScript", level: "Advanced" },
-        { name: "Python", level: "Intermediate" },
-      ],
-    },
-    {
-      name: "Frameworks & Libraries",
-      skills: [
-        { name: "React", level: "Expert" },
-        { name: "Node.js", level: "Advanced" },
-        { name: "Next.js", level: "Advanced" },
-      ],
-    },
-  ]
-
-  const customSections = resumeData?.customSections || []
-  const contentBlocks = resumeData?.contentBlocks || []
-
+export function CreativeTemplate({personal,education,experiences,skills,custom,  sectionOrder }: TemplateProps) {
   // Format date function
   const formatDate = (dateString: string) => {
     if (!dateString) return ""
@@ -100,66 +24,18 @@ export function CreativeTemplate({ resumeData, sectionOrder }: CreativeTemplateP
     }
   }
 
-  // Get the ordered sections
-  const orderedSections = sectionOrder || [
-    { id: "personal", title: "Personal Information", type: "core", isActive: true },
-    { id: "experience", title: "Experience", type: "core", isActive: true },
-    { id: "education", title: "Education", type: "core", isActive: true },
-    { id: "skills", title: "Skills", type: "core", isActive: true },
-    { id: "custom", title: "Custom Sections", type: "custom", isActive: true },
-    { id: "blocks", title: "Content Blocks", type: "blocks", isActive: true },
-  ]
-
-  // Render content blocks
-  const renderContentBlock = (block: ContentBlock) => {
-    switch (block.type) {
-      case "text":
-        return <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: block.content }} />
-      case "image":
-        return (
-          <div className="space-y-2">
-            {block.imageUrl && (
-              <img
-                src={block.imageUrl || "/placeholder.svg"}
-                alt={block.content}
-                className="max-h-[200px] mx-auto object-contain rounded-md"
-              />
-            )}
-            {block.content && <p className="text-sm text-zinc-600">{block.content}</p>}
-          </div>
-        )
-      case "link":
-        return (
-          <div className="space-y-1">
-            <a
-              href={block.linkUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-zinc-600 hover:underline inline-flex items-center"
-            >
-              {block.linkText || block.linkUrl}
-            </a>
-            {block.content && <p className="text-sm text-zinc-600">{block.content}</p>}
-          </div>
-        )
-      default:
-        return null
-    }
-  }
-
   // Filter sections for sidebar and main content
-  const sidebarSections = ["personal", "skills", "education"]
-  const mainSections = ["experience", "custom", "blocks"]
-
+  const sidebarSections = ["Personal Infomation", "Skills", "Education"]
+  const mainSections = ["Experience", "Custom Sections"]
   return (
-    <div className="font-sans text-zinc-800 max-w-[800px] mx-auto">
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-1 bg-zinc-100 p-6 h-full">
+    <div className="font-sans text-zinc-800 max-w-[900px] mx-auto">
+      <div className="grid grid-cols-3 gap-2">
+        <div className=" bg-zinc-100 p-6 px-2 h-full">
           <header className="mb-8">
             <h1 className="text-xl font-bold mb-1">{personal.fullName}</h1>
             <h2 className="text-base text-zinc-600 mb-4">{personal.jobTitle}</h2>
 
-            <div className="space-y-2 text-sm">
+            <div className="space-y-2 text-xs">
               <div className="flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +52,7 @@ export function CreativeTemplate({ resumeData, sectionOrder }: CreativeTemplateP
                   <rect width="20" height="16" x="2" y="4" rx="2" />
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                 </svg>
-                <span>{personal.email}</span>
+                <span className=" ">{personal.email}</span>
               </div>
               <div className="flex items-center gap-2">
                 <svg
@@ -211,7 +87,7 @@ export function CreativeTemplate({ resumeData, sectionOrder }: CreativeTemplateP
                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
-                <span>{personal.location}</span>
+                <span>{personal.address}</span>
               </div>
               {personal.website && (
                 <div className="flex items-center gap-2">
@@ -258,13 +134,13 @@ export function CreativeTemplate({ resumeData, sectionOrder }: CreativeTemplateP
           </header>
 
           {/* Render sidebar sections based on order */}
-          {orderedSections
-            .filter((section) => section.isActive && sidebarSections.includes(section.id))
+          {sectionOrder
+            .filter((section) => section.isActive && sidebarSections.includes(section.title))
             .map((section) => {
-              switch (section.id) {
-                case "skills":
+              switch (section.title) {
+                case "Skills":
                   return (
-                    <section key={section.id} className="mb-6">
+                    <section key={section.title} className="mb-6">
                       <h3 className="text-base font-bold mb-3 border-b border-zinc-300 pb-1">Skills</h3>
 
                       {skills.map((category, categoryIndex) => (
@@ -287,17 +163,17 @@ export function CreativeTemplate({ resumeData, sectionOrder }: CreativeTemplateP
                       ))}
                     </section>
                   )
-                case "education":
+                case "Education":
                   return (
-                    <section key={section.id}>
+                    <section key={section.title}>
                       <h3 className="text-base font-bold mb-3 border-b border-zinc-300 pb-1">Education</h3>
 
                       {education.map((edu, index) => (
                         <div key={index}>
                           <h4 className="text-sm font-medium">{edu.degree}</h4>
-                          <h5 className="text-xs text-zinc-600 mb-1">{edu.school}</h5>
+                          <h5 className="text-xs text-zinc-600 mb-1">{edu.institution}</h5>
                           <p className="text-xs text-zinc-600 mb-2">
-                            {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
+                            {formatDate(edu.startDate)} - {edu.current?"present":formatDate(edu.endDate!)}
                           </p>
                           {edu.description && <p className="text-xs">{edu.description}</p>}
                         </div>
@@ -317,22 +193,22 @@ export function CreativeTemplate({ resumeData, sectionOrder }: CreativeTemplateP
           </section>
 
           {/* Render main content sections based on order */}
-          {orderedSections
-            .filter((section) => section.isActive && mainSections.includes(section.id))
+          {sectionOrder
+            .filter((section) => section.isActive && mainSections.includes(section.title))
             .map((section) => {
-              switch (section.id) {
-                case "experience":
+              switch (section.title) {
+                case "Experience":
                   return (
-                    <section key={section.id} className="mb-6">
+                    <section key={section.title} className="mb-6">
                       <h3 className="text-lg font-bold mb-3 border-b border-zinc-300 pb-1">Experience</h3>
 
                       {experiences.map((experience, index) => (
                         <div key={index} className={index < experiences.length - 1 ? "mb-5" : ""}>
                           <div className="flex justify-between items-baseline mb-1">
-                            <h4 className="text-base font-medium">{experience.jobTitle}</h4>
+                            <h4 className="text-base font-medium">{experience.position}</h4>
                             <span className="text-sm text-zinc-600">
                               {formatDate(experience.startDate)} -{" "}
-                              {experience.current ? "Present" : formatDate(experience.endDate)}
+                              {experience.current ? "Present" : formatDate(experience.endDate!)}
                             </span>
                           </div>
                           <h5 className="text-sm font-medium text-zinc-600 mb-2">
@@ -344,8 +220,8 @@ export function CreativeTemplate({ resumeData, sectionOrder }: CreativeTemplateP
                       ))}
                     </section>
                   )
-                case "custom":
-                  return customSections.map((customSection) => (
+                case "Custom Sections":
+                  return custom.map((customSection) => (
                     <section key={customSection.id} className="mb-6">
                       <h3 className="text-lg font-bold mb-3 border-b border-zinc-300 pb-1">{customSection.title}</h3>
                       <div
@@ -354,21 +230,7 @@ export function CreativeTemplate({ resumeData, sectionOrder }: CreativeTemplateP
                       />
                     </section>
                   ))
-                case "blocks":
-                  if (contentBlocks.length === 0) return null
-                  return (
-                    <section key={section.id} className="mb-6">
-                      <h3 className="text-lg font-bold mb-3 border-b border-zinc-300 pb-1">Additional Information</h3>
-                      <div className="space-y-4">
-                        {contentBlocks.map((block) => (
-                          <div key={block.id} className="mb-3">
-                            <h4 className="text-base font-medium mb-1">{block.title}</h4>
-                            {renderContentBlock(block)}
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-                  )
+              
                 default:
                   return null
               }

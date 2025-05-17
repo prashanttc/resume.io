@@ -64,7 +64,6 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
         template: resume.template,
         updatedAt: new Date(),
 
-        // 🧠 Upsert personalInfo (1:1 relation)
         personalInfo: {
           upsert: {
             update: {
@@ -76,6 +75,7 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
               linkedin: resume.personalInfo?.linkedin, // Optional: fill from UI
               github: resume.personalInfo?.github,
               website: resume.personalInfo?.website,
+              summary:resume.personalInfo?.summary,
             },
             create: {
               fullName: resume.personalInfo?.fullName||"",
@@ -90,8 +90,6 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
             },
           },
         },
-
-        // 🔁 Array fields: nuke and recreate
         experiences: {
           deleteMany: {},
           create: resume.experiences.map((exp) => ({
@@ -136,12 +134,11 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
           create: resume.customSections.map((section) => ({
             title: section.title,
             entries: {
-              create: section.entries.map((entry, entryIndex) => ({
+              create: section.entries.map((entry) => ({
                 title: entry.title||'',
                 description: entry.description,
                 date: entry.date || null,
                 link: entry.link || null,
-                order: entryIndex,
               })),
             },
           })),

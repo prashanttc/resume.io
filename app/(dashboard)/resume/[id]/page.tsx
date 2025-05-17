@@ -1,6 +1,7 @@
 "use client";
 import { ResumeEditor } from "@/components/resume/resume-editor";
 import { useGetResumebyId } from "@/query/resume/query";
+import { LoaderCircle } from "lucide-react";
 import { useParams } from "next/navigation";
 
 export default function ResumePage() {
@@ -8,7 +9,7 @@ export default function ResumePage() {
   const id = params.id as string;
   const { data, isPending } = useGetResumebyId(id);
   if (isPending) {
-    return;
+    return <div className="flex h-full w-full items-center justify-center"><LoaderCircle className="animate-spin"/></div>;
   }
   return (
     <div className="flex flex-col gap-6 animate-in">
@@ -19,7 +20,7 @@ export default function ResumePage() {
         </p>
       </div>
 
-      <ResumeEditor />
+      <ResumeEditor data={data} id={id}/>
     </div>
   );
 }

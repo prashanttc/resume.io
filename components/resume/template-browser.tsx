@@ -54,47 +54,40 @@ export function TemplateBrowser({
       categories: ["creative"],
       thumbnail: "/placeholder.svg?height=160&width=120",
     },
-    {
-      id: "executive",
-      name: "Executive",
-      description: "A sophisticated template designed for senior professionals and executives",
-      categories: ["professional"],
-      thumbnail: "/placeholder.svg?height=160&width=120",
-    },
-    {
-      id: "technical",
-      name: "Technical Specialist",
-      description: "Optimized for technical roles with sections for projects and skills",
-      categories: ["professional", "technical"],
-      thumbnail: "/placeholder.svg?height=160&width=120",
-    },
-    {
-      id: "academic",
-      name: "Academic CV",
-      description: "Designed for academic and research positions with publications section",
-      categories: ["academic"],
-      thumbnail: "/placeholder.svg?height=160&width=120",
-    },
+    
+
   ]
 
   const filteredTemplates =
     category === "all" ? templates : templates.filter((template) => template.categories.includes(category))
 
   const content = (
-    <div className="space-y-6">
+    <div className=" space-y-6">
       <Tabs defaultValue="all" value={category} onValueChange={setCategory}>
-        <TabsList className="mb-4">
+     <div className="flex  justify-between">
+         <TabsList className="mb-4 ">
           <TabsTrigger value="all">All Templates</TabsTrigger>
           <TabsTrigger value="professional">Professional</TabsTrigger>
           <TabsTrigger value="modern">Modern</TabsTrigger>
           <TabsTrigger value="minimal">Minimal</TabsTrigger>
           <TabsTrigger value="creative">Creative</TabsTrigger>
           <TabsTrigger value="technical">Technical</TabsTrigger>
-          <TabsTrigger value="academic">Academic</TabsTrigger>
+          <TabsTrigger value="academic">Academic</TabsTrigger>     
         </TabsList>
-
+       {isDialog && (
+        <div className="flex justify-end">
+          <Button onClick={onClose} variant="outline" className="mr-2">
+            Cancel
+          </Button>
+          <Button onClick={onClose} disabled={!selectedTemplate}>
+            Apply Template
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      )}
+     </div>
         <TabsContent value={category} className="mt-0">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {filteredTemplates.map((template) => (
               <Card
                 key={template.id}
@@ -131,20 +124,11 @@ export function TemplateBrowser({
               </Card>
             ))}
           </div>
+    
         </TabsContent>
       </Tabs>
 
-      {isDialog && (
-        <div className="flex justify-end">
-          <Button onClick={onClose} variant="outline" className="mr-2">
-            Cancel
-          </Button>
-          <Button onClick={onClose} disabled={!selectedTemplate}>
-            Apply Template
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )}
+     
     </div>
   )
 
@@ -153,10 +137,10 @@ export function TemplateBrowser({
   }
 
   return (
-    <Dialog>
-      <DialogContent className="max-w-4xl">
-        <DialogHeader>
-          <DialogTitle>Select a Template</DialogTitle>
+    <Dialog >
+      <DialogContent className="">
+        <DialogHeader className="">
+          <DialogTitle className="">Select a Template</DialogTitle>
         </DialogHeader>
         {content}
       </DialogContent>

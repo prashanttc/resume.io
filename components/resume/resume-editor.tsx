@@ -7,8 +7,6 @@ import { Card } from "@/components/ui/card";
 import { ResumePreview } from "@/components/resume/resume-preview";
 import { AIOptimizer } from "@/components/resume/ai-optimizer";
 import {
-  Download,
-  Save,
   Sparkles,
   ChevronRight,
   ChevronLeft,
@@ -26,100 +24,70 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { TemplateBrowser } from "@/components/resume/template-browser";
-import { useParams } from "next/navigation";
 // import { ShareModal } from "@/components/resume/share-modal"
 import {
   SectionReorder,
   type ResumeSection,
 } from "@/components/resume/section-reorder";
-import {
-  CustomSectionBuilder,
-  type SectionType as CustomSectionType,
-} from "@/components/resume/custom-section-builder";
 import { EditorSections } from "./editor-section";
 import { toast } from "sonner";
-import { useGetResumebyId, useSaveResume } from "@/query/resume/query";
-import { LoadingScreen } from "../loading-screen";
-import { Education, Experiences, SkillCategory } from "@/types/resume";
+import { useSaveResume } from "@/query/resume/query";
+import {
+  CustomSections,
+  ResumeData,
+  SectionType,
+} from "@/types/resume";
+import { CustomSectionBuilder } from "./custom-section-builder";
 
-export type SectionType =
-| "personal"
-| "experience"
-| "education"
-| "skills"
-| "template"
-| "custom"
-| "reorder"
-| "ai";
 
-// Define the resume data structure
-export type ResumeData = {
-  id: string;
-  personalInfo: {
-    fullName: string;
-    email: string;
-    jobTitle: string;
-    phone: string;
-    linkedin: string | null;
-    github: string | null;
-    website: string | null;
-    address: string;
-    summary: string;
-  } | null;
-  experiences: Experiences[];
-  education: Education[];
-  skills: SkillCategory[];
-  customSections: CustomSectionType[];
-  template: string;
-  sectionOrder: ResumeSection[];
-};
-
-export function ResumeEditor() {
-  const params = useParams();
-  const id = params.id as string;
+export function ResumeEditor({ data, id }: { data: any; id: string }) {
   const { mutate, isPending, isError, error } = useSaveResume();
-  const { data, isPending: datafetching } = useGetResumebyId(id);
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionType>("personal");
   const [selectedTemplate, setSelectedTemplate] = useState("modern");
-   if (datafetching ||!data) {
-    return <LoadingScreen />;
-  }
-    const [resumeData, setResumeData] = useState<ResumeData>({
-    id: id,
-      personalInfo: {
-        fullName: data.personalInfo?.fullName || '',
-        email: data.personalInfo?.email || '',
-        jobTitle: data.personalInfo?.jobTitle || '',
-        phone: data.personalInfo?.phone || '',
-        linkedin: data.personalInfo?.linkedin || '',
-        github: data.personalInfo?.github || '',
-        website: data.personalInfo?.website || '',
-        address: data.personalInfo?.address || '',
-        summary: data.personalInfo?.summary || '',
-      },
-      experiences: data.experiences.map((exp: any) => ({
-        ...exp,
-        startDate: exp.startDate ? new Date(exp.startDate).toISOString() : '',
-        endDate: exp.endDate ? new Date(exp.endDate).toISOString() : '',
-      })),
-      education: data.education.map((edu: any) => ({
-        ...edu,
-        startDate: edu.startDate ? new Date(edu.startDate).toISOString() : '',
-        endDate: edu.endDate ? new Date(edu.endDate).toISOString() : '',
-      })),
-      skills: data.skills,
-      customSections: data.customSections || [],
-      sectionOrder: data.sectionOrder || [
-        {  title: 'Personal Information', type: 'core', isActive: true },
-        { title: 'Experience', type: 'core', isActive: true },
-        {  title: 'Education', type: 'core', isActive: true },
-        {  title: 'Skills', type: 'core', isActive: true },
-        {  title: 'Custom Sections', type: 'custom', isActive: true },
-      ],
-      template: data.template || 'modern',
-  });
 
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center h-full w-full">
+        someting went wrong!
+      </div>
+    );
+  }
+  const [resumeData, setResumeData] = useState<ResumeData>({
+    id: id,
+    personalInfo: {
+      fullName: data.personalInfo?.fullName || "",
+      email: data.personalInfo?.email || "",
+      jobTitle: data.personalInfo?.jobTitle || "",
+      phone: data.personalInfo?.phone || "",
+      linkedin: data.personalInfo?.linkedin || "",
+      github: data.personalInfo?.github || "",
+      website: data.personalInfo?.website || "",
+      address: data.personalInfo?.address || "",
+      summary: data.personalInfo?.summary || "",
+    },
+    experiences: data.experiences.map((exp: any) => ({
+      ...exp,
+      startDate: exp.startDate ? new Date(exp.startDate).toISOString() : "",
+      endDate: exp.endDate ? new Date(exp.endDate).toISOString() : "",
+    })),
+    education: data.education.map((edu: any) => ({
+      ...edu,
+      description: edu.description || "",
+      startDate: edu.startDate ? new Date(edu.startDate).toISOString() : "",
+      endDate: edu.endDate ? new Date(edu.endDate).toISOString() : "",
+    })),
+    skills: data.skills,
+    customSections: data.customSections,
+    sectionOrder: data.sectionOrder || [
+      { title: "Personal Information", type: "core", isActive: true },
+      { title: "Experience", type: "core", isActive: true },
+      { title: "Education", type: "core", isActive: true },
+      { title: "Skills", type: "core", isActive: true },
+      { title: "Custom Sections", type: "custom", isActive: true },
+    ],
+    template: data.template || "modern",
+  });
   // Define the section order
   const sectionOrder: SectionType[] = [
     "personal",
@@ -138,6 +106,7 @@ export function ResumeEditor() {
       return;
     }
   }, [isError, error]);
+
   // Handle section completion and auto-navigation
   const handleSectionComplete = (section: SectionType, data: any) => {
     setResumeData((prev) => {
@@ -168,7 +137,7 @@ export function ResumeEditor() {
   };
 
   // Handle custom sections update
-  const handleCustomSectionsUpdate = (sections: CustomSectionType[]) => {
+  const handleCustomSectionsUpdate = (sections: CustomSections[]) => {
     setTimeout(() => {
       setResumeData((prev) => ({
         ...prev,
@@ -187,11 +156,11 @@ export function ResumeEditor() {
   };
 
   // Handle section toggle
-  const handleSectionToggle = (id: string, isActive: boolean) => {
+  const handleSectionToggle = (title: string, isActive: boolean) => {
     setResumeData((prev) => ({
       ...prev,
       sectionOrder: prev.sectionOrder.map((section) =>
-        section.id === id ? { ...section, isActive } : section
+        section.title === title ? { ...section, isActive } : section
       ),
     }));
   };
@@ -199,20 +168,18 @@ export function ResumeEditor() {
   // Handle template selection
   const handleTemplateSelect = (template: string) => {
     setSelectedTemplate(template);
-  };
-
-  const handleTemplateSave = () => {
-    const template = selectedTemplate;
-    setResumeData((prev) => ({
+       setResumeData((prev) => ({
       ...prev,
       template,
     }));
+  };
+
+  const handleTemplateSave = () => { 
     handleSectionComplete("template", selectedTemplate);
   };
 
   // Save the entire resume
   const handleSaveResume = () => {
-    console.log("resume", resumeData);
     mutate(
       { resume: resumeData, resumeId: id },
       {
@@ -276,7 +243,6 @@ export function ResumeEditor() {
     }, 1500);
   };
 
- 
   return (
     <div className="flex flex-col">
       <Card className="border-0 shadow-sm p-4">
@@ -366,7 +332,7 @@ export function ResumeEditor() {
                               Browse Templates
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-4xl">
+                          <DialogContent className="max-w-7xl  overflow-y-auto max-h-[95%]">
                             <DialogHeader>
                               <DialogTitle>Select a Template</DialogTitle>
                             </DialogHeader>
@@ -390,15 +356,8 @@ export function ResumeEditor() {
                         </div>
                         <div className="p-4">
                           <h3 className="font-medium capitalize">
-                            {selectedTemplate}
+                            { selectedTemplate}
                           </h3>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {selectedTemplate === "modern"
-                              ? "A clean, professional template with a traditional layout and modern styling"
-                              : selectedTemplate === "minimalist"
-                              ? "A simple, elegant template with minimal styling and clean typography"
-                              : "A creative template with a sidebar for skills and contact information"}
-                          </p>
                         </div>
                       </Card>
 
@@ -438,10 +397,9 @@ export function ResumeEditor() {
                     </Button>
                     <Button
                       onClick={goToNextSection}
-                      disabled={
-                        activeSection === sectionOrder[sectionOrder.length - 1]
-                      }
-                      className="hover-lift"
+                      className={`hover-lift ${
+                        activeSection === "ai" && "hidden"
+                      } `}
                     >
                       Next
                       <ChevronRight className="ml-2 h-4 w-4" />
@@ -484,7 +442,7 @@ export function ResumeEditor() {
                   </div>
                   <Card className="border-0 shadow-sm p-0">
                     <ResumePreview
-                      template={selectedTemplate}
+                      template={resumeData.template || selectedTemplate}
                       resumeData={resumeData}
                       sectionOrder={resumeData.sectionOrder.filter(
                         (s) => s.isActive

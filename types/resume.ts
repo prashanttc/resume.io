@@ -15,12 +15,12 @@ export type resume = {
   downloads: number;
   shares: number;
   isDefault: boolean;
-  template:string;
+  template: string;
   updatedAt: Date;
 };
 
-
 export type ResumeData = {
+  id: string;
   personalInfo: PersonalInfo | null;
   experiences: Experiences[];
   education: Education[];
@@ -37,6 +37,7 @@ export type EntryType = {
   date: string | null;
   link: string | null;
 };
+
 export type PersonalInfo = {
   fullName: string;
   email: string;
@@ -61,16 +62,35 @@ export type Experiences = {
 
 export type Education = {
   institution: string;
+  current: boolean;
   degree: string;
-  field: string;
+  description: string | null;
   startDate: string;
   endDate?: string;
   location?: string;
 };
-
 
 export type CustomSections = {
   id: string;
   title: string;
   entries: EntryType[];
 };
+
+export type TemplateProps = {
+  personal: PersonalInfo;
+  experiences: Experiences[];
+  skills: SkillCategory[];
+  education: Education[];
+  custom: CustomSections[];
+  sectionOrder: ResumeSection[];
+};
+
+export type SectionType =
+  | "personal"
+  | "experience"
+  | "education"
+  | "skills"
+  | "template"
+  | "custom"
+  | "reorder"
+  | "ai";

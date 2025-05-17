@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge"
 import { ModernTemplate } from "@/components/resume/templates/modern-template"
 import { MinimalistTemplate } from "@/components/resume/templates/minimalist-template"
 import { CreativeTemplate } from "@/components/resume/templates/creative-template"
-
 export function TemplateGallery() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
@@ -35,27 +34,6 @@ export function TemplateGallery() {
       description: "A creative template with a sidebar for skills and contact information",
       categories: ["creative"],
       component: CreativeTemplate,
-    },
-    {
-      id: "executive",
-      name: "Executive",
-      description: "A sophisticated template designed for senior professionals and executives",
-      categories: ["professional"],
-      component: ModernTemplate, // Reusing component for demo
-    },
-    {
-      id: "technical",
-      name: "Technical Specialist",
-      description: "Optimized for technical roles with sections for projects and skills",
-      categories: ["professional", "technical"],
-      component: MinimalistTemplate, // Reusing component for demo
-    },
-    {
-      id: "academic",
-      name: "Academic CV",
-      description: "Designed for academic and research positions with publications section",
-      categories: ["academic"],
-      component: CreativeTemplate, // Reusing component for demo
     },
   ]
 
@@ -86,7 +64,7 @@ export function TemplateGallery() {
                   onClick={() => setSelectedTemplate(template.id === selectedTemplate ? null : template.id)}
                 >
                   <div className="absolute inset-0 flex items-center justify-center p-4 transform scale-[0.4]">
-                    <template.component />
+                    {/* <template.component /> */}
                   </div>
                   {selectedTemplate === template.id && (
                     <div className="absolute inset-0 bg-black/5 flex items-center justify-center">
