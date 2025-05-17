@@ -23,6 +23,7 @@ export type ResumeData = {
   id: string;
   personalInfo: PersonalInfo | null;
   experiences: Experiences[];
+  projects:Projects[];
   education: Education[];
   skills: SkillCategory[];
   customSections: CustomSections[];
@@ -59,6 +60,14 @@ export type Experiences = {
   location?: string;
   description?: string;
 };
+export type Projects = {
+  title: string;
+  role?: string;
+  startDate: string;
+  endDate?: string;
+  current: boolean;
+  description: string;
+};
 
 export type Education = {
   institution: string;
@@ -79,6 +88,7 @@ export type CustomSections = {
 export type TemplateProps = {
   personal: PersonalInfo;
   experiences: Experiences[];
+  projects:Projects[];
   skills: SkillCategory[];
   education: Education[];
   custom: CustomSections[];
@@ -88,9 +98,9 @@ export type TemplateProps = {
 export type SectionType =
   | "personal"
   | "experience"
+  | "project"
   | "education"
   | "skills"
   | "template"
   | "custom"
   | "reorder"
-  | "ai";

@@ -9,11 +9,13 @@ export function ModernTemplate({
   personal,
   education,
   experiences,
+  projects,
   skills,
   custom,
   sectionOrder,
 }: TemplateProps) {
   // Format date function
+  console.log("fff",sectionOrder)
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -21,7 +23,6 @@ export function ModernTemplate({
       month: "short",
     });
   };
-  console.log("u",custom.map((cu)=>cu.title))
   return (
     <div className="font-sans text-zinc-800 max-w-[800px] mx-auto">
       <header className="mb-6">
@@ -85,6 +86,40 @@ export function ModernTemplate({
                       )}
                     </div>
                     <p className="text-sm mt-1">{experience.description}</p>
+                  </div>
+                ))}
+              </section>
+            );
+          case "Projects":
+            return (
+              <section key={section.title} className="mb-6">
+                <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
+                  Projects
+                </h3>
+
+                {projects.map((project, index) => (
+                  <div
+                    key={index}
+                    className={index < projects.length - 1 ? "mb-4" : ""}
+                  >
+                    <div className="flex justify-between items-baseline mb-1">
+                      <h4 className="text-base font-medium">
+                        {project.title}
+                      </h4>
+                      <span className="text-sm text-zinc-600">
+                        {formatDate(project.startDate)} -{" "}
+                        {project.current
+                          ? "Present"
+                          : formatDate(project.endDate || "")}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-baseline mb-1">
+                      <h5 className="text-sm font-medium text-zinc-600">
+                        {project.role}
+                      </h5>
+                     
+                    </div>
+                    <p className="text-sm mt-1">{project.description}</p>
                   </div>
                 ))}
               </section>

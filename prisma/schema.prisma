@@ -30,6 +30,7 @@ model Resume {
   sectionOrder    sectionOrder[]
   personalInfo    PersonalInfo?
   experiences     Experience[]
+  projects        Projects[]
   education       Education[]
   skills          SkillCategory[]
   customSections  CustomSection[]
@@ -65,6 +66,18 @@ model Experience {
   endDate     DateTime?
   location    String?
   description String?
+
+  resume      Resume   @relation(fields: [resumeId], references: [id])
+}
+model Projects {
+  id          String   @id @default(uuid())
+  resumeId    String
+  title       String
+  role        String?
+  startDate   DateTime
+  current     Boolean  @default(false)
+  endDate     DateTime?
+  description String
 
   resume      Resume   @relation(fields: [resumeId], references: [id])
 }

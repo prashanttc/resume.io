@@ -1,11 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { PersonalInfoForm } from "@/components/resume/personal-info-form"
-import { ExperienceForm } from "@/components/resume/experience-form"
-import { EducationForm } from "@/components/resume/education-form"
-import { SkillsForm } from "@/components/resume/skills-form"
-import type { ResumeData, SectionType } from "@/components/resume/resume-editor"
+import { PersonalInfoForm } from "@/components/resume/forms/personal-info-form"
+import { ExperienceForm } from "@/components/resume/forms/experience-form"
+import { EducationForm } from "@/components/resume/forms/education-form"
+import { SkillsForm } from "@/components/resume/forms/skills-form"
+import { ResumeData, SectionType } from "@/types/resume"
+import { ProjectForm } from "./forms/project-form"
 
 interface EditorSectionsProps {
   activeSection: SectionType
@@ -18,6 +19,7 @@ export function EditorSections({ activeSection, resumeData, onSectionComplete ,d
   const data_personal = data.personalInfo;
   const [personalData, setPersonalData] = useState(resumeData.personalInfo ||{})
   const [experienceData, setExperienceData] = useState(resumeData.experiences || [])
+  const [projectData, setProjectData] = useState(resumeData.projects || [])
   const [educationData, setEducationData] = useState(resumeData.education || [])
   const [skillsData, setSkillsData] = useState(resumeData.skills || [])
 
@@ -25,6 +27,7 @@ export function EditorSections({ activeSection, resumeData, onSectionComplete ,d
   useEffect(() => {
     setPersonalData(resumeData.personalInfo || data_personal||{})
     setExperienceData(resumeData.experiences || [])
+    setProjectData(resumeData.projects || [])
     setEducationData(resumeData.education || [])
     setSkillsData(resumeData.skills || [])
   }, [resumeData])
@@ -40,6 +43,10 @@ export function EditorSections({ activeSection, resumeData, onSectionComplete ,d
     setExperienceData(data)
     onSectionComplete("experience", data)
   }
+  const handleProjectSubmit = (data: any[]) => {
+    setProjectData(data)
+    onSectionComplete("project", data)
+  }
 
   // Handle education submission
   const handleEducationSubmit = (data: any[]) => {
@@ -52,7 +59,6 @@ export function EditorSections({ activeSection, resumeData, onSectionComplete ,d
     setSkillsData(data)
     onSectionComplete("skills", data)
   }
-
   return (
     <div className="animate-in">
       {activeSection === "personal" && (
@@ -66,6 +72,12 @@ export function EditorSections({ activeSection, resumeData, onSectionComplete ,d
         <div>
           <h3 className="text-lg font-medium mb-4">Work Experience</h3>
           <ExperienceForm defaultValues={experienceData} onSubmit={handleExperienceSubmit} />
+        </div>
+      )}
+      {activeSection === "project" && (
+        <div>
+          <h3 className="text-lg font-medium mb-4">Projects</h3>
+          <ProjectForm defaultValues={projectData} onSubmit={handleProjectSubmit} />
         </div>
       )}
 

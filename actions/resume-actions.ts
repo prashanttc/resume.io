@@ -38,6 +38,7 @@ export async function getResumeById(id: string) {
         sectionOrder:true,
         education:true,
         experiences:true,
+        projects:true,
         skills:{
           include:{
             skills:true
@@ -104,6 +105,21 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
             current: exp.current,
             location: exp.location,
             description: exp.description,
+          })),
+        },
+        projects: {
+          deleteMany: {},
+          create: resume.projects.map((project) => ({
+            title: project.title,
+            role: project.role,
+            startDate: new Date(project.startDate),
+            endDate: project.current
+              ? null
+              : project.endDate
+              ? new Date(project.endDate)
+              : null,
+            current: project.current,
+            description: project.description,
           })),
         },
         education: {

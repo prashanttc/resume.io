@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { format } from "date-fns"
-import { EntryType } from "../../app/(dashboard)/resume/custom-section-builder"
+import { EntryType } from "@/types/resume"
 
 interface SectionEntriesProps {
   sectionId: string

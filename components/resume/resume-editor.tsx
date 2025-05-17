@@ -32,13 +32,8 @@ import {
 import { EditorSections } from "./editor-section";
 import { toast } from "sonner";
 import { useSaveResume } from "@/query/resume/query";
-import {
-  CustomSections,
-  ResumeData,
-  SectionType,
-} from "@/types/resume";
+import { CustomSections, ResumeData, SectionType } from "@/types/resume";
 import { CustomSectionBuilder } from "./custom-section-builder";
-
 
 export function ResumeEditor({ data, id }: { data: any; id: string }) {
   const { mutate, isPending, isError, error } = useSaveResume();
@@ -53,6 +48,7 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
       </div>
     );
   }
+  console.log("data",data)
   const [resumeData, setResumeData] = useState<ResumeData>({
     id: id,
     personalInfo: {
@@ -71,6 +67,11 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
       startDate: exp.startDate ? new Date(exp.startDate).toISOString() : "",
       endDate: exp.endDate ? new Date(exp.endDate).toISOString() : "",
     })),
+    projects: data.projects.map((exp: any) => ({
+      ...exp,
+      startDate: exp.startDate ? new Date(exp.startDate).toISOString() : "",
+      endDate: exp.endDate ? new Date(exp.endDate).toISOString() : "",
+    })),
     education: data.education.map((edu: any) => ({
       ...edu,
       description: edu.description || "",
@@ -79,9 +80,10 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
     })),
     skills: data.skills,
     customSections: data.customSections,
-    sectionOrder: data.sectionOrder || [
+    sectionOrder: [
       { title: "Personal Information", type: "core", isActive: true },
       { title: "Experience", type: "core", isActive: true },
+      { title: "Projects", type: "core", isActive: true },
       { title: "Education", type: "core", isActive: true },
       { title: "Skills", type: "core", isActive: true },
       { title: "Custom Sections", type: "custom", isActive: true },
@@ -92,14 +94,14 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
   const sectionOrder: SectionType[] = [
     "personal",
     "experience",
+    "project",
     "education",
     "skills",
     "custom",
     "reorder",
     "template",
-    "ai",
   ];
-
+ console.log("res8ke",resumeData)
   useEffect(() => {
     if (isError) {
       toast.error(error.message);
@@ -116,6 +118,8 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
         updated.personalInfo = data;
       } else if (section === "experience") {
         updated.experiences = data;
+      } else if (section === "project") {
+        updated.projects = data;
       } else if (section === "education") {
         updated.education = data;
       } else if (section === "skills") {
@@ -168,13 +172,13 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
   // Handle template selection
   const handleTemplateSelect = (template: string) => {
     setSelectedTemplate(template);
-       setResumeData((prev) => ({
+    setResumeData((prev) => ({
       ...prev,
       template,
     }));
   };
 
-  const handleTemplateSave = () => { 
+  const handleTemplateSave = () => {
     handleSectionComplete("template", selectedTemplate);
   };
 
@@ -216,6 +220,8 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
         return !!resumeData.personalInfo;
       case "experience":
         return resumeData.experiences.length > 0;
+      case "project":
+        return resumeData.projects.length > 0;
       case "education":
         return resumeData.education.length > 0;
       case "skills":
@@ -226,8 +232,6 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
         return true; // Reordering is always considered complete
       case "template":
         return false; // Template always has a default value
-      case "ai":
-        return false; // AI optimization is optional
       default:
         return false;
     }
@@ -267,9 +271,7 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                           : "bg-secondary-foreground/20"
                       }`}
                     >
-                      {section === "ai" ? (
-                        <Sparkles className="h-3 w-3" />
-                      ) : section === "reorder" ? (
+                      {section === "reorder" ? (
                         <Settings className="h-3 w-3" />
                       ) : isSectionCompleted(section) ? (
                         <Check className="h-3 w-3" />
@@ -282,6 +284,8 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                         ? "Personal Info"
                         : section === "experience"
                         ? "Experience"
+                        :section === "project"
+                        ? "Projects"
                         : section === "education"
                         ? "Education"
                         : section === "skills"
@@ -290,9 +294,8 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                         ? "Custom Sections"
                         : section === "reorder"
                         ? "Reorder Sections"
-                        : section === "template"
-                        ? "Template"
-                        : "AI Optimize"}
+                        : "Template" 
+                      }
                     </span>
                   </button>
                 ))}
@@ -308,6 +311,7 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                 <div className="space-y-6">
                   {activeSection === "personal" ||
                   activeSection === "experience" ||
+                  activeSection === "project" ||
                   activeSection === "education" ||
                   activeSection === "skills" ? (
                     <EditorSections
@@ -356,7 +360,7 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                         </div>
                         <div className="p-4">
                           <h3 className="font-medium capitalize">
-                            { selectedTemplate}
+                            {selectedTemplate}
                           </h3>
                         </div>
                       </Card>
@@ -378,11 +382,6 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                       onReorder={handleSectionReorder}
                       onToggleSection={handleSectionToggle}
                     />
-                  ) : activeSection === "ai" ? (
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-medium">AI Optimization</h3>
-                      <AIOptimizer />
-                    </div>
                   ) : null}
 
                   <div className="flex justify-between pt-4">
@@ -398,7 +397,7 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                     <Button
                       onClick={goToNextSection}
                       className={`hover-lift ${
-                        activeSection === "ai" && "hidden"
+                        activeSection === "template" && "hidden"
                       } `}
                     >
                       Next
@@ -433,8 +432,7 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                         size="sm"
                         variant="outline"
                         className="hover-lift"
-                        onClick={() => setActiveSection("ai")}
-                      >
+                        >
                         <Sparkles className="mr-2 h-4 w-4" />
                         Optimize with AI
                       </Button>
