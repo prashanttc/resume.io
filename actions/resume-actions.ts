@@ -28,23 +28,23 @@ export async function getResumeById(id: string) {
       where: {
         id,
       },
-      include:{
-        personalInfo:true,
-        customSections:{
-          include:{
-            entries:true
-          }
+      include: {
+        personalInfo: true,
+        customSections: {
+          include: {
+            entries: true,
+          },
         },
-        sectionOrder:true,
-        education:true,
-        experiences:true,
-        projects:true,
-        skills:{
-          include:{
-            skills:true
-          }
-        }
-      }
+        sectionOrder: true,
+        education: true,
+        experiences: true,
+        projects: true,
+        skills: {
+          include: {
+            skills: true,
+          },
+        },
+      },
     });
     if (!resume) {
       throw new Error("no resume found");
@@ -70,21 +70,21 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
             update: {
               fullName: resume.personalInfo?.fullName,
               email: resume.personalInfo?.email,
-              jobTitle:resume.personalInfo?.jobTitle,
+              jobTitle: resume.personalInfo?.jobTitle,
               phone: resume.personalInfo?.phone,
               address: resume.personalInfo?.address,
               linkedin: resume.personalInfo?.linkedin, // Optional: fill from UI
               github: resume.personalInfo?.github,
               website: resume.personalInfo?.website,
-              summary:resume.personalInfo?.summary,
+              summary: resume.personalInfo?.summary,
             },
             create: {
-              fullName: resume.personalInfo?.fullName||"",
-              email: resume.personalInfo?.email||"",
-              phone: resume.personalInfo?.phone||"",
-              address: resume.personalInfo?.address||"",
-              summary: resume.personalInfo?.summary||"",
-              jobTitle: resume.personalInfo?.jobTitle||"",
+              fullName: resume.personalInfo?.fullName || "",
+              email: resume.personalInfo?.email || "",
+              phone: resume.personalInfo?.phone || "",
+              address: resume.personalInfo?.address || "",
+              summary: resume.personalInfo?.summary || "",
+              jobTitle: resume.personalInfo?.jobTitle || "",
               linkedin: resume.personalInfo?.linkedin || "", // Optional: fill from UI
               github: resume.personalInfo?.github || "",
               website: resume.personalInfo?.website || "",
@@ -128,7 +128,12 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
             institution: edu.institution,
             degree: edu.degree,
             startDate: new Date(edu.startDate),
-            endDate: edu.endDate ? new Date(edu.endDate) : null,
+            endDate: edu.current
+              ? null
+              : edu.endDate
+              ? new Date(edu.endDate)
+              : null,
+            current: edu.current,
             location: edu.location,
           })),
         },
@@ -137,11 +142,11 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
           create: resume.skills.map((skill) => ({
             name: skill.name,
             skills: {
-              create:skill.skills.map((s)=>({
-                name:s.name,
-                level:s.level
-              }))
-            }
+              create: skill.skills.map((s) => ({
+                name: s.name,
+                level: s.level,
+              })),
+            },
           })),
         },
         customSections: {
@@ -151,7 +156,7 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
             title: section.title,
             entries: {
               create: section.entries.map((entry) => ({
-                title: entry.title||'',
+                title: entry.title || "",
                 description: entry.description,
                 date: entry.date || null,
                 link: entry.link || null,

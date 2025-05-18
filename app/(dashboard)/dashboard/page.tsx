@@ -7,6 +7,7 @@ import { useGetAllResumes } from "@/query/resume/query";
 import { CircleX, LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { ResumeNotFound } from "@/components/error";
 
 export default function DashboardPage() {
   const { data: resumes, isError, error, isPending } = useGetAllResumes();
@@ -28,10 +29,7 @@ if (isPending) {
 }
 if (!resumes) {
   return (
-    <div className="flex flex-col h-full w-full items-center justify-center">
-      <CircleX className="h-10 w-10" />
-      <p>oops! no resume found!</p>
-    </div>
+   <ResumeNotFound variant="error"/>
   );
 }
   return (

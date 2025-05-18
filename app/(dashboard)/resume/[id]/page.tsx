@@ -20,7 +20,7 @@ export default function ResumePage() {
         </p>
       </div>
 
-      <ResumeEditor data={data} id={id}/>
+      <ResumeEditor data={data} id={id} title={data?.title||'resume'}/>
     </div>
   );
 }

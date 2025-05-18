@@ -51,7 +51,6 @@ interface PersonalInfoFormProps {
 }
 
 export function PersonalInfoForm({ defaultValues, onSubmit }: PersonalInfoFormProps) {
-  console.log("defa",defaultValues)
   const form = useForm<PersonalInfoFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues || {

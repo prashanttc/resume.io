@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ResumePreview } from "@/components/resume/resume-preview";
-import { AIOptimizer } from "@/components/resume/ai-optimizer";
 import {
   Sparkles,
   ChevronRight,
@@ -34,10 +33,12 @@ import { toast } from "sonner";
 import { useSaveResume } from "@/query/resume/query";
 import { CustomSections, ResumeData, SectionType } from "@/types/resume";
 import { CustomSectionBuilder } from "./custom-section-builder";
+import { downloadPdf } from "@/lib/utils";
 
-export function ResumeEditor({ data, id }: { data: any; id: string }) {
+export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:string }) {
   const { mutate, isPending, isError, error } = useSaveResume();
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionType>("personal");
   const [selectedTemplate, setSelectedTemplate] = useState("modern");
 
@@ -48,7 +49,6 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
       </div>
     );
   }
-  console.log("data",data)
   const [resumeData, setResumeData] = useState<ResumeData>({
     id: id,
     personalInfo: {
@@ -101,7 +101,6 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
     "reorder",
     "template",
   ];
- console.log("res8ke",resumeData)
   useEffect(() => {
     if (isError) {
       toast.error(error.message);
@@ -239,12 +238,17 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
 
   // Handle export to PDF
   const handleExportPDF = () => {
-    toast("Your resume is being exported to PDF...");
-
-    // In a real app, this would trigger a PDF export
-    setTimeout(() => {
-      toast("Your resume has been exported to PDF successfully.");
-    }, 1500);
+    setIsDownloading(true);
+    try {
+      const download = downloadPdf({resumeId:id,title});
+      setTimeout(() => {
+      setIsDownloading(false);
+      toast.success('downloaded successfully')  
+      }, 2000);
+    } catch (error: any) {
+      toast.error("failed to dowload", error.message);
+      return;
+    } 
   };
 
   return (
@@ -284,7 +288,7 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                         ? "Personal Info"
                         : section === "experience"
                         ? "Experience"
-                        :section === "project"
+                        : section === "project"
                         ? "Projects"
                         : section === "education"
                         ? "Education"
@@ -294,8 +298,7 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                         ? "Custom Sections"
                         : section === "reorder"
                         ? "Reorder Sections"
-                        : "Template" 
-                      }
+                        : "Template"}
                     </span>
                   </button>
                 ))}
@@ -416,6 +419,22 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                         size="sm"
                         variant="outline"
                         className="hover-lift"
+                        onClick={handleExportPDF}
+                        disabled={isDownloading}
+                      >
+                        {isDownloading ? (
+                          <LoaderCircle className="animate-spin" />
+                        ) : (
+                          <div className="flex gap-2 justify-center items-center">
+                            <FileText className="mr-2 h-4 w-4" />
+                            Download
+                          </div>
+                        )}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="hover-lift"
                         onClick={handleSaveResume}
                         disabled={isPending}
                       >
@@ -432,7 +451,7 @@ export function ResumeEditor({ data, id }: { data: any; id: string }) {
                         size="sm"
                         variant="outline"
                         className="hover-lift"
-                        >
+                      >
                         <Sparkles className="mr-2 h-4 w-4" />
                         Optimize with AI
                       </Button>

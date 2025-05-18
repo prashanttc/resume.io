@@ -93,7 +93,6 @@ export function ResumePreview({
       ],
     },
   ];
-
   const customSections = resumeData?.customSections ||[];
   const TemplateComponent = templateMap[template];
   if (!TemplateComponent) {

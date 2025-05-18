@@ -91,6 +91,7 @@ model Education {
   startDate   DateTime
   endDate     DateTime?
   location    String?
+  current     Boolean @default(false)
 
   resume      Resume   @relation(fields: [resumeId], references: [id])
 }

@@ -73,7 +73,7 @@ export type Education = {
   institution: string;
   current: boolean;
   degree: string;
-  description: string | null;
+  description: string |null;
   startDate: string;
   endDate?: string;
   location?: string;
