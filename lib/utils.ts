@@ -26,3 +26,12 @@ export const downloadPdf = async ({resumeId,title}:{resumeId:string;title:string
   a.remove();
   URL.revokeObjectURL(url);
 };
+
+ export  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  }

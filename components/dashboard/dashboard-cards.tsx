@@ -1,69 +1,75 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Download, Eye, FileText, Share2 } from "lucide-react"
+import { ResumeLimitIndicator } from "./resume-limit-indicator"
+import { resume } from "@/types/resume"
 
-export function DashboardCards() {
+export function DashboardStats({resume}:{resume:resume[]}) {
+  const currentPlan = "free"
+  const resumeCount = resume.length;
+  const maxFreeResumes = 3
+  const view = resume.map((res)=>res.views);
+  const shares = resume.map((res)=>res.shares);
+  const download = resume.map((res)=>res.downloads);
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card className="border-0 shadow-sm hover-shadow transition-all">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Resumes</CardTitle>
-          <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center">
-            <FileText className="h-4 w-4 text-foreground" />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">3</div>
-          <div className="flex items-center mt-1">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 mr-1.5"></div>
-            <p className="text-xs text-muted-foreground">+1 from last month</p>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="border-0 shadow-sm hover-shadow transition-all">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Resume Views</CardTitle>
-          <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center">
-            <Eye className="h-4 w-4 text-foreground" />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">24</div>
-          <div className="flex items-center mt-1">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 mr-1.5"></div>
-            <p className="text-xs text-muted-foreground">+8 from last month</p>
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <FileText className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Total Resumes</p>
+              <h3 className="text-2xl font-semibold">{resumeCount}</h3>
+              {currentPlan === "free" && (
+                <div className="mt-2">
+                  <ResumeLimitIndicator currentCount={resumeCount} maxCount={maxFreeResumes} />
+                </div>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="border-0 shadow-sm hover-shadow transition-all">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Downloads</CardTitle>
-          <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center">
-            <Download className="h-4 w-4 text-foreground" />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">12</div>
-          <div className="flex items-center mt-1">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 mr-1.5"></div>
-            <p className="text-xs text-muted-foreground">+3 from last month</p>
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <Eye className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Resume Views</p>
+              <h3 className="text-2xl font-semibold">{view}</h3>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="border-0 shadow-sm hover-shadow transition-all">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Shares</CardTitle>
-          <div className="h-8 w-8 rounded-full bg-secondary flex items-center justify-center">
-            <Share2 className="h-4 w-4 text-foreground" />
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <Download className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Downloads</p>
+              <h3 className="text-2xl font-semibold">{download}</h3>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">7</div>
-          <div className="flex items-center mt-1">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 mr-1.5"></div>
-            <p className="text-xs text-muted-foreground">+2 from last month</p>
+        </CardContent>
+      </Card>
+
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <Share2 className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Shares</p>
+              <h3 className="text-2xl font-semibold">{shares}</h3>
+            </div>
           </div>
         </CardContent>
       </Card>

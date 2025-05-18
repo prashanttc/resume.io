@@ -1,13 +1,14 @@
 "use client";
-import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { QuickStart } from "@/components/dashboard/quick-start";
 import { ResumeList } from "@/components/dashboard/resume-list";
-import { DashboardOverview } from "@/components/dashboard/dashboard-overview";
 import { useGetAllResumes } from "@/query/resume/query";
-import { CircleX, LoaderCircle } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { ResumeNotFound } from "@/components/error";
+import { PlanOverview } from "@/components/dashboard/plan-overview";
+import { DashboardStats } from "@/components/dashboard/dashboard-cards";
+import { UpcomingFeatures } from "@/components/dashboard/upcoming-features";
 
 export default function DashboardPage() {
   const { data: resumes, isError, error, isPending } = useGetAllResumes();
@@ -40,14 +41,14 @@ if (!resumes) {
       </div>
 
       <QuickStart />
-
+      <DashboardStats resume={resumes} />
       <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-4">
-        <div className="md:col-span-2 lg:col-span-3 space-y-8">
+        <div className="md:col-span-2 lg:col-span-2 space-y-8">
           <ResumeList resumes={resumes} />
-          <RecentActivity />
-        </div>
-        <div className="md:col-span-1">
-          <DashboardOverview resumes={resumes} />
+          <UpcomingFeatures/>
+       </div>
+        <div className="md:col-span-2">
+          <PlanOverview resume={resumes} />
         </div>
       </div>
     </div>

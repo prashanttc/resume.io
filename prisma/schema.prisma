@@ -27,6 +27,7 @@ model Resume {
   views           Int          @default(0)
   downloads       Int          @default(0)
   shares          Int          @default(0)
+  slug            String?       @unique
   sectionOrder    sectionOrder[]
   personalInfo    PersonalInfo?
   experiences     Experience[]

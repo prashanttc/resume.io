@@ -23,7 +23,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { TemplateBrowser } from "@/components/resume/template-browser";
-// import { ShareModal } from "@/components/resume/share-modal"
 import {
   SectionReorder,
   type ResumeSection,
@@ -34,6 +33,8 @@ import { useSaveResume } from "@/query/resume/query";
 import { CustomSections, ResumeData, SectionType } from "@/types/resume";
 import { CustomSectionBuilder } from "./custom-section-builder";
 import { downloadPdf } from "@/lib/utils";
+import { ResumeNotFound } from "../error";
+import { ShareModal } from "../share-modal";
 
 export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:string }) {
   const { mutate, isPending, isError, error } = useSaveResume();
@@ -44,9 +45,7 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
 
   if (!data) {
     return (
-      <div className="flex items-center justify-center h-full w-full">
-        someting went wrong!
-      </div>
+      <ResumeNotFound variant="error"/>
     );
   }
   const [resumeData, setResumeData] = useState<ResumeData>({
@@ -240,11 +239,11 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
   const handleExportPDF = () => {
     setIsDownloading(true);
     try {
-      const download = downloadPdf({resumeId:id,title});
+       downloadPdf({resumeId:id,title});
       setTimeout(() => {
       setIsDownloading(false);
       toast.success('downloaded successfully')  
-      }, 2000);
+      }, 4000);
     } catch (error: any) {
       toast.error("failed to dowload", error.message);
       return;
@@ -415,22 +414,9 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-base font-medium">Preview</h3>
                     <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="hover-lift"
-                        onClick={handleExportPDF}
-                        disabled={isDownloading}
-                      >
-                        {isDownloading ? (
-                          <LoaderCircle className="animate-spin" />
-                        ) : (
-                          <div className="flex gap-2 justify-center items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            Download
-                          </div>
-                        )}
-                      </Button>
+                   <Button variant='outline' size='sm' className="hover-lift">
+                    <ShareModal resumeId={id} resumeName={title} loading={isDownloading} handleExport={handleExportPDF}/>
+                   </Button>
                       <Button
                         size="sm"
                         variant="outline"

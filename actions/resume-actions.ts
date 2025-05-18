@@ -134,7 +134,7 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
               ? new Date(edu.endDate)
               : null,
             current: edu.current,
-            description:edu.description,
+            description: edu.description,
             location: edu.location,
           })),
         },
@@ -202,3 +202,20 @@ export async function getAllResume() {
   }
 }
 
+export async function deleteResume(id: string) {
+  if (!id) throw new Error("invalid resume id!");
+  try {
+    const deleteResume = await prisma.resume.delete({
+      where: {
+        id,
+      },
+    });
+    if (!deleteResume) {
+      throw new Error("unable to delete resume");
+    }
+    return { success: true };
+  } catch (error: any) {
+    console.log("something went wrong");
+    throw new Error("something went wrong", error.message);
+  }
+}

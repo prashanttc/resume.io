@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,6 @@ import {
   Edit,
   Eye,
   MoreHorizontal,
-  Plus,
   Share2,
   Trash2,
   FileText,
@@ -22,22 +21,32 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, downloadPdf, formatDate } from "@/lib/utils";
 import { resume } from "@/types/resume";
 import NewResume from "../NewResume";
+import { ShareModal } from "../share-modal";
+import { toast } from "sonner";
+import { useDeleteResume } from "@/query/resume/query";
 
 export type resumeProps={
   resumes:resume[]
 }
 export function ResumeList({resumes}:resumeProps) {
+  const{mutate,isPending} = useDeleteResume()
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-
-
   const handleDelete = (id: string) => {
-    // setResumes(resumes.filter((resume) => resume.id !== id));
+    mutate(id,{
+      onSuccess:()=>{
+        toast.success('resume deleted.')
+      }
+    })
   };
 
-
+  const handledownload =(e:React.MouseEvent,resume:resume)=>{
+    e.preventDefault();
+    toast.loading('downloading')
+    downloadPdf({resumeId:resume.id,title:resume.title})
+  }
   return (
     <Card className="border-0 shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -148,11 +157,10 @@ export function ResumeList({resumes}:resumeProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={(e) => e.preventDefault()}>
-                          <Share2 className="mr-2 h-4 w-4" />
-                          Share
+                        <DropdownMenuItem className="cursor-pointer" onClick={(e)=>e.preventDefault()}>
+                          <ShareModal resumeId={resume.id} resumeName={resume.title}/>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+                        <DropdownMenuItem onClick={(e)=>handledownload(e,resume)} className="cursor-pointer">
                           <Download className="mr-2 h-4 w-4" />
                           Download
                         </DropdownMenuItem>
@@ -182,7 +190,7 @@ export function ResumeList({resumes}:resumeProps) {
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuItem
-                          className="text-destructive"
+                          className="text-destructive cursor-pointer"
                           onClick={(e) => {
                             e.preventDefault();
                             handleDelete(resume.id);
@@ -228,7 +236,7 @@ export function ResumeList({resumes}:resumeProps) {
                         )}
                       </div>
                       <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span>Last updated: {resume.updatedAt.toISOString()}</span>
+                        <span>Last updated: {formatDate(resume.updatedAt.toDateString())}</span>
                         <span className="flex items-center">
                           <Eye className="mr-1 h-3 w-3" />
                           {resume.views} views
@@ -237,15 +245,6 @@ export function ResumeList({resumes}:resumeProps) {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <Edit className="h-4 w-4" />
-                      <span className="sr-only">Edit</span>
-                    </Button>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
@@ -258,11 +257,10 @@ export function ResumeList({resumes}:resumeProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={(e) => e.preventDefault()}>
-                          <Share2 className="mr-2 h-4 w-4" />
-                          Share
+                        <DropdownMenuItem className="cursor-pointer" onClick={(e)=>e.preventDefault()}>
+                         <ShareModal resumeId={resume.id} resumeName={resume.title}/>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+                        <DropdownMenuItem onClick={(e) => handledownload(e,resume)} className="cursor-pointer">
                           <Download className="mr-2 h-4 w-4" />
                           Download
                         </DropdownMenuItem>
@@ -292,7 +290,7 @@ export function ResumeList({resumes}:resumeProps) {
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuItem
-                          className="text-destructive"
+                          className="text-destructive cursor-pointer"
                           onClick={(e) => {
                             e.preventDefault();
                             handleDelete(resume.id);

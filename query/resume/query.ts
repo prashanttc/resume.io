@@ -1,4 +1,5 @@
 import {
+  deleteResume,
   getAllResume,
   getResumeById,
   newResume,
@@ -10,12 +11,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export function useCreateNewResume() {
   const queryclient = useQueryClient();
   return useMutation({
-    mutationFn: (name: string) => newResume(name),    
-     onSuccess: () => {
-      queryclient.invalidateQueries({ queryKey: ['getallresume'] });
+    mutationFn: (name: string) => newResume(name),
+    onSuccess: () => {
+      queryclient.invalidateQueries({ queryKey: ["getallresume"] });
     },
-  },
-  );
+  });
 }
 
 export function useGetResumebyId(id: string) {
@@ -41,5 +41,16 @@ export function useGetAllResumes() {
   return useQuery({
     queryKey: ["getallresume"],
     queryFn: getAllResume,
+  });
+}
+
+export function useDeleteResume() {
+  const queryclient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => deleteResume(id),
+    onSuccess: () => {
+      queryclient.invalidateQueries({ queryKey: ["getallresume"] });
+      queryclient.invalidateQueries({ queryKey: ["getResumeByid"] });
+    },
   });
 }

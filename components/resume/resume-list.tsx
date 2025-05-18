@@ -24,6 +24,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { resume } from "@/types/resume"
+import { formatDate } from "@/lib/utils"
 
 
 interface ResumeItemProps {
@@ -33,16 +34,7 @@ interface ResumeItemProps {
 export function ResumeItem({ resume }: ResumeItemProps) {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
 
-  // Format the date to be more readable
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })
-  }
-
+  
   // Get time elapsed since last update
   const getTimeElapsed = (dateString: string) => {
     const date = new Date(dateString)
