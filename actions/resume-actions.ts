@@ -134,6 +134,7 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
               ? new Date(edu.endDate)
               : null,
             current: edu.current,
+            description:edu.description,
             location: edu.location,
           })),
         },
@@ -200,3 +201,4 @@ export async function getAllResume() {
     throw new Error("internal server errror");
   }
 }
+

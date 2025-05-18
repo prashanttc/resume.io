@@ -7,16 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { X, Check } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Skill, SkillCategory } from "@/types/resume"
 
-type Skill = {
-  name: string
-  level: "Beginner" | "Intermediate" | "Advanced" | "Expert"
-}
-
-type SkillCategory = {
-  name: string
-  skills: Skill[]
-}
 
 interface SkillsFormProps {
   defaultValues?: SkillCategory[]
@@ -46,7 +38,6 @@ export function SkillsForm({ defaultValues = [], onSubmit }: SkillsFormProps) {
           },
         ],
   )
-
   const [newCategory, setNewCategory] = useState("")
   const [newSkill, setNewSkill] = useState("")
   const [newSkillLevel, setNewSkillLevel] = useState<Skill["level"]>("Intermediate")

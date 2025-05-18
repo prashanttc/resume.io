@@ -2,12 +2,12 @@ import { ResumeSection } from "@/components/resume/section-reorder";
 
 export type SkillCategory = {
   name: string;
-  skills: {
+  skills:Skill[]
+};
+export type Skill={
     name: string;
     level: string;
-  }[];
-};
-
+}
 export type resume = {
   id: string;
   title: string;

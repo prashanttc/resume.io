@@ -92,22 +92,7 @@ export function EditorSections({ activeSection, resumeData, onSectionComplete ,d
         <div>
           <h3 className="text-lg font-medium mb-4">Skills</h3>
           <SkillsForm
-            defaultValues={
-              Array.isArray(skillsData)
-                ? skillsData.reduce((acc: any[], skill: any) => {
-                    const category = acc.find((cat) => cat.name === skill.category)
-                    if (category) {
-                      category.skills.push({ name: skill.name, level: skill.level })
-                    } else {
-                      acc.push({
-                        name: skill.category,
-                        skills: [{ name: skill.name, level: skill.level }]
-                      })
-                    }
-                    return acc
-                  }, [])
-                : []
-            }
+            defaultValues={skillsData}
             onSubmit={handleSkillsSubmit}
           />
         </div>

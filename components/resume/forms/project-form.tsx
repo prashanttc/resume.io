@@ -325,7 +325,7 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
             )}
             <Button type="submit" className="hover-lift" disabled={!isFormDirty}>
               <Plus className="mr-2 h-4 w-4" />
-              {editIndex !== null ? "Update Experience" : "Add Experience"}
+              {editIndex !== null ? "Update Project" : "Add Project"}
             </Button>
           </div>
         </form>
