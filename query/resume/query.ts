@@ -4,6 +4,7 @@ import {
   getResumeById,
   newResume,
   saveResume,
+  setSlug,
 } from "@/actions/resume-actions";
 import { ResumeData } from "@/types/resume";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -48,6 +49,18 @@ export function useDeleteResume() {
   const queryclient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deleteResume(id),
+    onSuccess: () => {
+      queryclient.invalidateQueries({ queryKey: ["getallresume"] });
+      queryclient.invalidateQueries({ queryKey: ["getResumeByid"] });
+    },
+  });
+}
+
+export function useSetSlug() {
+  const queryclient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ url, id }: { url: string; id: string }) =>
+      setSlug({ url, id }),
     onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ["getallresume"] });
       queryclient.invalidateQueries({ queryKey: ["getResumeByid"] });

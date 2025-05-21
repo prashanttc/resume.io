@@ -1,13 +1,18 @@
 "use server";
 
+import { getUserIdFromSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ResumeData } from "@/types/resume";
 
 export async function newResume(name: string) {
+  const user = await getUserIdFromSession();
+  if (!user) {
+    throw new Error("unauthorized");
+  }
   try {
     const newResume = await prisma.resume.create({
       data: {
-        userId: "234820380283028",
+        userId: user,
         title: name,
       },
     });
@@ -23,6 +28,10 @@ export async function newResume(name: string) {
 }
 
 export async function getResumeById(id: string) {
+  const user = await getUserIdFromSession();
+  if (!user) {
+    throw new Error("unauthorized");
+  }
   try {
     const resume = await prisma.resume.findFirst({
       where: {
@@ -57,11 +66,18 @@ export async function getResumeById(id: string) {
 }
 
 export async function saveResume(resume: ResumeData, resumeId: string) {
+  const user = await getUserIdFromSession();
+  if (!user) {
+    throw new Error("unauthorized");
+  }
   if (!resume || !resumeId) throw new Error("Invalid resume input");
   try {
+    const url = process.env.NEXT_PUBLIC_BASE_URL!;
+    const slug = `${url}${resumeId}/preview`;
     await prisma.resume.update({
       where: { id: resumeId },
       data: {
+        slug: resume.slug || slug,
         template: resume.template,
         updatedAt: new Date(),
 
@@ -185,8 +201,12 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
 }
 
 export async function getAllResume() {
+  const user = await getUserIdFromSession();
+  if (!user) {
+    throw new Error("unauthorized");
+  }
   try {
-    const userId = "234820380283028";
+    const userId = user;
     const all = await prisma.resume.findMany({
       where: {
         userId,
@@ -203,6 +223,10 @@ export async function getAllResume() {
 }
 
 export async function deleteResume(id: string) {
+  const user = await getUserIdFromSession();
+  if (!user) {
+    throw new Error("unauthorized");
+  }
   if (!id) throw new Error("invalid resume id!");
   try {
     const deleteResume = await prisma.resume.delete({
@@ -217,5 +241,29 @@ export async function deleteResume(id: string) {
   } catch (error: any) {
     console.log("something went wrong");
     throw new Error("something went wrong", error.message);
+  }
+}
+
+export async function setSlug({ url, id }: { url: string; id: string }) {
+  const user = await getUserIdFromSession();
+  if (!user) {
+    throw new Error("unauthorized");
+  }
+  try {
+    const set = await prisma.resume.update({
+      where: {
+        id,
+      },
+      data: {
+        slug: url,
+      },
+    });
+    if (!set) {
+      throw new Error("error updating url");
+    }
+    return { success: true };
+  } catch (error: any) {
+    console.log("someting went wrong!", error.message);
+    throw new Error("internal server error");
   }
 }

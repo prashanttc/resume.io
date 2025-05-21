@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import type React from "react";
+
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,57 +16,94 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Copy,
-  Download,
-  Facebook,
-  Link,
-  Linkedin,
-  LoaderCircle,
-  Mail,
-  Share2,
-  Twitter,
-} from "lucide-react";
+import { Copy, Download, Link, Share2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { useGetResumebyId, useSetSlug } from "@/query/resume/query";
 import { toast } from "sonner";
+import Loader from "./Loader";
 
 interface ShareModalProps {
   resumeId: string;
-  loading?: boolean;
-  handleExport?: () => void;
   resumeName: string;
 }
 
-export function ShareModal({
-  resumeId,
-  resumeName,
-  handleExport,
-  loading,
-}: ShareModalProps) {
-  const url = process.env.NEXT_PUBLIC_BASE_URL!;
+export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
+  const { mutate } = useSetSlug();
+  const { data, isPending } = useGetResumebyId(resumeId);
   const [open, setOpen] = useState(false);
-  const [shareLink, setShareLink] = useState(`${url}${resumeId}/preview`);
   const [isPublic, setIsPublic] = useState(true);
   const [password, setPassword] = useState("");
+  const url = process.env.NEXT_PUBLIC_BASE_URL!;
+
+  // Custom URL state
+  const [customUrlInput, setCustomUrlInput] = useState("");
+  const [isCustomUrlAvailable, setIsCustomUrlAvailable] = useState(true);
+  const [isCheckingUrl, setIsCheckingUrl] = useState(false);
+  const [savedCustomUrl, setSavedCustomUrl] = useState("");
+  const [defaultUrl, setDefaultUrl] = useState(`${url}${resumeId}/preview`);
+  const [shareLink, setShareLink] = useState(defaultUrl);
+  
+  useEffect(() => {
+    setDefaultUrl(data!.slug || "");
+  }, [ data]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareLink);
-    toast.success("copied");
+    toast("copied");
   };
 
-  const handleGenerateLink = () => {
-    // In a real app, this would generate a new link with the selected options
-    const newLink = `https://resumeos.com/share/${resumeId}${
-      isPublic ? "" : "&protected=true"
-    }`;
-    setShareLink(newLink);
+  const checkCustomUrlAvailability = async (url: string) => {
+    if (!url.trim()) {
+      setIsCustomUrlAvailable(true);
+      return;
+    }
+    setIsCheckingUrl(true);
+
+    const response = await fetch("/api/slug-check", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url }),
+    });
+
+    const data = await response.json();
+    setIsCustomUrlAvailable(data?.available);
+    setIsCheckingUrl(false);
   };
 
+  const handleCustomUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/g, "-");
+    setCustomUrlInput(value);
+    checkCustomUrlAvailability(value);
+  };
+
+  const saveCustomUrl = () => {
+    if (!customUrlInput || !isCustomUrlAvailable) return;
+    setSavedCustomUrl(customUrlInput);
+    setShareLink(`${url}${customUrlInput}`);
+    mutate(
+      { url: shareLink, id: resumeId },
+      {
+        onSuccess: () => {
+          toast.success(`Your resume is now available at ${shareLink}`);
+        },
+      }
+    );
+    setCustomUrlInput("");
+  };
+
+  if (isPending) {
+    return <Loader />;
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="hover-lift flex gap-2 items-center justify-center">
+        <div  className="hover-lift flex gap-2 items-center  justify-center">
           <Share2 className="mr-2 h-4 w-4" />
           Share
         </div>
@@ -76,56 +115,132 @@ export function ShareModal({
             Share your resume "{resumeName}" with others.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="share-link">Share Link</Label>
-            <div className="flex gap-2">
-              <Input
-                id="share-link"
-                value={shareLink}
-                readOnly
-                className="flex-1"
-              />
-              <Button variant="outline" size="icon" onClick={handleCopyLink}>
-                <Copy className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
 
-          <div className="space-y-4 border rounded-md p-4 bg-secondary/30">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="public-switch">Public Access</Label>
-                <p className="text-xs text-muted-foreground">
-                  Anyone with the link can view your resume
-                </p>
-              </div>
-              <Switch
-                id="public-switch"
-                checked={isPublic}
-                onCheckedChange={setIsPublic}
-              />
-            </div>
+        <Tabs defaultValue="link" className="mt-4">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="link">Share Link</TabsTrigger>
+            <TabsTrigger value="custom">Custom URL</TabsTrigger>
+          </TabsList>
 
-            {!isPublic && (
-              <div className="space-y-2">
-                <Label htmlFor="password">Password Protection</Label>
+          <TabsContent value="link" className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="share-link">Share Link</Label>
+              <div className="flex gap-2">
                 <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter a password"
+                  id="share-link"
+                  value={shareLink}
+                  readOnly
+                  className="flex-1"
                 />
+                <Button variant="outline" size="icon" onClick={handleCopyLink}>
+                  <Copy className="h-4 w-4" />
+                </Button>
               </div>
-            )}
+            </div>
 
-            <Button onClick={handleGenerateLink} className="w-full">
-              <Link className="mr-2 h-4 w-4" />
-              Generate Link
-            </Button>
-          </div>
-        </div>
+          </TabsContent>
+
+          <TabsContent value="custom" className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="custom-url">Custom URL</Label>
+              <p className="text-xs text-muted-foreground mb-2">
+                Create a memorable, custom URL for your resume
+              </p>
+
+              {savedCustomUrl ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 p-3 border rounded-md bg-secondary/20">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">Your custom URL</p>
+                      <p className="text-sm text-primary">{shareLink} </p>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCopyLink}
+                    >
+                      <Copy className="h-3.5 w-3.5 mr-1" />
+                      Copy
+                    </Button>
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => setSavedCustomUrl("")}
+                  >
+                    Change Custom URL
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-shrink-0 text-sm text-muted-foreground">
+                      {url}preview/
+                    </div>
+                    <div className="relative flex-1">
+                      <Input
+                        id="custom-url"
+                        value={customUrlInput}
+                        onChange={handleCustomUrlChange}
+                        placeholder="your-custom-url"
+                        className={
+                          !isCustomUrlAvailable ? "border-red-500 pr-8" : ""
+                        }
+                      />
+                      {isCheckingUrl && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                          <div className="h-4 w-4 rounded-full border-2 border-t-transparent border-primary animate-spin"></div>
+                        </div>
+                      )}
+                      {!isCustomUrlAvailable &&
+                        !isCheckingUrl &&
+                        customUrlInput && (
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <div className="h-4 w-4 text-red-500">❌</div>
+                          </div>
+                        )}
+                      {isCustomUrlAvailable &&
+                        !isCheckingUrl &&
+                        customUrlInput && (
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <div className="h-4 w-4 text-green-500">✓</div>
+                          </div>
+                        )}
+                    </div>
+                  </div>
+
+                  {!isCustomUrlAvailable && customUrlInput && (
+                    <p className="text-xs text-red-500">
+                      This URL is already taken. Please choose another one.
+                    </p>
+                  )}
+
+                  <div className="space-y-2 text-xs text-muted-foreground">
+                    <p>Guidelines for custom URLs:</p>
+                    <ul className="list-disc pl-4 space-y-1">
+                      <li>Use lowercase letters, numbers, and hyphens only</li>
+                      <li>Avoid using special characters or spaces</li>
+                      <li>Choose something memorable and professional</li>
+                      <li>Minimum 3 characters, maximum 30 characters</li>
+                    </ul>
+                  </div>
+
+                  <Button
+                    onClick={saveCustomUrl}
+                    className="w-full"
+                    disabled={
+                      !customUrlInput || !isCustomUrlAvailable || isCheckingUrl
+                    }
+                  >
+                    <Link className="mr-2 h-4 w-4" />
+                    Save Custom URL
+                  </Button>
+                </div>
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
 
         <DialogFooter className="flex flex-col sm:flex-row gap-2">
           <Button
@@ -135,20 +250,9 @@ export function ShareModal({
           >
             Close
           </Button>
-          <Button
-            variant="outline"
-            className="sm:w-auto w-full"
-            onClick={handleExport}
-            disabled={loading}
-          >
-            {loading ? (
-              <LoaderCircle  className="animate-spin"/>
-            ) : (
-              <>
-                <Download className="mr-2 h-4 w-4" />
-                <span> Download PDF</span>
-              </>
-            )}
+          <Button variant="outline" className="sm:w-auto w-full">
+            <Download className="mr-2 h-4 w-4" />
+            Download PDF
           </Button>
         </DialogFooter>
       </DialogContent>

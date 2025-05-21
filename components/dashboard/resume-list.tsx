@@ -6,10 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Download,
-  Edit,
   Eye,
   MoreHorizontal,
-  Share2,
   Trash2,
   FileText,
 } from "lucide-react";
@@ -25,15 +23,16 @@ import { cn, downloadPdf, formatDate } from "@/lib/utils";
 import { resume } from "@/types/resume";
 import NewResume from "../NewResume";
 import { ShareModal } from "../share-modal";
-import { toast } from "sonner";
 import { useDeleteResume } from "@/query/resume/query";
+import { toast } from "sonner";
 
 export type resumeProps={
   resumes:resume[]
 }
 export function ResumeList({resumes}:resumeProps) {
-  const{mutate,isPending} = useDeleteResume()
+  const{mutate} = useDeleteResume()
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
   const handleDelete = (id: string) => {
     mutate(id,{
       onSuccess:()=>{
@@ -44,7 +43,7 @@ export function ResumeList({resumes}:resumeProps) {
 
   const handledownload =(e:React.MouseEvent,resume:resume)=>{
     e.preventDefault();
-    toast.loading('downloading')
+    toast.success('downloading')
     downloadPdf({resumeId:resume.id,title:resume.title})
   }
   return (

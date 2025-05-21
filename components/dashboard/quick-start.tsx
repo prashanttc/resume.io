@@ -30,12 +30,7 @@ export function QuickStart() {
                 Templates
               </Button>
             </Link>
-            <Link href="/resume/optimize">
-              <Button variant="outline" className="hover-lift">
-                <Sparkles className="mr-2 h-4 w-4" />
-                AI Optimize
-              </Button>
-            </Link>
+          
             <Button variant="ghost" size="sm" onClick={() => setDismissed(true)} className="ml-2">
               Dismiss
             </Button>

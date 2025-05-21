@@ -29,6 +29,7 @@ export type ResumeData = {
   customSections: CustomSections[];
   sectionOrder: ResumeSection[];
   template: string;
+  slug?:string;
 };
 
 export type EntryType = {

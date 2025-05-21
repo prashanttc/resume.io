@@ -10,7 +10,9 @@ export function DashboardStats({resume}:{resume:resume[]}) {
   const view = resume.map((res)=>res.views);
   const shares = resume.map((res)=>res.shares);
   const download = resume.map((res)=>res.downloads);
-
+  const v = view.length > 0? view.length-1:0;
+  const s = shares.length > 0 ? shares.length-1:0;
+  const d = download.length >0? download.length-1:0;
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card className="border-0 shadow-sm">
@@ -40,7 +42,7 @@ export function DashboardStats({resume}:{resume:resume[]}) {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Resume Views</p>
-              <h3 className="text-2xl font-semibold">{view}</h3>
+              <h3 className="text-2xl font-semibold">{v||0}</h3>
             </div>
           </div>
         </CardContent>
@@ -54,7 +56,7 @@ export function DashboardStats({resume}:{resume:resume[]}) {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Downloads</p>
-              <h3 className="text-2xl font-semibold">{download}</h3>
+              <h3 className="text-2xl font-semibold">{d||0}</h3>
             </div>
           </div>
         </CardContent>
@@ -68,7 +70,7 @@ export function DashboardStats({resume}:{resume:resume[]}) {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Shares</p>
-              <h3 className="text-2xl font-semibold">{shares}</h3>
+              <h3 className="text-2xl font-semibold">{s||0}</h3>
             </div>
           </div>
         </CardContent>
