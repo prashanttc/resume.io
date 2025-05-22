@@ -73,7 +73,7 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
   if (!resume || !resumeId) throw new Error("Invalid resume input");
   try {
     const url = process.env.NEXT_PUBLIC_BASE_URL!;
-    const slug = `${url}${resumeId}/preview`;
+    const slug = `${url}preview/${resumeId}`;
     await prisma.resume.update({
       where: { id: resumeId },
       data: {
@@ -250,6 +250,7 @@ export async function setSlug({ url, id }: { url: string; id: string }) {
     throw new Error("unauthorized");
   }
   try {
+    console.log("url",url)
     const set = await prisma.resume.update({
       where: {
         id,
@@ -258,6 +259,7 @@ export async function setSlug({ url, id }: { url: string; id: string }) {
         slug: url,
       },
     });
+    console.log("set",set)
     if (!set) {
       throw new Error("error updating url");
     }
@@ -265,5 +267,46 @@ export async function setSlug({ url, id }: { url: string; id: string }) {
   } catch (error: any) {
     console.log("someting went wrong!", error.message);
     throw new Error("internal server error");
+  }
+}
+
+export async function getresumeBySlug(url:string) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+const completeUrl = `${baseUrl}preview/${url}`
+  try {
+    if(!url){
+      throw new Error('no url found')
+    }
+    const update = await prisma.resume.findFirst({
+      where:{
+        slug:completeUrl
+      },
+     include: {
+        personalInfo: true,
+        customSections: {
+          include: {
+            entries: true,
+          },
+        },
+        sectionOrder: true,
+        education: true,
+        experiences: true,
+        projects: true,
+        skills: {
+          include: {
+            skills: true,
+          },
+        },
+      },
+    })
+    if(!update){
+      console.log("update",update)
+      throw new Error('no resume found by this url')
+    }
+    console.log("update",update)
+    return  update;
+  } catch (error:any) {
+    console.log("something went wrong")
+    throw new Error(error.message)
   }
 }

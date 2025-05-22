@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus, Save, Trash2 } from "lucide-react"
 import { v4 as uuidv4 } from "uuid"
-import { useToast } from "@/hooks/use-toast"
 import { CustomSections, EntryType } from "@/types/resume"
 import { SectionEntries } from "@/components/resume/custom-section-entries"
 
@@ -21,7 +20,6 @@ interface CustomSectionBuilderProps {
 export function CustomSectionBuilder({ initialSections = [], onSave, isLoading = false }: CustomSectionBuilderProps) {
   const [sections, setSections] = useState<CustomSections[]>(initialSections.length > 0 ? initialSections : [])
   const [newSectionTitle, setNewSectionTitle] = useState("")
-  const { toast } = useToast()
 
   // Update sections when initialSections changes
   useEffect(() => {
@@ -32,11 +30,6 @@ export function CustomSectionBuilder({ initialSections = [], onSave, isLoading =
 
   const addSection = () => {
     if (!newSectionTitle.trim()) {
-      toast({
-        title: "Section title required",
-        description: "Please enter a title for your new section",
-        variant: "destructive",
-      })
       return
     }
 
@@ -48,11 +41,6 @@ export function CustomSectionBuilder({ initialSections = [], onSave, isLoading =
 
     setSections([...sections, newSection])
     setNewSectionTitle("")
-
-    toast({
-      title: "Section added",
-      description: `"${newSectionTitle}" section has been added`,
-    })
   }
 
   const updateSectionTitle = (id: string, title: string) => {
@@ -61,11 +49,6 @@ export function CustomSectionBuilder({ initialSections = [], onSave, isLoading =
 
   const deleteSection = (id: string) => {
     setSections(sections.filter((section) => section.id !== id))
-
-    toast({
-      title: "Section deleted",
-      description: "The section has been removed",
-    })
   }
 
   const addEntry = (sectionId: string, entry: EntryType) => {
@@ -117,11 +100,6 @@ export function CustomSectionBuilder({ initialSections = [], onSave, isLoading =
     if (onSave) {
       onSave(sections)
     }
-
-    toast({
-      title: "Changes saved",
-      description: "Your custom sections have been saved",
-    })
   }
 
   return (

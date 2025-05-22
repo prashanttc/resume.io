@@ -1,9 +1,4 @@
-import {
-  EntryType,
-  TemplateProps,
-} from "@/types/resume";
-
-
+import { EntryType, TemplateProps } from "@/types/resume";
 
 export function ModernTemplate({
   personal,
@@ -23,7 +18,7 @@ export function ModernTemplate({
     });
   };
   return (
-    <div className="font-sans text-zinc-800 max-w-[800px] mx-auto">
+    <div className="font-sans text-zinc-800 max-w-[800px] mx-auto print-wrapper min-h-[1123px]">
       <header className="mb-6">
         <h1 className="text-3xl font-bold mb-1">{personal.fullName}</h1>
         <h2 className="text-xl text-zinc-600 mb-3">{personal.jobTitle}</h2>
@@ -44,7 +39,7 @@ export function ModernTemplate({
         switch (section.title) {
           case "Personal Information":
             return (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mb-6 resume-section">
                 <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                   Summary
                 </h3>
@@ -53,7 +48,7 @@ export function ModernTemplate({
             );
           case "Experience":
             return (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mb-6  resume-section">
                 <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                   Experience
                 </h3>
@@ -91,7 +86,7 @@ export function ModernTemplate({
             );
           case "Projects":
             return (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mb-6  resume-section">
                 <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                   Projects
                 </h3>
@@ -102,9 +97,7 @@ export function ModernTemplate({
                     className={index < projects.length - 1 ? "mb-4" : ""}
                   >
                     <div className="flex justify-between items-baseline mb-1">
-                      <h4 className="text-base font-medium">
-                        {project.title}
-                      </h4>
+                      <h4 className="text-base font-medium">{project.title}</h4>
                       <span className="text-sm text-zinc-600">
                         {formatDate(project.startDate)} -{" "}
                         {project.current
@@ -116,7 +109,6 @@ export function ModernTemplate({
                       <h5 className="text-sm font-medium text-zinc-600">
                         {project.role}
                       </h5>
-                     
                     </div>
                     <p className="text-sm mt-1">{project.description}</p>
                   </div>
@@ -125,14 +117,14 @@ export function ModernTemplate({
             );
           case "Education":
             return (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mb-6  resume-section">
                 <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                   Education
                 </h3>
 
                 {education.map((edu, index) => (
-                  <div key={index}>
-                    <div className="flex justify-between items-baseline mb-1">
+                  <div key={index} className=" mb-5">
+                    <div className="flex justify-between items-baseline ">
                       <h4 className="text-base font-medium">{edu.degree}</h4>
                       <span className="text-sm text-zinc-600">
                         {formatDate(edu.startDate)} -
@@ -158,7 +150,7 @@ export function ModernTemplate({
             );
           case "Skills":
             return (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mb-6  resume-section">
                 <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                   Skills
                 </h3>
@@ -189,7 +181,7 @@ export function ModernTemplate({
             return custom.length > 0 ? (
               <div key={section.title}>
                 {custom.map((customSection) => (
-                  <section key={customSection.id} className="mb-6">
+                  <section key={customSection.id} className="mb-6  resume-section">
                     <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                       {customSection.title}
                     </h3>

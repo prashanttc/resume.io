@@ -3,6 +3,7 @@ import "@/app/globals.css"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
+import { Providers } from "@/providers/queryProvider"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,7 +27,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased scrollbar-hide scrollbar-hidden `}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <Providers>
           {children}
+          </Providers>
           <Toaster />
         </ThemeProvider>
       </body>

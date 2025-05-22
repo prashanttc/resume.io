@@ -2,6 +2,7 @@ import {
   deleteResume,
   getAllResume,
   getResumeById,
+  getresumeBySlug,
   newResume,
   saveResume,
   setSlug,
@@ -23,6 +24,12 @@ export function useGetResumebyId(id: string) {
   return useQuery({
     queryKey: ["getResumeByid", id],
     queryFn: () => getResumeById(id),
+  });
+}
+export function useGetResumeBySlug(url: string) {
+  return useQuery({
+    queryKey: ["getResumeByurl", url],
+    queryFn: () => getresumeBySlug(url),
   });
 }
 
@@ -52,6 +59,7 @@ export function useDeleteResume() {
     onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ["getallresume"] });
       queryclient.invalidateQueries({ queryKey: ["getResumeByid"] });
+      queryclient.invalidateQueries({ queryKey: ["getResumeByurl"] });
     },
   });
 }
@@ -64,6 +72,7 @@ export function useSetSlug() {
     onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ["getallresume"] });
       queryclient.invalidateQueries({ queryKey: ["getResumeByid"] });
+      queryclient.invalidateQueries({ queryKey: ["getResumeByurl"] });
     },
   });
 }

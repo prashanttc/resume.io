@@ -32,14 +32,12 @@ import { toast } from "sonner";
 import { useSaveResume } from "@/query/resume/query";
 import { CustomSections, ResumeData, SectionType } from "@/types/resume";
 import { CustomSectionBuilder } from "./custom-section-builder";
-import { downloadPdf } from "@/lib/utils";
 import { ResumeNotFound } from "../error";
 import { ShareModal } from "../share-modal";
 
 export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:string }) {
   const { mutate, isPending, isError, error } = useSaveResume();
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionType>("personal");
   const [selectedTemplate, setSelectedTemplate] = useState("modern");
 
@@ -88,7 +86,8 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
       { title: "Custom Sections", type: "custom", isActive: true },
     ],
     template: data.template || "modern",
-  });
+    slug:data.slug
+     });
   // Define the section order
   const sectionOrder: SectionType[] = [
     "personal",
@@ -233,21 +232,6 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
       default:
         return false;
     }
-  };
-
-  // Handle export to PDF
-  const handleExportPDF = () => {
-    setIsDownloading(true);
-    try {
-       downloadPdf({resumeId:id,title});
-      setTimeout(() => {
-      setIsDownloading(false);
-      toast.success('downloaded successfully')  
-      }, 4000);
-    } catch (error: any) {
-      toast.error("failed to dowload", error.message);
-      return;
-    } 
   };
 
   return (
@@ -415,7 +399,7 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
                     <h3 className="text-base font-medium">Preview</h3>
                     <div className="flex gap-2">
                    <Button variant='outline' size='sm' className="hover-lift">
-                    <ShareModal resumeId={id} resumeName={title} loading={isDownloading} handleExport={handleExportPDF}/>
+                    <ShareModal resumeId={id} resumeName={title}/>
                    </Button>
                       <Button
                         size="sm"

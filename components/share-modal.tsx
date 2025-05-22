@@ -16,11 +16,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Copy, Download, Link, Share2 } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { Copy, Download, Link, LoaderCircle, Share2 } from "lucide-react";
 import { useGetResumebyId, useSetSlug } from "@/query/resume/query";
 import { toast } from "sonner";
 import Loader from "./Loader";
+import { downloadPdf } from "@/lib/utils";
 
 interface ShareModalProps {
   resumeId: string;
@@ -31,8 +31,7 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
   const { mutate } = useSetSlug();
   const { data, isPending } = useGetResumebyId(resumeId);
   const [open, setOpen] = useState(false);
-  const [isPublic, setIsPublic] = useState(true);
-  const [password, setPassword] = useState("");
+  const [isDownloading, setIsDownloading] = useState(false);
   const url = process.env.NEXT_PUBLIC_BASE_URL!;
 
   // Custom URL state
@@ -40,31 +39,30 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
   const [isCustomUrlAvailable, setIsCustomUrlAvailable] = useState(true);
   const [isCheckingUrl, setIsCheckingUrl] = useState(false);
   const [savedCustomUrl, setSavedCustomUrl] = useState("");
-  const [defaultUrl, setDefaultUrl] = useState(`${url}${resumeId}/preview`);
-  const [shareLink, setShareLink] = useState(defaultUrl);
-  
-  useEffect(() => {
-    setDefaultUrl(data!.slug || "");
-  }, [ data]);
+  const [shareLink, setShareLink] = useState(data?.slug || "");
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareLink);
     toast("copied");
   };
+  useEffect(() => {
+    setShareLink(data?.slug!);
+  }, [data]);
 
-  const checkCustomUrlAvailability = async (url: string) => {
-    if (!url.trim()) {
+  const checkCustomUrlAvailability = async (input: string) => {
+    if (!input.trim()) {
       setIsCustomUrlAvailable(true);
       return;
     }
-    setIsCheckingUrl(true);
+    const link = `${url}preview/${input}`;
 
+    setIsCheckingUrl(true);
     const response = await fetch("/api/slug-check", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ url }),
+      body: JSON.stringify({ link }),
     });
 
     const data = await response.json();
@@ -84,16 +82,30 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
   const saveCustomUrl = () => {
     if (!customUrlInput || !isCustomUrlAvailable) return;
     setSavedCustomUrl(customUrlInput);
-    setShareLink(`${url}${customUrlInput}`);
+    const link = `${url}preview/${customUrlInput}`;
+    setShareLink(link);
     mutate(
-      { url: shareLink, id: resumeId },
+      { url: link, id: resumeId },
       {
         onSuccess: () => {
-          toast.success(`Your resume is now available at ${shareLink}`);
+          toast.success(`Your resume is now available at ${link}`);
         },
       }
     );
     setCustomUrlInput("");
+  };
+
+  const handleExport = async () => {
+    await downloadPdf({
+      resumeId,
+      title: resumeName,
+      onStart: () => setIsDownloading(true),
+      onSuccess: () => setIsDownloading(false),
+      onError: () => {
+        setIsDownloading(false);
+        toast.error("Download failed. Try again.");
+      },
+    });
   };
 
   if (isPending) {
@@ -103,7 +115,7 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div  className="hover-lift flex gap-2 items-center  justify-center">
+        <div className="hover-lift flex gap-2 items-center  justify-center">
           <Share2 className="mr-2 h-4 w-4" />
           Share
         </div>
@@ -137,7 +149,6 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
                 </Button>
               </div>
             </div>
-
           </TabsContent>
 
           <TabsContent value="custom" className="space-y-4 py-4">
@@ -250,9 +261,19 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
           >
             Close
           </Button>
-          <Button variant="outline" className="sm:w-auto w-full">
-            <Download className="mr-2 h-4 w-4" />
-            Download PDF
+          <Button
+            variant="outline"
+            className="sm:w-auto w-full"
+            onClick={handleExport}
+          >
+            {isDownloading ? (
+              <LoaderCircle className="animate-spin" />
+            ) : (
+              <>
+                <Download className="mr-2 h-4 w-4" />
+                Download PDF
+              </>
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

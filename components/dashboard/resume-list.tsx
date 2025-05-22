@@ -1,6 +1,6 @@
 "use client";
 
-import {  useState } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,7 @@ import {
   MoreHorizontal,
   Trash2,
   FileText,
+  LoaderCircle,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -26,26 +27,36 @@ import { ShareModal } from "../share-modal";
 import { useDeleteResume } from "@/query/resume/query";
 import { toast } from "sonner";
 
-export type resumeProps={
-  resumes:resume[]
-}
-export function ResumeList({resumes}:resumeProps) {
-  const{mutate} = useDeleteResume()
+export type resumeProps = {
+  resumes: resume[];
+};
+export function ResumeList({ resumes }: resumeProps) {
+  const { mutate } = useDeleteResume();
+  const [isDownloading, setIsDownloading] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const handleDelete = (id: string) => {
-    mutate(id,{
-      onSuccess:()=>{
-        toast.success('resume deleted.')
-      }
-    })
+    mutate(id, {
+      onSuccess: () => {
+        toast.success("resume deleted.");
+      },
+    });
   };
 
-  const handledownload =(e:React.MouseEvent,resume:resume)=>{
+  const handledownload = async (e: React.MouseEvent, resume: resume) => {
     e.preventDefault();
-    toast.success('downloading')
-    downloadPdf({resumeId:resume.id,title:resume.title})
-  }
+    toast.success("downloading");
+    await downloadPdf({
+      resumeId: resume.id,
+      title: resume.title,
+      onStart: () => setIsDownloading(true),
+      onSuccess: () => setIsDownloading(false),
+      onError: () => {
+        setIsDownloading(false);
+        toast.error("Download failed. Try again.");
+      },
+    });
+  };
   return (
     <Card className="border-0 shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -104,7 +115,7 @@ export function ResumeList({resumes}:resumeProps) {
               </svg>
             </Button>
           </div>
-          </div>
+        </div>
       </CardHeader>
       <CardContent>
         {resumes.length === 0 ? (
@@ -114,7 +125,7 @@ export function ResumeList({resumes}:resumeProps) {
             <p className="text-muted-foreground mb-4">
               Create your first resume to get started
             </p>
-           <NewResume/>
+            <NewResume />
           </div>
         ) : viewMode === "grid" ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -132,7 +143,9 @@ export function ResumeList({resumes}:resumeProps) {
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="font-medium text-sm">{resume.title}</h3>
+                          <h3 className="font-medium text-sm">
+                            {resume.title}
+                          </h3>
                           {resume.isDefault && (
                             <Badge variant="outline" className="text-xs">
                               Default
@@ -156,12 +169,27 @@ export function ResumeList({resumes}:resumeProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="cursor-pointer" onClick={(e)=>e.preventDefault()}>
-                          <ShareModal resumeId={resume.id} resumeName={resume.title}/>
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          <ShareModal
+                            resumeId={resume.id}
+                            resumeName={resume.title}
+                          />
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={(e)=>handledownload(e,resume)} className="cursor-pointer">
-                          <Download className="mr-2 h-4 w-4" />
-                          Download
+                        <DropdownMenuItem
+                          onClick={(e) => handledownload(e, resume)}
+                          className="cursor-pointer"
+                        >
+                          {isDownloading ? (
+                            <LoaderCircle className="animate-spin" />
+                          ) : (
+                            <div className="flex gap-2">
+                              <Download className="mr-2 h-4 w-4" />
+                              Download
+                            </div>
+                          )}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         {!resume.isDefault && (
@@ -235,7 +263,10 @@ export function ResumeList({resumes}:resumeProps) {
                         )}
                       </div>
                       <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span>Last updated: {formatDate(resume.updatedAt.toDateString())}</span>
+                        <span>
+                          Last updated:{" "}
+                          {formatDate(resume.updatedAt.toDateString())}
+                        </span>
                         <span className="flex items-center">
                           <Eye className="mr-1 h-3 w-3" />
                           {resume.views} views
@@ -256,12 +287,27 @@ export function ResumeList({resumes}:resumeProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="cursor-pointer" onClick={(e)=>e.preventDefault()}>
-                         <ShareModal resumeId={resume.id} resumeName={resume.title}/>
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          <ShareModal
+                            resumeId={resume.id}
+                            resumeName={resume.title}
+                          />
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={(e) => handledownload(e,resume)} className="cursor-pointer">
-                          <Download className="mr-2 h-4 w-4" />
-                          Download
+                        <DropdownMenuItem
+                          onClick={(e) => handledownload(e, resume)}
+                          className="cursor-pointer"
+                        >
+                          {isDownloading ? (
+                            <LoaderCircle className="animate-spin" />
+                          ) : (
+                            <div className="flex gap-2">
+                              <Download className="mr-2 h-4 w-4" />
+                              Download
+                            </div>
+                          )}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         {!resume.isDefault && (

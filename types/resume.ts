@@ -2,12 +2,12 @@ import { ResumeSection } from "@/components/resume/section-reorder";
 
 export type SkillCategory = {
   name: string;
-  skills:Skill[]
+  skills: Skill[];
 };
-export type Skill={
-    name: string;
-    level: string;
-}
+export type Skill = {
+  name: string;
+  level: string;
+};
 export type resume = {
   id: string;
   title: string;
@@ -23,13 +23,13 @@ export type ResumeData = {
   id: string;
   personalInfo: PersonalInfo | null;
   experiences: Experiences[];
-  projects:Projects[];
+  projects: Projects[];
   education: Education[];
   skills: SkillCategory[];
   customSections: CustomSections[];
   sectionOrder: ResumeSection[];
   template: string;
-  slug?:string;
+  slug?: string;
 };
 
 export type EntryType = {
@@ -74,7 +74,7 @@ export type Education = {
   institution: string;
   current: boolean;
   degree: string;
-  description: string |null;
+  description: string | null;
   startDate: string;
   endDate?: string;
   location?: string;
@@ -89,7 +89,7 @@ export type CustomSections = {
 export type TemplateProps = {
   personal: PersonalInfo;
   experiences: Experiences[];
-  projects:Projects[];
+  projects: Projects[];
   skills: SkillCategory[];
   education: Education[];
   custom: CustomSections[];
@@ -104,4 +104,4 @@ export type SectionType =
   | "skills"
   | "template"
   | "custom"
-  | "reorder"
+  | "reorder";

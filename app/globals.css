@@ -165,3 +165,22 @@
 :focus-visible {
   @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
 }
+
+@media print {
+  .print-wrapper {
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .resume-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .page-break {
+    display: block;
+    height: 0;
+    page-break-after: always;
+  }
+}
