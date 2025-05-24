@@ -55,7 +55,6 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
       return;
     }
     const link = `${url}preview/${input}`;
-
     setIsCheckingUrl(true);
     const response = await fetch("/api/slug-check", {
       method: "POST",

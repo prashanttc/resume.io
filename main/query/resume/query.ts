@@ -71,10 +71,10 @@ export function useSetSlug() {
   return useMutation({
     mutationFn: ({ url, id }: { url: string; id: string }) =>
       setSlug({ url, id }),
-    onSuccess: () => {
+    onSuccess: (_,{id}) => {
       queryclient.invalidateQueries({ queryKey: ["getallresume"] });
-      queryclient.invalidateQueries({ queryKey: ["getResumeByid"] });
-      queryclient.invalidateQueries({ queryKey: ["getResumeByurl"] });
+      queryclient.invalidateQueries({ queryKey: ["getResumeByid",id] });
+      queryclient.invalidateQueries({ queryKey: ["getResumeByurl",id] });
     },
   });
 }

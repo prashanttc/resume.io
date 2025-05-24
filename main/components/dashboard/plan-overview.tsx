@@ -1,24 +1,36 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import { Check, Crown, CreditCard, FileText, Zap } from "lucide-react"
-import { resume } from "@/types/resume"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Check, Crown, CreditCard, FileText, Zap } from "lucide-react";
+import { resume } from "@/types/resume";
+import PremiumButton from "../SubscriptionButton";
+import { isPremium } from "@/query/user/query";
 
-export function PlanOverview({resume}:{resume:resume[]}) {
-  const [currentPlan, setCurrentPlan] = useState<"free" | "pro">("free")
-  const [resumeCount, setResumeCount] = useState(resume.length)
-  const maxFreeResumes = 3
-
+export function PlanOverview({ resume }: { resume: resume[] }) {
+  const { data, isError, error, isPending } = isPremium();
+  const [currentPlan, setCurrentPlan] = useState<"free" | "pro">("free");
+  const [resumeCount, setResumeCount] = useState(resume.length);
+  const maxFreeResumes = 3;
   return (
     <Card className="border-0 shadow-sm overflow-hidden">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base font-medium">Your Plan</CardTitle>
-          <Badge variant={currentPlan === "pro" ? "default" : "outline"} className="px-2.5 py-0.5">
+          <Badge
+            variant={currentPlan === "pro" ? "default" : "outline"}
+            className="px-2.5 py-0.5"
+          >
             {currentPlan === "pro" ? "Pro" : "Free"}
           </Badge>
         </div>
@@ -42,7 +54,10 @@ export function PlanOverview({resume}:{resume:resume[]}) {
                   {resumeCount} of {maxFreeResumes}
                 </span>
               </div>
-              <Progress value={(resumeCount / maxFreeResumes) * 100} className="h-2" />
+              <Progress
+                value={(resumeCount / maxFreeResumes) * 100}
+                className="h-2"
+              />
             </div>
 
             <div className="rounded-lg border bg-card p-4 mt-4">
@@ -52,7 +67,9 @@ export function PlanOverview({resume}:{resume:resume[]}) {
                 </div>
                 <div>
                   <h3 className="font-medium text-sm">Upgrade to Pro</h3>
-                  <p className="text-xs text-muted-foreground">Unlock premium features</p>
+                  <p className="text-xs text-muted-foreground">
+                    Unlock premium features
+                  </p>
                 </div>
               </div>
 
@@ -61,21 +78,27 @@ export function PlanOverview({resume}:{resume:resume[]}) {
                   <Check className="h-4 w-4 text-primary mt-0.5" />
                   <div className="text-sm">
                     <span className="font-medium">Unlimited Resumes</span>
-                    <p className="text-xs text-muted-foreground">Create as many resumes as you need</p>
+                    <p className="text-xs text-muted-foreground">
+                      Create as many resumes as you need
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-primary mt-0.5" />
                   <div className="text-sm">
                     <span className="font-medium">Premium Templates</span>
-                    <p className="text-xs text-muted-foreground">Access to all premium resume templates</p>
+                    <p className="text-xs text-muted-foreground">
+                      Access to all premium resume templates
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <Check className="h-4 w-4 text-primary mt-0.5" />
                   <div className="text-sm">
                     <span className="font-medium">AI Resume Optimization</span>
-                    <p className="text-xs text-muted-foreground">Get AI-powered suggestions to improve your resume</p>
+                    <p className="text-xs text-muted-foreground">
+                      Get AI-powered suggestions to improve your resume
+                    </p>
                   </div>
                 </div>
               </div>
@@ -83,7 +106,7 @@ export function PlanOverview({resume}:{resume:resume[]}) {
           </div>
         )}
 
-        {currentPlan === "pro" && (
+        {data?.isPremium && (
           <div className="space-y-4">
             <div className="flex items-center gap-3 mb-2">
               <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
@@ -91,7 +114,9 @@ export function PlanOverview({resume}:{resume:resume[]}) {
               </div>
               <div>
                 <h3 className="font-medium text-sm">Pro Plan Benefits</h3>
-                <p className="text-xs text-muted-foreground">Your premium features</p>
+                <p className="text-xs text-muted-foreground">
+                  Your premium features
+                </p>
               </div>
             </div>
 
@@ -100,28 +125,36 @@ export function PlanOverview({resume}:{resume:resume[]}) {
                 <Check className="h-4 w-4 text-primary mt-0.5" />
                 <div className="text-sm">
                   <span className="font-medium">Unlimited Resumes</span>
-                  <p className="text-xs text-muted-foreground">Create as many resumes as you need</p>
+                  <p className="text-xs text-muted-foreground">
+                    Create as many resumes as you need
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-primary mt-0.5" />
                 <div className="text-sm">
                   <span className="font-medium">Premium Templates</span>
-                  <p className="text-xs text-muted-foreground">Access to all premium resume templates</p>
+                  <p className="text-xs text-muted-foreground">
+                    Access to all premium resume templates
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-primary mt-0.5" />
                 <div className="text-sm">
                   <span className="font-medium">AI Resume Optimization</span>
-                  <p className="text-xs text-muted-foreground">Get AI-powered suggestions to improve your resume</p>
+                  <p className="text-xs text-muted-foreground">
+                    Get AI-powered suggestions to improve your resume
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-primary mt-0.5" />
                 <div className="text-sm">
                   <span className="font-medium">Priority Support</span>
-                  <p className="text-xs text-muted-foreground">Get help from our support team within 24 hours</p>
+                  <p className="text-xs text-muted-foreground">
+                    Get help from our support team within 24 hours
+                  </p>
                 </div>
               </div>
             </div>
@@ -140,17 +173,21 @@ export function PlanOverview({resume}:{resume:resume[]}) {
       </CardContent>
 
       <CardFooter className="bg-muted/20 pt-4 pb-4">
-        {currentPlan === "free" ? (
-          <Button className="w-full" onClick={() => setCurrentPlan("pro")}>
+        {!data?.isPremium ? (
+          <div className="w-full bg-white rounded-2xl flex items-center justify-center font-semibold" onClick={() => setCurrentPlan("pro")}>
             <Zap className="mr-2 h-4 w-4" />
-            Upgrade to Pro
-          </Button>
+            <PremiumButton />
+          </div>
         ) : (
-          <Button variant="outline" className="w-full" onClick={() => setCurrentPlan("free")}>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => setCurrentPlan("free")}
+          >
             Manage Subscription
           </Button>
         )}
       </CardFooter>
     </Card>
-  )
+  );
 }

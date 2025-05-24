@@ -9,10 +9,9 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { url } = await req.json();
-
+    const { link } = await req.json();
     const existing = await prisma.resume.findUnique({
-      where: { slug: url },
+      where: { slug: link },
     });
 
     if (existing) {

@@ -47,9 +47,9 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
       <ResumeNotFound variant="error"/>
     );
   }
-  console.log("data",data)
   const [resumeData, setResumeData] = useState<ResumeData>({
     id: id,
+    slug:data.slug, 
     personalInfo: {
       fullName: data.personalInfo?.fullName || "",
       email: data.personalInfo?.email || "",

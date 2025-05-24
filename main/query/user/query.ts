@@ -1,7 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
+import { getIsPremium } from "@/actions/user-actions";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { signIn } from "next-auth/react";
 
-async function signupUser({ email, password, name }: { email: string; password: string; name?: string }) {
+async function signupUser({
+  email,
+  password,
+  name,
+}: {
+  email: string;
+  password: string;
+  name?: string;
+}) {
   const res = await fetch("/api/auth/signUp", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -17,4 +26,11 @@ async function signupUser({ email, password, name }: { email: string; password: 
 
 export function useSignup() {
   return useMutation({ mutationFn: signupUser });
+}
+
+export function isPremium() {
+  return useQuery({
+    queryKey: ["isPremium"],
+    queryFn: getIsPremium,
+  });
 }

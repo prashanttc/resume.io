@@ -54,9 +54,8 @@ export function AIOptimizer({ id }: { id: string }) {
       throw new Error(errorData.error || "Failed to call AI optimise API");
     }
     const data = await res.json();
-      toast.success("optimisation generated");
-      setResult(data);
-      console.log("data",result?.cleanJson.aiSuggestions)
+    toast.success("optimisation generated");
+    setResult(data);
     setIsAnalyzing(false);
   };
 
@@ -69,7 +68,7 @@ export function AIOptimizer({ id }: { id: string }) {
       {
         onSuccess: () => {
           toast.success("saved");
-           router.push(`/resume/${id}`);
+          router.push(`/resume/${id}`);
         },
         onError: (error) => {
           toast.error(error.message);

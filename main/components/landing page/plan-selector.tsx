@@ -1,23 +1,30 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Check, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import PremiumButton from "../SubscriptionButton";
+import { isPremium } from "@/query/user/query";
 
 const plans = [
   {
     id: "free",
     name: "Free",
-    price: "$0",
+    price: "0",
     description: "Perfect for getting started",
-    features: ["3 Resume", "3 Basic Templates", "Export as PDF", "Limited AI Suggestions"],
+    features: [
+      "3 Resume",
+      "3 Basic Templates",
+      "Export as PDF",
+      "Limited AI Suggestions",
+    ],
     popular: false,
   },
   {
     id: "pro",
     name: "Pro",
-    price: "$9",
+    price: "100",
     period: "/month",
     description: "For serious job seekers",
     features: [
@@ -29,20 +36,22 @@ const plans = [
     ],
     popular: true,
   },
-]
+];
 
 export default function PlanSelector() {
-  const [billingPeriod, setBillingPeriod] = useState<"monthly" | "yearly">("monthly")
-  const [selectedPlan, setSelectedPlan] = useState<string>("pro")
+  const [billingPeriod, setBillingPeriod] = useState<"monthly" | "yearly">(
+    "monthly"
+  );
+  const [selectedPlan, setSelectedPlan] = useState<string>("pro");
 
   const handleSelectPlan = (planId: string) => {
-    setSelectedPlan(planId)
-  }
+    setSelectedPlan(planId);
+  };
 
   const getYearlyPrice = (price: string) => {
-    const numPrice = Number.parseInt(price.replace("$", ""))
-    return `$${Math.round(numPrice * 0.8 * 12)}`
-  }
+    const numPrice = Number.parseInt(price.replace("$", ""));
+    return `$${Math.round(numPrice * 0.8 * 12)}`;
+  };
 
   return (
     <div className="space-y-8">
@@ -51,7 +60,9 @@ export default function PlanSelector() {
           <button
             onClick={() => setBillingPeriod("monthly")}
             className={`px-4 py-2 text-sm rounded-full transition-colors ${
-              billingPeriod === "monthly" ? "bg-white text-zinc-900" : "text-zinc-400 hover:text-white"
+              billingPeriod === "monthly"
+                ? "bg-white text-zinc-900"
+                : "text-zinc-400 hover:text-white"
             }`}
           >
             Monthly
@@ -59,7 +70,9 @@ export default function PlanSelector() {
           <button
             onClick={() => setBillingPeriod("yearly")}
             className={`px-4 py-2 text-sm rounded-full transition-colors ${
-              billingPeriod === "yearly" ? "bg-white text-zinc-900" : "text-zinc-400 hover:text-white"
+              billingPeriod === "yearly"
+                ? "bg-white text-zinc-900"
+                : "text-zinc-400 hover:text-white"
             }`}
           >
             Yearly <span className="text-xs opacity-80">Save 20%</span>
@@ -80,8 +93,8 @@ export default function PlanSelector() {
                 selectedPlan === plan.id
                   ? "border-white bg-zinc-800 ring-2 ring-white ring-offset-2 ring-offset-zinc-950"
                   : plan.popular
-                    ? "border-zinc-700 bg-zinc-800"
-                    : "border-zinc-800 bg-zinc-900"
+                  ? "border-zinc-700 bg-zinc-800"
+                  : "border-zinc-800 bg-zinc-900"
               } p-6 flex flex-col cursor-pointer transition-all duration-300 hover:border-zinc-600`}
               onClick={() => handleSelectPlan(plan.id)}
             >
@@ -107,10 +120,14 @@ export default function PlanSelector() {
                 <h3 className="text-xl font-bold">{plan.name}</h3>
                 <div className="mt-2 flex items-baseline">
                   <span className="text-3xl font-bold">
-                    {billingPeriod === "yearly" ? getYearlyPrice(plan.price) : plan.price}
+                    {billingPeriod === "yearly"
+                      ? getYearlyPrice(plan.price)
+                      : plan.price}
                   </span>
                   {plan.period && (
-                    <span className="ml-1 text-zinc-400">{billingPeriod === "yearly" ? "/year" : plan.period}</span>
+                    <span className="ml-1 text-zinc-400">
+                      {billingPeriod === "yearly" ? "/year" : plan.period}
+                    </span>
                   )}
                 </div>
                 <p className="mt-2 text-sm text-zinc-400">{plan.description}</p>
@@ -148,12 +165,19 @@ export default function PlanSelector() {
       </div>
 
       {selectedPlan !== "free" && (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mt-8">
-          <Button size="lg" className="bg-white text-zinc-900 hover:bg-zinc-200">
-            Continue with {plans.find((p) => p.id === selectedPlan)?.name} Plan <ArrowRight className="ml-2 h-4 w-4" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex justify-center mt-8"
+        >
+          <Button
+            size="lg"
+            className="bg-white text-zinc-900 hover:bg-zinc-200"
+          >
+            <PremiumButton />
           </Button>
         </motion.div>
       )}
     </div>
-  )
+  );
 }

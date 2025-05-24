@@ -14,7 +14,6 @@ export type resume = {
   views: number;
   downloads: number;
   shares: number;
-  isDefault: boolean;
   template: string;
   updatedAt: Date;
 };

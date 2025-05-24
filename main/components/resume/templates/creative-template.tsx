@@ -1,7 +1,7 @@
-import { TemplateProps } from "@/types/resume"
+import { EntryType, TemplateProps } from "@/types/resume"
 
 
-export function CreativeTemplate({personal,education,experiences,skills,custom,  sectionOrder }: TemplateProps) {
+export function CreativeTemplate({personal,education,experiences,skills,custom,projects,  sectionOrder }: TemplateProps) {
   // Format date function
   const formatDate = (dateString: string) => {
     if (!dateString) return ""
@@ -26,7 +26,7 @@ export function CreativeTemplate({personal,education,experiences,skills,custom, 
 
   // Filter sections for sidebar and main content
   const sidebarSections = ["Personal Infomation", "Skills", "Education"]
-  const mainSections = ["Experience", "Custom Sections"]
+  const mainSections = ["Experience", "Custom Sections","Projects"]
   return (
     <div className="font-sans text-zinc-800 max-w-[900px] mx-auto">
       <div className="grid grid-cols-3 gap-2">
@@ -71,7 +71,7 @@ export function CreativeTemplate({personal,education,experiences,skills,custom, 
                 </svg>
                 <span>{personal.phone}</span>
               </div>
-              <div className="flex items-center gap-2">
+        {personal.address &&       <div className="flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -88,7 +88,7 @@ export function CreativeTemplate({personal,education,experiences,skills,custom, 
                   <circle cx="12" cy="10" r="3" />
                 </svg>
                 <span>{personal.address}</span>
-              </div>
+              </div>}
               {personal.website && (
                 <div className="flex items-center gap-2">
                   <svg
@@ -165,7 +165,7 @@ export function CreativeTemplate({personal,education,experiences,skills,custom, 
                   )
                 case "Education":
                   return (
-                    <section key={section.title}>
+                    <section key={section.title} className="mb-5">
                       <h3 className="text-base font-bold mb-3 border-b border-zinc-300 pb-1">Education</h3>
 
                       {education.map((edu, index) => (
@@ -220,16 +220,67 @@ export function CreativeTemplate({personal,education,experiences,skills,custom, 
                       ))}
                     </section>
                   )
-                case "Custom Sections":
-                  return custom.map((customSection) => (
-                    <section key={customSection.id} className="mb-6">
-                      <h3 className="text-lg font-bold mb-3 border-b border-zinc-300 pb-1">{customSection.title}</h3>
-                      <div
-                        className="text-sm prose prose-sm max-w-none"
-                        dangerouslySetInnerHTML={{ __html: customSection.title }}
-                      />
+                case "Projects":
+                  return (
+                    <section key={section.title} className="mb-6">
+                      <h3 className="text-lg font-bold mb-3 border-b border-zinc-300 pb-1">Projects</h3>
+
+                      {projects.map((project, index) => (
+                        <div key={index} className={index < projects.length - 1 ? "mb-5" : ""}>
+                          <div className="flex justify-between items-baseline mb-1">
+                            <h4 className="text-base font-medium">{project.title}</h4>
+                            <span className="text-sm text-zinc-600">
+                              {formatDate(project.startDate)} -{" "}
+                              {project.current ? "Present" : formatDate(project.endDate!)}
+                            </span>
+                          </div>
+                          <h5 className="text-sm font-medium text-zinc-600 mb-2">
+                            {project.role}
+                          </h5>
+                          <p className="text-sm mb-2">{project.description}</p>
+                        </div>
+                      ))}
                     </section>
-                  ))
+                  )
+             case "Custom Sections":
+                         return custom.length > 0 ? (
+                           <div key={section.title}>
+                             {custom.map((customSection) => (
+                               <section key={customSection.id} className="mb-6  resume-section">
+                                 <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
+                                   {customSection.title}
+                                 </h3>
+                                 <div className="space-y-4">
+                                   {customSection.entries.map((entry: EntryType) => (
+                                     <div key={entry.id} className="mb-3">
+                                       <div className="flex justify-between items-baseline mb-1">
+                                         <h4 className="text-base font-medium">
+                                           {entry.title}
+                                         </h4>
+                                         {entry.date && (
+                                           <span className="text-sm text-zinc-600">
+                                             {entry.date}
+                                           </span>
+                                         )}
+                                       </div>
+                                       <p className="text-sm mt-1">{entry.description}</p>
+                                       {entry.link && (
+                                         <a
+                                           href={entry.link}
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           className="text-blue-600 hover:underline text-sm mt-1 inline-block"
+                                         >
+                                           View more
+                                         </a>
+                                       )}
+                                     </div>
+                                   ))}
+                                 </div>
+                               </section>
+                             ))}
+                           </div>
+                         ) : null;
               
                 default:
                   return null
