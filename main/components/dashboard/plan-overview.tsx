@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,13 +15,17 @@ import { Progress } from "@/components/ui/progress";
 import { Check, Crown, CreditCard, FileText, Zap } from "lucide-react";
 import { resume } from "@/types/resume";
 import PremiumButton from "../SubscriptionButton";
-import { isPremium } from "@/query/user/query";
 
-export function PlanOverview({ resume }: { resume: resume[] }) {
-  const { data, isError, error, isPending } = isPremium();
+export function PlanOverview({ resume,premium }: { resume: resume[];premium:boolean }) {
   const [currentPlan, setCurrentPlan] = useState<"free" | "pro">("free");
   const [resumeCount, setResumeCount] = useState(resume.length);
   const maxFreeResumes = 3;
+  useEffect(() => {
+    if (premium) {
+      setCurrentPlan("pro");
+    }
+  }, [premium]);
+
   return (
     <Card className="border-0 shadow-sm overflow-hidden">
       <CardHeader className="pb-4">
@@ -60,54 +64,58 @@ export function PlanOverview({ resume }: { resume: resume[] }) {
               />
             </div>
 
-            <div className="rounded-lg border bg-card p-4 mt-4">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Crown className="h-4 w-4 text-primary" />
+            {!premium && (
+              <div className="rounded-lg border bg-card p-4 mt-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Crown className="h-4 w-4 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-sm">Upgrade to Pro</h3>
+                    <p className="text-xs text-muted-foreground">
+                      Unlock premium features
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-medium text-sm">Upgrade to Pro</h3>
-                  <p className="text-xs text-muted-foreground">
-                    Unlock premium features
-                  </p>
-                </div>
-              </div>
 
-              <div className="grid gap-2">
-                <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-primary mt-0.5" />
-                  <div className="text-sm">
-                    <span className="font-medium">Unlimited Resumes</span>
-                    <p className="text-xs text-muted-foreground">
-                      Create as many resumes as you need
-                    </p>
+                <div className="grid gap-2">
+                  <div className="flex items-start gap-2">
+                    <Check className="h-4 w-4 text-primary mt-0.5" />
+                    <div className="text-sm">
+                      <span className="font-medium">Unlimited Resumes</span>
+                      <p className="text-xs text-muted-foreground">
+                        Create as many resumes as you need
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-primary mt-0.5" />
-                  <div className="text-sm">
-                    <span className="font-medium">Premium Templates</span>
-                    <p className="text-xs text-muted-foreground">
-                      Access to all premium resume templates
-                    </p>
+                  <div className="flex items-start gap-2">
+                    <Check className="h-4 w-4 text-primary mt-0.5" />
+                    <div className="text-sm">
+                      <span className="font-medium">Premium Templates</span>
+                      <p className="text-xs text-muted-foreground">
+                        Access to all premium resume templates
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <Check className="h-4 w-4 text-primary mt-0.5" />
-                  <div className="text-sm">
-                    <span className="font-medium">AI Resume Optimization</span>
-                    <p className="text-xs text-muted-foreground">
-                      Get AI-powered suggestions to improve your resume
-                    </p>
+                  <div className="flex items-start gap-2">
+                    <Check className="h-4 w-4 text-primary mt-0.5" />
+                    <div className="text-sm">
+                      <span className="font-medium">
+                        AI Resume Optimization
+                      </span>
+                      <p className="text-xs text-muted-foreground">
+                        Get AI-powered suggestions to improve your resume
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
-        {data?.isPremium && (
-          <div className="space-y-4">
+        {premium && (
+          <div className="space-y-4 ">
             <div className="flex items-center gap-3 mb-2">
               <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
                 <Crown className="h-4 w-4 text-primary" />
@@ -173,8 +181,11 @@ export function PlanOverview({ resume }: { resume: resume[] }) {
       </CardContent>
 
       <CardFooter className="bg-muted/20 pt-4 pb-4">
-        {!data?.isPremium ? (
-          <div className="w-full bg-white rounded-2xl flex items-center justify-center font-semibold" onClick={() => setCurrentPlan("pro")}>
+        {!premium ? (
+          <div
+            className="w-full bg-white rounded-2xl flex items-center justify-center font-semibold"
+            onClick={() => setCurrentPlan("pro")}
+          >
             <Zap className="mr-2 h-4 w-4" />
             <PremiumButton />
           </div>
