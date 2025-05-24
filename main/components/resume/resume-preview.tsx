@@ -14,6 +14,7 @@ export function ResumePreview({
   resumeData,
   sectionOrder,
 }: ResumePreviewProps) {
+  console.log("resumedata",resumeData)
   const personal = resumeData?.personalInfo || {
     fullName: "John Doe",
     jobTitle: "Software Engineer",

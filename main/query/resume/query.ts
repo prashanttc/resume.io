@@ -6,9 +6,11 @@ import {
   newResume,
   saveResume,
   setSlug,
+  updateAiResults,
 } from "@/actions/resume-actions";
 import { ResumeData } from "@/types/resume";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { redirect, useRouter } from "next/navigation";
 
 export function useCreateNewResume() {
   const queryclient = useQueryClient();
@@ -73,6 +75,16 @@ export function useSetSlug() {
       queryclient.invalidateQueries({ queryKey: ["getallresume"] });
       queryclient.invalidateQueries({ queryKey: ["getResumeByid"] });
       queryclient.invalidateQueries({ queryKey: ["getResumeByurl"] });
+    },
+  });
+}
+export function useUpdateAI() {
+  const queryclient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ cleanJson, id }: { cleanJson: any; id: string }) =>
+      updateAiResults({ cleanJson, id }),
+    onSuccess: (_,{id}) => {
+      queryclient.invalidateQueries({ queryKey: ["getResumeByid",id] });
     },
   });
 }

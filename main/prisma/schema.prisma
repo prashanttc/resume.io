@@ -29,6 +29,7 @@ model Resume {
   downloads       Int          @default(0)
   shares          Int          @default(0)
   slug            String?      @unique 
+  atsScore        Int          @default(0)
   sectionOrder    sectionOrder[]
   personalInfo    PersonalInfo?
   experiences     Experience[]
@@ -55,7 +56,7 @@ model PersonalInfo {
   website   String?
   summary   String
   jobTitle  String
-  resume    Resume  @relation(fields: [resumeId], references: [id])
+  resume    Resume  @relation(fields: [resumeId], references: [id] ,onDelete: Cascade)
 }
 
 model Experience {
@@ -69,7 +70,7 @@ model Experience {
   location    String?
   description String?
 
-  resume      Resume   @relation(fields: [resumeId], references: [id])
+  resume      Resume   @relation(fields: [resumeId], references: [id],onDelete: Cascade)
 }
 model Projects {
   id          String   @id @default(uuid())
@@ -81,7 +82,7 @@ model Projects {
   endDate     DateTime?
   description String
 
-  resume      Resume   @relation(fields: [resumeId], references: [id])
+  resume      Resume   @relation(fields: [resumeId], references: [id],onDelete: Cascade)
 }
 
 model Education {
@@ -95,7 +96,7 @@ model Education {
   location    String?
   current     Boolean @default(false)
 
-  resume      Resume   @relation(fields: [resumeId], references: [id])
+  resume      Resume   @relation(fields: [resumeId], references: [id],onDelete: Cascade)
 }
 
 model SkillCategory {
@@ -103,7 +104,7 @@ model SkillCategory {
   resumeId  String
   name      String
   skills    Skills[] // 🆕 Add this line
-  resume    Resume @relation(fields: [resumeId], references: [id])
+  resume    Resume @relation(fields: [resumeId], references: [id],onDelete: Cascade)
 }
 
 model Skills{
@@ -146,7 +147,7 @@ model AIOptimization {
   applied     Boolean  @default(false)
   createdAt   DateTime @default(now())
 
-  resume      Resume   @relation(fields: [resumeId], references: [id])
+  resume      Resume   @relation(fields: [resumeId], references: [id],onDelete: Cascade)
 }
 model sectionOrder {
    id         String  @id @default(uuid())

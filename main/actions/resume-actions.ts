@@ -250,7 +250,7 @@ export async function setSlug({ url, id }: { url: string; id: string }) {
     throw new Error("unauthorized");
   }
   try {
-    console.log("url",url)
+    console.log("url", url);
     const set = await prisma.resume.update({
       where: {
         id,
@@ -259,7 +259,7 @@ export async function setSlug({ url, id }: { url: string; id: string }) {
         slug: url,
       },
     });
-    console.log("set",set)
+    console.log("set", set);
     if (!set) {
       throw new Error("error updating url");
     }
@@ -270,18 +270,18 @@ export async function setSlug({ url, id }: { url: string; id: string }) {
   }
 }
 
-export async function getresumeBySlug(url:string) {
+export async function getresumeBySlug(url: string) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
-const completeUrl = `${baseUrl}preview/${url}`
+  const completeUrl = `${baseUrl}preview/${url}`;
   try {
-    if(!url){
-      throw new Error('no url found')
+    if (!url) {
+      throw new Error("no url found");
     }
     const update = await prisma.resume.findFirst({
-      where:{
-        slug:completeUrl
+      where: {
+        slug: completeUrl,
       },
-     include: {
+      include: {
         personalInfo: true,
         customSections: {
           include: {
@@ -298,15 +298,103 @@ const completeUrl = `${baseUrl}preview/${url}`
           },
         },
       },
-    })
-    if(!update){
-      console.log("update",update)
-      throw new Error('no resume found by this url')
+    });
+    if (!update) {
+      console.log("update", update);
+      throw new Error("no resume found by this url");
     }
-    console.log("update",update)
-    return  update;
-  } catch (error:any) {
-    console.log("something went wrong")
-    throw new Error(error.message)
+    console.log("update", update);
+    return update;
+  } catch (error: any) {
+    console.log("something went wrong");
+    throw new Error(error.message);
+  }
+}
+
+export async function updateAiResults({
+  cleanJson,
+  id,
+}: {
+  cleanJson: any;
+  id: string;
+}) {
+  try {
+    if (!cleanJson || !id) {
+      throw new Error("resume id is needed");
+    }
+    console.log("hahahaha",cleanJson)
+    const update = await prisma.resume.update({
+      where: {
+        id,
+      },
+      data: {
+        atsScore: cleanJson.atsScore,
+        personalInfo: {
+          update: {
+            jobTitle: cleanJson.personalInfo.jobTitle,
+            summary: cleanJson.personalInfo.summary,
+          },
+        },
+        experiences: {
+          update: cleanJson.experiences.map((exp: any) => ({
+            where: { id: exp.id },
+            data: {
+              position: exp.position,
+              description: exp.description,
+            },
+          })),
+        },
+        projects: {
+          update: cleanJson.projects.map((prj: any) => ({
+            where: { id: prj.id },
+            data: {
+              title: prj.title,
+              role: prj.role,
+              description: prj.description,
+            },
+          })),
+        },
+        skills: {
+          deleteMany: {},
+          create: cleanJson.skills.map((skillCategory: any) => ({
+            name: skillCategory.name,
+            skills: {
+              create: skillCategory.skills.map((s: any) => ({
+                name: s.name,
+                level: s.level,
+              })),
+            },
+          })),
+        },
+        customSections: {
+          update: cleanJson.customSections.map((cs: any) => ({
+            where: { id: cs.id },
+            data: {
+              title: cs.title,
+              entries: {
+                deleteMany: {}, // nuke old entries
+                create: cs.entries.map((entry: any) => ({
+                  title: entry.title,
+                  description: entry.description,
+                })),
+              },
+            },
+          })),
+        },
+        aiOptimizations: {
+          deleteMany: {},
+          create: cleanJson.aiSuggestions.map((ai: any) => ({
+            suggestion: ai.suggestion,
+          })),
+        },
+      },
+    });
+    if (!update) {
+      throw new Error("failed to update resume");
+    }
+    return { success: true };
+  } catch (error: any) {
+    console.error("soemthing went wrong");
+    throw new Error("internal server error", error.message);
   }
 }

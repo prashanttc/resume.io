@@ -34,6 +34,7 @@ import { CustomSections, ResumeData, SectionType } from "@/types/resume";
 import { CustomSectionBuilder } from "./custom-section-builder";
 import { ResumeNotFound } from "../error";
 import { ShareModal } from "../share-modal";
+import Link from "next/link";
 
 export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:string }) {
   const { mutate, isPending, isError, error } = useSaveResume();
@@ -46,6 +47,7 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
       <ResumeNotFound variant="error"/>
     );
   }
+  console.log("data",data)
   const [resumeData, setResumeData] = useState<ResumeData>({
     id: id,
     personalInfo: {
@@ -86,7 +88,6 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
       { title: "Custom Sections", type: "custom", isActive: true },
     ],
     template: data.template || "modern",
-    slug:data.slug
      });
   // Define the section order
   const sectionOrder: SectionType[] = [
@@ -422,8 +423,10 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
                         variant="outline"
                         className="hover-lift"
                       >
+                        <Link href={`/optimise/${id}`} className="flex gap-2 items-center justify-center">
                         <Sparkles className="mr-2 h-4 w-4" />
                         Optimize with AI
+                        </Link>
                       </Button>
                     </div>
                   </div>
