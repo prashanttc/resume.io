@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { generatePDF } from "./generate.js";
+import { generatePDF } from "./generate/generate.js";
 import { prisma } from "./prisma/client.js";
 
 const app = express();
