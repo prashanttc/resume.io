@@ -20,16 +20,16 @@ export const downloadPdf = async ({
   try {
     onStart?.(); // trigger loading state
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_RENDER_URL}generate`, {
+    const res = await fetch(`http://localhost:5000/generate`, {
       method: "POST",
       headers:{
         "Content-Type": "application/json"
-
       },
       body: JSON.stringify({ resumeId, title }),
     });
 
     if (!res.ok) {
+      console.log("res",res)
       throw new Error("Something went wrong");
     }
 
