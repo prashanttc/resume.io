@@ -104,3 +104,11 @@ export type SectionType =
   | "template"
   | "custom"
   | "reorder";
+
+  export interface Template {
+  id: string
+  name: string
+  description: string
+  categories: string[]
+  thumbnail: string
+}

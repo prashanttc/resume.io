@@ -7,14 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { Check, ChevronRight } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { templates } from "@/constants"
 
-interface Template {
-  id: string
-  name: string
-  description: string
-  categories: string[]
-  thumbnail: string
-}
 
 interface TemplateBrowserProps {
   selectedTemplate: string
@@ -30,33 +24,6 @@ export function TemplateBrowser({
   isDialog = false,
 }: TemplateBrowserProps) {
   const [category, setCategory] = useState("all")
-
-  // Mock templates data
-  const templates: Template[] = [
-    {
-      id: "modern",
-      name: "Modern Professional",
-      description: "A clean, professional template with a traditional layout and modern styling",
-      categories: ["professional", "modern"],
-      thumbnail: "/placeholder.svg?height=160&width=120",
-    },
-    {
-      id: "minimalist",
-      name: "Minimalist",
-      description: "A simple, elegant template with minimal styling and clean typography",
-      categories: ["minimal", "modern"],
-      thumbnail: "/placeholder.svg?height=160&width=120",
-    },
-    {
-      id: "creative",
-      name: "Creative Split",
-      description: "A creative template with a sidebar for skills and contact information",
-      categories: ["creative"],
-      thumbnail: "/placeholder.svg?height=160&width=120",
-    },
-    
-
-  ]
 
   const filteredTemplates =
     category === "all" ? templates : templates.filter((template) => template.categories.includes(category))

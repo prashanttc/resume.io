@@ -70,11 +70,6 @@ export function ResumeItem({ resume }: ResumeItemProps) {
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="font-medium truncate">{resume.title}</h3>
-                {resume.isDefault && (
-                  <Badge variant="outline" className="text-xs">
-                    Default
-                  </Badge>
-                )}
               </div>
               <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
                 <div className="flex items-center">

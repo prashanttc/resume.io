@@ -14,7 +14,6 @@ export function ResumePreview({
   resumeData,
   sectionOrder,
 }: ResumePreviewProps) {
-  console.log("resumedata",resumeData)
   const personal = resumeData?.personalInfo || {
     fullName: "John Doe",
     jobTitle: "Software Engineer",
@@ -101,7 +100,7 @@ export function ResumePreview({
     return <div className="text-red-500">Unknown template selected.</div>;
   }
   return (
-    <div className="h-full overflow-auto bg-white p-8">
+    <div className="h-full overflow-auto bg-white">
       <TemplateComponent
         personal={personal}
         experiences={experiences}

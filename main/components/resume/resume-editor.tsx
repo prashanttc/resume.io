@@ -35,21 +35,28 @@ import { CustomSectionBuilder } from "./custom-section-builder";
 import { ResumeNotFound } from "../error";
 import { ShareModal } from "../share-modal";
 import Link from "next/link";
+import { templates } from "@/constants";
 
-export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:string }) {
+export function ResumeEditor({
+  data,
+  id,
+  title,
+}: {
+  data: any;
+  id: string;
+  title: string;
+}) {
   const { mutate, isPending, isError, error } = useSaveResume();
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionType>("personal");
   const [selectedTemplate, setSelectedTemplate] = useState("modern");
 
   if (!data) {
-    return (
-      <ResumeNotFound variant="error"/>
-    );
+    return <ResumeNotFound variant="error" />;
   }
   const [resumeData, setResumeData] = useState<ResumeData>({
     id: id,
-    slug:data.slug, 
+    slug: data.slug,
     personalInfo: {
       fullName: data.personalInfo?.fullName || "",
       email: data.personalInfo?.email || "",
@@ -88,7 +95,7 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
       { title: "Custom Sections", type: "custom", isActive: true },
     ],
     template: data.template || "modern",
-     });
+  });
   // Define the section order
   const sectionOrder: SectionType[] = [
     "personal",
@@ -234,7 +241,8 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
         return false;
     }
   };
-
+  const templateData =  templates.find((template) => template.id==selectedTemplate);
+  
   return (
     <div className="flex flex-col">
       <Card className="border-0 shadow-sm p-4">
@@ -340,7 +348,7 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
                       <Card className="overflow-hidden border-0 shadow-sm">
                         <div className="relative h-40 overflow-hidden bg-white">
                           <img
-                            src="/placeholder.svg?height=160&width=120"
+                            src={templateData?.thumbnail||"/placeholder.svg?height=160&width=120"}
                             alt={`${selectedTemplate} template`}
                             className="w-full h-full object-cover"
                           />
@@ -349,6 +357,7 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
                           <h3 className="font-medium capitalize">
                             {selectedTemplate}
                           </h3>
+                          <p className="text-sm text-slate-300">{templateData?.description}</p>
                         </div>
                       </Card>
 
@@ -399,9 +408,13 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-base font-medium">Preview</h3>
                     <div className="flex gap-2">
-                   <Button variant='outline' size='sm' className="hover-lift">
-                    <ShareModal resumeId={id} resumeName={title}/>
-                   </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="hover-lift"
+                      >
+                        <ShareModal resumeId={id} resumeName={title} />
+                      </Button>
                       <Button
                         size="sm"
                         variant="outline"
@@ -423,9 +436,12 @@ export function ResumeEditor({ data, id ,title }: { data: any; id: string;title:
                         variant="outline"
                         className="hover-lift"
                       >
-                        <Link href={`/optimise/${id}`} className="flex gap-2 items-center justify-center">
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        Optimize with AI
+                        <Link
+                          href={`/optimise/${id}`}
+                          className="flex gap-2 items-center justify-center"
+                        >
+                          <Sparkles className="mr-2 h-4 w-4" />
+                          Optimize with AI
                         </Link>
                       </Button>
                     </div>
