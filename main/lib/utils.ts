@@ -20,7 +20,7 @@ export const downloadPdf = async ({
   try {
     onStart?.(); // trigger loading state
 
-    const res = await fetch(`http://localhost:5000/generate`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_RENDER_URL!}generate`, {
       method: "POST",
       headers:{
         "Content-Type": "application/json"
