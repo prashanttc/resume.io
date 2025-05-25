@@ -16,7 +16,13 @@ import { Check, Crown, CreditCard, FileText, Zap } from "lucide-react";
 import { resume } from "@/types/resume";
 import PremiumButton from "../SubscriptionButton";
 
-export function PlanOverview({ resume,premium }: { resume: resume[];premium:boolean }) {
+export function PlanOverview({
+  resume,
+  premium,
+}: {
+  resume: resume[];
+  premium: boolean;
+}) {
   const [currentPlan, setCurrentPlan] = useState<"free" | "pro">("free");
   const [resumeCount, setResumeCount] = useState(resume.length);
   const maxFreeResumes = 3;
@@ -184,7 +190,6 @@ export function PlanOverview({ resume,premium }: { resume: resume[];premium:bool
         {!premium ? (
           <div
             className="w-full bg-white rounded-2xl flex items-center justify-center font-semibold"
-            onClick={() => setCurrentPlan("pro")}
           >
             <Zap className="mr-2 h-4 w-4" />
             <PremiumButton />
@@ -193,7 +198,6 @@ export function PlanOverview({ resume,premium }: { resume: resume[];premium:bool
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => setCurrentPlan("free")}
           >
             Manage Subscription
           </Button>

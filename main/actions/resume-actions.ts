@@ -2,6 +2,7 @@
 
 import { getUserIdFromSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isPremium } from "@/query/user/query";
 import { ResumeData } from "@/types/resume";
 
 export async function newResume(name: string) {
@@ -10,6 +11,29 @@ export async function newResume(name: string) {
     throw new Error("unauthorized");
   }
   try {
+    const PremiumUser = await prisma.user.findUnique({
+      where: {
+        id: user,
+      },
+      select: {
+        isPremium: true,
+      },
+    });
+    if (!PremiumUser) {
+      throw new Error("user not found");
+    }
+
+    const resumeCount = await prisma.resume.count({
+      where: {
+        userId: user,
+      },
+    });
+    if (!PremiumUser.isPremium && resumeCount >= 3) {
+      throw new Error(
+        "Free users can only create up to 3 resumes. Upgrade to premium for unlimited."
+      );
+    }
+
     const newResume = await prisma.resume.create({
       data: {
         userId: user,
@@ -21,9 +45,9 @@ export async function newResume(name: string) {
       throw new Error("problem creating new resume");
     }
     return newResume.id;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    throw new Error("internal server error");
+    throw new Error(error || "internal server error");
   }
 }
 
@@ -300,10 +324,8 @@ export async function getresumeBySlug(url: string) {
       },
     });
     if (!update) {
-      console.log("update", update);
       throw new Error("no resume found by this url");
     }
-    console.log("update", update);
     return update;
   } catch (error: any) {
     console.log("something went wrong");
@@ -322,7 +344,6 @@ export async function updateAiResults({
     if (!cleanJson || !id) {
       throw new Error("resume id is needed");
     }
-    console.log("hahahaha",cleanJson)
     const update = await prisma.resume.update({
       where: {
         id,
@@ -396,5 +417,54 @@ export async function updateAiResults({
   } catch (error: any) {
     console.error("soemthing went wrong");
     throw new Error("internal server error", error.message);
+  }
+}
+
+export async function updateViewCount(url: string) {
+  try {
+    if (!url) {
+      throw new Error("not url found");
+    }
+    const resume = await prisma.resume.update({
+      where: {
+        slug: url,
+      },
+      data: {
+        views: { increment: 1 },
+      },
+    });
+    return { success: true };
+  } catch (error: any) {
+    console.error(error.message || "internal server error");
+    return { success: false };
+  }
+}
+
+export async function resumeCount() {
+  try {
+    const user = await getUserIdFromSession();
+    if (!user) {
+      throw new Error("user not authorized");
+    }
+    const PremiumUser = await prisma.user.findUnique({
+      where: {
+        id: user,
+      },
+      select: {
+        isPremium: true,
+      },
+    });
+    if(PremiumUser?.isPremium ){
+    throw new Error('user is premium member')
+    }
+    const resumeCount = await prisma.resume.count({
+      where:{
+        userId:user
+      }
+    })
+    return resumeCount;
+  } catch (error: any) {
+    console.error(error.message);
+    throw new Error(error.message);
   }
 }

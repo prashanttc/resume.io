@@ -57,7 +57,7 @@ export default function DashboardPage() {
       </div>
 
       <QuickStart />
-      <DashboardStats resume={resumes} />
+      <DashboardStats resume={resumes} premium={premium||false}/>
       <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-4">
         <div className="md:col-span-2 lg:col-span-2 space-y-8">
           <ResumeList resumes={resumes} />

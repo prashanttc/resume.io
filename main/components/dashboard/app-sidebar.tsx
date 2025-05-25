@@ -1,8 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { BarChart, FileText, Github, Home, Layers, Linkedin, Settings, Share2, User } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import { BarChart, FileText, Github, Home, Layers, Linkedin, LogOut, Settings, Share2, User } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -16,13 +16,23 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarSeparator,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { ModeToggle } from "@/components/mode-toggle"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { signOut, useSession } from "next-auth/react"
+import { Separator } from "../ui/separator"
 
 export function AppSidebar() {
+  const router = useRouter();
   const pathname = usePathname()
+  const{data,status}=useSession()
+  if(status==='loading'){
+    return
+  }
+  if(status==="unauthenticated"){
+    router.push("/")
+  }
+    const user = data?.user;
+  
 
   const isActive = (path: string) => {
     return pathname === path
@@ -104,13 +114,11 @@ export function AppSidebar() {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-
+              <Separator/>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive("/share")} tooltip="Share">
-                  <Link href="/share">
-                    <Share2 className="h-4 w-4" />
-                    <span>Share & Export</span>
-                  </Link>
+                <SidebarMenuButton className="mt-5" onClick={()=>signOut()}>
+                  <LogOut/>
+                Logout
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -119,44 +127,20 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive("/settings")} tooltip="Settings">
-                  <Link href="/settings">
-                    <Settings className="h-4 w-4" />
-                    <span>Settings</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive("/profile")} tooltip="Profile">
-                  <Link href="/profile">
-                    <User className="h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
 
         <SidebarSeparator />
 
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
             <Avatar className="h-8 w-8 ring-2 ring-background">
-              <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarImage src={user?.image||"/placeholder.svg?height=32&width=32"} alt="User" />
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-sm font-medium">John Doe</span>
-              <span className="text-xs text-muted-foreground">john@example.com</span>
+              <span className="text-sm font-medium">{user?.name||"guest"}</span>
+              <span className="text-xs  text-muted-foreground">{user?.email}</span>
             </div>
           </div>
-          <ModeToggle />
         </div>
       </SidebarFooter>
       <SidebarRail />

@@ -6,6 +6,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PremiumButton from "../SubscriptionButton";
 import { isPremium } from "@/query/user/query";
+import Link from "next/link";
 
 const plans = [
   {
@@ -174,7 +175,8 @@ export default function PlanSelector() {
             size="lg"
             className="bg-white text-zinc-900 hover:bg-zinc-200"
           >
-            <PremiumButton />
+      <Link href={'/signUp'}>Go pro
+      </Link>
           </Button>
         </motion.div>
       )}

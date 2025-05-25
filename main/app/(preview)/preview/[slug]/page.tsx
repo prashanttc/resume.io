@@ -3,14 +3,28 @@ import { ResumeNotFound } from "@/components/error";
 import Loader from "@/components/Loader";
 import { ModernTemplate } from "@/components/resume/templates/modern-template";
 import { templateMap } from "@/components/resume/templates/template-map";
-import { useGetResumeBySlug } from "@/query/resume/query";
+import { useGetResumeBySlug, useViewUpdate } from "@/query/resume/query";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 const page = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
   const params = useParams();
   const slug = params.slug as string;
-  const { data: resumeData, isPending ,isError } = useGetResumeBySlug(slug);
+  const { data: resumeData, isPending, isError } = useGetResumeBySlug(slug);
+  const { mutate } = useViewUpdate();
+  const completeUrl = `${baseUrl}preview/${slug}`;
+
+  useEffect(() => {
+    const viewedKey = `viewed_resume_${slug}`;
+    if (!localStorage.getItem(viewedKey)) {
+      mutate(completeUrl, {
+        onSuccess: () => {
+          localStorage.setItem(viewedKey, "true");
+        },
+      });
+    }
+  }, []);
   if (isPending) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
@@ -18,7 +32,7 @@ const page = () => {
       </div>
     );
   }
-  if (!resumeData||isError) {
+  if (!resumeData || isError) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
         <ResumeNotFound variant="empty" />
@@ -51,7 +65,7 @@ const page = () => {
   const Template = templateMap[resumeData.template] || ModernTemplate;
 
   return (
-    <div className="w-full h-full" >
+    <div className="w-full h-full">
       <div className="h-full bg-white p-8 max-w-[800px] mx-auto" id="resume">
         <Template
           personal={personal}

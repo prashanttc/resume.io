@@ -4,13 +4,14 @@ import {
   getResumeById,
   getresumeBySlug,
   newResume,
+  resumeCount,
   saveResume,
   setSlug,
   updateAiResults,
+  updateViewCount,
 } from "@/actions/resume-actions";
 import { ResumeData } from "@/types/resume";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { redirect, useRouter } from "next/navigation";
 
 export function useCreateNewResume() {
   const queryclient = useQueryClient();
@@ -18,6 +19,7 @@ export function useCreateNewResume() {
     mutationFn: (name: string) => newResume(name),
     onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ["getallresume"] });
+      queryclient.invalidateQueries({ queryKey: ["resumecount"] });
     },
   });
 }
@@ -58,9 +60,10 @@ export function useDeleteResume() {
   const queryclient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => deleteResume(id),
-    onSuccess: () => {
+    onSuccess: (_,id) => {
       queryclient.invalidateQueries({ queryKey: ["getallresume"] });
-      queryclient.invalidateQueries({ queryKey: ["getResumeByid"] });
+      queryclient.invalidateQueries({ queryKey: ["getResumeByid",id] });
+      queryclient.invalidateQueries({ queryKey: ["resumecount"] });
       queryclient.invalidateQueries({ queryKey: ["getResumeByurl"] });
     },
   });
@@ -87,4 +90,22 @@ export function useUpdateAI() {
       queryclient.invalidateQueries({ queryKey: ["getResumeByid",id] });
     },
   });
+}
+
+export function useViewUpdate(){
+   const queryclient = useQueryClient();
+  return useMutation({
+    mutationFn: (url:string ) =>
+      updateViewCount(url),
+    onSuccess: () => {
+      queryclient.invalidateQueries({ queryKey: ["getallresume"] });
+    },
+  }); 
+}
+
+export function useResumeCount(){
+  return useQuery({
+    queryKey:['resumecount'],
+    queryFn: resumeCount
+  })
 }
