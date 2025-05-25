@@ -57,12 +57,10 @@ export default function SignupPage() {
     if (isError && error) {
       toast.error(error.message || "Error creating account");
     }
-  }, [isError, error]); 
+  }, [isError, error]);
 
   return (
-    <div
-      className="min-h-screen flex flex-col bg-black text-white"
-    >
+    <div className="min-h-screen flex flex-col bg-black text-white">
       <div className="container flex h-16 items-center px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <ArrowLeft className="h-4 w-4" />
@@ -88,7 +86,8 @@ export default function SignupPage() {
                   </div>
                 </div>
                 <span className="text-xl font-bold bg-clip-text text-transparent text-white">
-ResuMate                </span>
+                  ResuMate{" "}
+                </span>
               </div>
               <CardTitle className="text-2xl font-bold text-white">
                 Create an account
@@ -148,8 +147,7 @@ ResuMate                </span>
                       )}
                     />
                   </div>
-                  <div className="flex items-center space-x-2"> 
-                  </div>
+                  <div className="flex items-center space-x-2"></div>
                   <Button
                     type="submit"
                     className="w-full bg-gradient-to-r from-zinc-600 to-zinc-600 hover:from-zinc-500 hover:to-zinc-500 border-0 text-white"
@@ -198,7 +196,7 @@ ResuMate                </span>
               <Button
                 variant="outline"
                 className="w-full border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
-                onClick={()=>signIn('google')}
+                onClick={() => signIn("google",{callbackUrl:'/dashboard'})}
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                   <path
