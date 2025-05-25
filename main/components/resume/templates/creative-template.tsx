@@ -89,9 +89,9 @@ export function CreativeTemplate({personal,education,experiences,skills,custom,p
                 </svg>
                 <span>{personal.address}</span>
               </div>}
-              {personal.website && (
-                <div className="flex items-center gap-2">
-                  <svg
+                {personal.website && (
+            <p className="text-xs break-words flex gap-2">
+                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
                     height="16"
@@ -106,12 +106,14 @@ export function CreativeTemplate({personal,education,experiences,skills,custom,p
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
                   </svg>
-                  <span>{personal.website}</span>
-                </div>
-              )}
-              {personal.linkedin && (
-                <div className="flex items-center gap-2">
-                  <svg
+              <a href={personal.website} target="_blank" rel="noreferrer" className="underline hover:text-blue-600">
+                Website
+              </a>
+            </p>
+          )}
+          {personal.linkedin && (
+            <p className="text-xs break-words flex gap-2">
+               <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
                     height="16"
@@ -127,9 +129,18 @@ export function CreativeTemplate({personal,education,experiences,skills,custom,p
                     <rect width="4" height="12" x="2" y="9" />
                     <circle cx="4" cy="4" r="2" />
                   </svg>
-                  <span>{personal.linkedin}</span>
-                </div>
-              )}
+              <a href={personal.linkedin} target="_blank" rel="noreferrer" className="underline hover:text-blue-600">
+                LinkedIn
+              </a>
+            </p>
+          )}
+          {personal.github && (
+            <p className="text-xs break-words">
+              <a href={personal.github} target="_blank" rel="noreferrer" className="underline hover:text-blue-600">
+                Github
+              </a>
+            </p>
+          )}
             </div>
           </header>
 

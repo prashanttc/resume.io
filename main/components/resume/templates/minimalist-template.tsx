@@ -28,8 +28,29 @@ export function MinimalistTemplate({
           <div>{personal.email}</div>
           <div>{personal.phone}</div>
           <div>{personal.address}</div>
-          {personal.website && <div>{personal.website}</div>}
-          {personal.linkedin && <div>{personal.linkedin}</div>}
+               {personal.website && (
+            <p className="text-xs break-words flex gap-2">
+
+              <a href={personal.website} target="_blank" rel="noreferrer" className="underline hover:text-blue-600">
+                Website
+              </a>
+            </p>
+          )}
+          {personal.linkedin && (
+            <p className="text-xs break-words flex gap-2">
+          
+              <a href={personal.linkedin} target="_blank" rel="noreferrer" className="underline hover:text-blue-600">
+                LinkedIn
+              </a>
+            </p>
+          )}
+          {personal.github && (
+            <p className="text-xs break-words">
+              <a href={personal.github} target="_blank" rel="noreferrer" className="underline hover:text-blue-600">
+                Github
+              </a>
+            </p>
+          )}
         </div>
       </header>
 

@@ -27,8 +27,58 @@ export function BoldTemplate({
           {personal.email && <span>{personal.email}</span>}
           {personal.phone && <span>{personal.phone}</span>}
           {personal.address && <span>{personal.address}</span>}
-          {personal.website && <span>{personal.website}</span>}
-          {personal.linkedin && <span>{personal.linkedin}</span>}
+                  {personal.website && (
+            <p className="text-xs break-words flex gap-2">
+                 <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-zinc-500"
+                  >
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                  </svg>
+              <a href={personal.website} target="_blank" rel="noreferrer" className="underline hover:text-blue-600">
+                Website
+              </a>
+            </p>
+          )}
+          {personal.linkedin && (
+            <p className="text-xs break-words flex gap-2">
+               <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-zinc-500"
+                  >
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                    <rect width="4" height="12" x="2" y="9" />
+                    <circle cx="4" cy="4" r="2" />
+                  </svg>
+              <a href={personal.linkedin} target="_blank" rel="noreferrer" className="underline hover:text-blue-600">
+                LinkedIn
+              </a>
+            </p>
+          )}
+          {personal.github && (
+            <p className="text-xs break-words">
+              <a href={personal.github} target="_blank" rel="noreferrer" className="underline hover:text-blue-600">
+                Github
+              </a>
+            </p>
+          )}
         </div>
       </header>
 
