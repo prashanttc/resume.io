@@ -13,7 +13,6 @@ app.use(bodyParser.json());
 
 app.post("/generate", async (req, res) => {
   const { resumeId, title } =  req.body;
- console.log("resime",resumeId)
   if (!resumeId || !title) {
     return res.status(400).json({ error: "Missing resumeId or title" });
   }
