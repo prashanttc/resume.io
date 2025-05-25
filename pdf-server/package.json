@@ -17,7 +17,6 @@
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "pupeteer": "^0.0.1",
     "puppeteer": "^24.9.0"
   }
 }
