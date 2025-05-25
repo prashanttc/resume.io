@@ -13,7 +13,7 @@ const testimonials = [
     role: "Software Engineer at Google",
     image: "/placeholder.svg?height=80&width=80&text=AJ",
     content:
-      "ResumeForge helped me land my dream job. The AI suggestions highlighted skills I hadn't thought to include, and the clean design made my resume stand out from the competition.",
+      "ResuMate helped me land my dream job. The AI suggestions highlighted skills I hadn't thought to include, and the clean design made my resume stand out from the competition.",
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const testimonials = [
     role: "Marketing Director at Spotify",
     image: "/placeholder.svg?height=80&width=80&text=SC",
     content:
-      "After struggling with traditional resume builders, ResumeForge was a breath of fresh air. The templates are modern, the interface is intuitive, and the analytics helped me understand what was working.",
+      "After struggling with traditional resume builders, ResuMate was a breath of fresh air. The templates are modern, the interface is intuitive, and the analytics helped me understand what was working.",
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const testimonials = [
     role: "Product Manager at Adobe",
     image: "/placeholder.svg?height=80&width=80&text=MR",
     content:
-      "The ATS optimization feature is a game-changer. I went from getting no callbacks to multiple interview requests within a week of using ResumeForge for my applications.",
+      "The ATS optimization feature is a game-changer. I went from getting no callbacks to multiple interview requests within a week of using ResuMate for my applications.",
   },
   {
     id: 4,
@@ -37,7 +37,7 @@ const testimonials = [
     role: "UX Designer at Microsoft",
     image: "/placeholder.svg?height=80&width=80&text=ET",
     content:
-      "As a designer, I was impressed by the beautiful templates and customization options. ResumeForge allowed me to create a resume that truly represented my personal brand and showcased my portfolio.",
+      "As a designer, I was impressed by the beautiful templates and customization options. ResuMate allowed me to create a resume that truly represented my personal brand and showcased my portfolio.",
   },
 ]
 
@@ -87,7 +87,7 @@ export default function TestimonialSection() {
           </div>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">What our users are saying</h2>
           <p className="text-zinc-400 max-w-2xl mx-auto">
-            Join thousands of professionals who have transformed their career with ResumeForge.
+            Join thousands of professionals who have transformed their career with ResuMate.
           </p>
         </motion.div>
 

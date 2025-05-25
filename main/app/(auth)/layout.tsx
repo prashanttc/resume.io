@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "get started with resume.io",
+  title: "get started with ResuMate",
 };
 
 export default function RootLayout({

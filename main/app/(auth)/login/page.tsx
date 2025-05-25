@@ -81,9 +81,8 @@ export default function LoginPage() {
                   </div>
                 </div>
                 <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-zinc-400 to-zinc-400">
-                  resume.io
-                </span>
-              </div>
+ResuMate                </span>
+            </div>
               <CardTitle className="text-2xl font-bold text-white">Welcome back</CardTitle>
               <CardDescription className="text-zinc-400">Enter your email to sign in to your account</CardDescription>
             </CardHeader>
@@ -197,7 +196,7 @@ export default function LoginPage() {
             <CardFooter className="flex flex-col items-center">
               <p className="text-sm text-zinc-400 mt-2">
                 Don&apos;t have an account?{" "}
-                <Link href="/signup" className="text-white hover:text-zinc-300 hover:underline">
+                <Link href="/signUp" className="text-white hover:text-zinc-300 hover:underline">
                   Sign up
                 </Link>
               </p>

@@ -19,7 +19,7 @@ export function QuickStart() {
       <CardContent className="p-6">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="space-y-1">
-            <h2 className="text-lg font-medium">Get started with ResumeOS</h2>
+            <h2 className="text-lg font-medium">Get started with ResuMate</h2>
             <p className="text-muted-foreground">Create your first resume or explore templates</p>
           </div>
           <div className="flex flex-wrap gap-3">

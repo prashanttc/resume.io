@@ -27,7 +27,7 @@ export default function LandingPage() {
         <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2">
             <FileText className="h-6 w-6 text-white" />
-            <span className="text-xl font-bold tracking-tight">Resume.io</span>
+            <span className="text-xl font-bold tracking-tight">ResuMate</span>
           </div>
 
           <nav className="hidden md:flex items-center gap-8">
@@ -186,9 +186,9 @@ export default function LandingPage() {
                     size="lg"
                     className="bg-gradient-to-r from-white to-zinc-200 text-zinc-900 hover:from-zinc-200 hover:to-zinc-300 text-base font-medium"
                   >
-                    <Link href={"/login"}>
-                   </Link>
+                    <Link href={"/login"} className="flex gap-3  items-center justify-center">
                   Create Your Resume <ChevronRight className="ml-2 h-4 w-4" />
+                   </Link>
                   </Button>
                 </motion.div>
 
@@ -382,7 +382,7 @@ export default function LandingPage() {
                     className="text-zinc-400"
                   >
                     Join thousands of professionals who have elevated their job
-                    search with ResumeForge.
+                    search with ResuMate.
                   </motion.p>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -423,7 +423,7 @@ export default function LandingPage() {
               <div className="flex items-center gap-2 mb-4">
                 <FileText className="h-6 w-6 text-white" />
                 <span className="text-xl font-bold tracking-tight">
-                  ResumeForge
+                  ResuMate
                 </span>
               </div>
               <p className="text-zinc-400 text-sm">
@@ -510,7 +510,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-12 pt-8 border-t border-zinc-800 text-center text-sm text-zinc-500">
-            © {new Date().getFullYear()} ResumeForge. All rights reserved.
+            © {new Date().getFullYear()} ResuMate. All rights reserved.
           </div>
         </div>
       </footer>

@@ -88,8 +88,7 @@ export default function SignupPage() {
                   </div>
                 </div>
                 <span className="text-xl font-bold bg-clip-text text-transparent text-white">
-                  resume.io
-                </span>
+ResuMate                </span>
               </div>
               <CardTitle className="text-2xl font-bold text-white">
                 Create an account
