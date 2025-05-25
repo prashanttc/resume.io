@@ -66,7 +66,7 @@ export default function LandingPage() {
             <Button
               className="bg-white text-zinc-900 hover:bg-zinc-200"
             >
-              <Link href={'/signUp'}>
+              <Link href={'/signup'}>
               Get Started
               </Link>
             </Button>

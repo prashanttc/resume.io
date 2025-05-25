@@ -196,7 +196,7 @@ ResuMate                </span>
             <CardFooter className="flex flex-col items-center">
               <p className="text-sm text-zinc-400 mt-2">
                 Don&apos;t have an account?{" "}
-                <Link href="/signUp" className="text-white hover:text-zinc-300 hover:underline">
+                <Link href="/signup" className="text-white hover:text-zinc-300 hover:underline">
                   Sign up
                 </Link>
               </p>
