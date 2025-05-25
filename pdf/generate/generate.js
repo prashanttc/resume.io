@@ -2,18 +2,34 @@ import puppeteer from "puppeteer";
 
 export async function generatePDF({ slug, title }) {
   const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium-browser"
   });
 
-  const page = await browser.newPage();
-  await page.goto(slug, { waitUntil: "networkidle0" });
-  await page.waitForSelector("#resume", { timeout: 10000 });
+  try {
+    const page = await browser.newPage();
+    await page.goto(slug, { 
+      waitUntil: "networkidle0",
+      timeout: 30000  // Increased timeout
+    });
+    
+    await page.waitForSelector("#resume", { 
+      timeout: 15000 
+    });
 
-  const pdfBuffer = await page.pdf({
-    format: "A4",
-    printBackground: true,
-  });
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: {
+        top: '20mm',
+        right: '20mm',
+        bottom: '20mm',
+        left: '20mm'
+      }
+    });
 
-  await browser.close();
-  return pdfBuffer;
+    return pdfBuffer;
+  } finally {
+    await browser.close();
+  }
 }
