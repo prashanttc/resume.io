@@ -1,22 +1,21 @@
 {
   "name": "pdf-server",
   "version": "1.0.0",
-  "main": "generate.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "build": "echo \"no build needed\""
-
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "@prisma/client": "^6.8.2",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "puppeteer": "^24.9.0"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
