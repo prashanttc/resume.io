@@ -3,7 +3,6 @@ import puppeteer from "puppeteer";
 export async function generatePDF({ slug, title }) {
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium-browser"
   });
 
   try {
