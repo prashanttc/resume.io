@@ -455,8 +455,7 @@ export async function resumeCount() {
       },
     });
     if(PremiumUser?.isPremium ){
-    throw new Error('user is premium member')
-    }
+return null    }
     const resumeCount = await prisma.resume.count({
       where:{
         userId:user
