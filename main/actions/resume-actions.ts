@@ -422,8 +422,21 @@ export async function updateAiResults({
 
 export async function updateViewCount(url: string) {
   try {
+    const userId = await getUserIdFromSession();
     if (!url) {
       throw new Error("not url found");
+    }
+    if (!userId) {
+      throw new Error("unauthorized");
+    }
+    const sameUser = await prisma.resume.findUnique({
+      where: {
+        id: userId,
+        slug: url,
+      },
+    });
+    if (sameUser) {
+      return { success: false };
     }
     const resume = await prisma.resume.update({
       where: {
@@ -454,13 +467,14 @@ export async function resumeCount() {
         isPremium: true,
       },
     });
-    if(PremiumUser?.isPremium ){
-return null    }
+    if (PremiumUser?.isPremium) {
+      return null;
+    }
     const resumeCount = await prisma.resume.count({
-      where:{
-        userId:user
-      }
-    })
+      where: {
+        userId: user,
+      },
+    });
     return resumeCount;
   } catch (error: any) {
     console.error(error.message);

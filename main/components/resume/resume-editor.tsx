@@ -86,7 +86,7 @@ export function ResumeEditor({
     })),
     skills: data.skills,
     customSections: data.customSections,
-    sectionOrder: [
+    sectionOrder: data.sectionOrder|| [ 
       { title: "Personal Information", type: "core", isActive: true },
       { title: "Experience", type: "core", isActive: true },
       { title: "Projects", type: "core", isActive: true },

@@ -186,7 +186,7 @@ export default function LandingPage() {
                     size="lg"
                     className="bg-gradient-to-r from-white to-zinc-200 text-zinc-900 hover:from-zinc-200 hover:to-zinc-300 text-base font-medium"
                   >
-                    <Link href={"/login"} className="flex gap-3  items-center justify-center">
+                    <Link href={"/dashboard"} className="flex gap-3  items-center justify-center">
                   Create Your Resume <ChevronRight className="ml-2 h-4 w-4" />
                    </Link>
                   </Button>
