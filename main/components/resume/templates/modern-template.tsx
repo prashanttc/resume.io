@@ -18,7 +18,7 @@ export function ModernTemplate({
     });
   };
   return (
-    <div className="font-sans text-zinc-800 max-w-[900px]  print-wrapper min-h-[1123px] p-8">
+    <div className="font-sans text-zinc-800 max-w-[800px] print-wrapper min-h-[1123px] p-8">
       <header className="mb-6">
         <h1 className="text-3xl font-bold mb-1">{personal.fullName}</h1>
         <h2 className="text-xl text-zinc-600 mb-3">{personal.jobTitle}</h2>
