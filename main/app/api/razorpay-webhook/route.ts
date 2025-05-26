@@ -12,7 +12,7 @@ export const config = {
 };
 
 export async function POST(req: NextRequest) {
-  const rawBody = await req.text(); 
+  const rawBody = await req.text();
   const signature = req.headers.get("x-razorpay-signature");
   const expectedSignature = crypto
     .createHmac("sha256", RAZORPAY_WEBHOOK_SECRET)
@@ -26,16 +26,26 @@ export async function POST(req: NextRequest) {
   const payload = JSON.parse(rawBody);
   const event = payload.event;
 
-  if (
-    event === "subscription.activated" ||
-    event === "subscription.completed" ||
-    event === "subscription.charged"
-  ) {
+  if (event === "subscription.activated" || event === "subscription.charged") {
     const subscriptionId = payload.payload.subscription.entity.id;
     const user = await prisma.user.updateMany({
-      where: { subscriptionId }, 
+      where: { subscriptionId },
       data: { isPremium: true },
     });
+
+    if (event === "subscription.completed") {
+      const subscriptionId = payload.payload.subscription.entity.id;
+      await prisma.user.updateMany({
+        where: {
+          subscriptionId,
+        },
+        data: {
+          isPremium: false,
+          lastSubscriptionDate: new Date(),
+          subscriptionId: null,
+        },
+      });
+    }
 
     return NextResponse.json({ success: true });
   }

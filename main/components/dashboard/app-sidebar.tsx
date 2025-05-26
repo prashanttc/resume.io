@@ -10,6 +10,7 @@ import {
   Layers,
   Linkedin,
   LogOut,
+  Star,
 } from "lucide-react";
 import {
   Sidebar,
@@ -107,16 +108,16 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={isActive("/analytics")}
+                  isActive={isActive("/pro")}
                   tooltip="Analytics"
-                >
-                  <Link href="/analytics">
-                    <BarChart className="h-4 w-4" />
-                    <span>Analytics</span>
+                  >
+                  <Link href="/pro">
+                    <Star className="h-4 w-4" />
+                    <span>Pro</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            </SidebarMenu>
+                  </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 

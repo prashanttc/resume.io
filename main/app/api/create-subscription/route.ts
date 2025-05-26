@@ -25,11 +25,15 @@ export async function POST() {
     const subscription = await razorpay.subscriptions.create({
       plan_id: planId,
       customer_notify: 1,
-      total_count: 12,
+      total_count: 1,
     });
     await prisma.user.update({
       where: { id: userId },
-      data: { subscriptionId: subscription.id },
+      data: { subscriptionId: subscription.id,
+              lastSubscriptionDate:  new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+
+       },
+
     });
     return NextResponse.json({
       subscriptionId: subscription.id,

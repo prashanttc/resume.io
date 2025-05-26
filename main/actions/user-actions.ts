@@ -8,13 +8,12 @@ export async function getIsPremium() {
     if (!userId) {
       throw new Error("Unauthorized");
     }
-     console.log("userId",userId)
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { isPremium: true },
+      select: { isPremium: true ,lastSubscriptionDate:true},
     });
 
-    return { isPremium: user?.isPremium ?? false };
+    return { isPremium: user?.isPremium ?? false ,expireDate:user?.lastSubscriptionDate };
   } catch (error: any) {
     console.error("Error in getIsPremium:", error.message);
     return { isPremium: false }; // fallback to non-premium on error

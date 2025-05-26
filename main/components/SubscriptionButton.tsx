@@ -19,7 +19,7 @@ export default function PremiumButton() {
     const { subscriptionId, user } = await res.json();
     const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Set this in .env
-      name: 'Resume Builder Pro',
+      name: 'Resumate Pro',
       description: 'Monthly Premium Access',
       subscription_id: subscriptionId,
       handler: async function (response: any) {

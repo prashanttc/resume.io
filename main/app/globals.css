@@ -67,6 +67,9 @@
     --sidebar-border: 0 0% 20%;
     --sidebar-ring: 0 0% 29.8%;
   }
+  .theme {
+    --animate-gradient: gradient 8s linear infinite;
+  }
 }
 
 @layer base {
@@ -182,5 +185,22 @@
     display: block;
     height: 0;
     page-break-after: always;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@theme inline {
+  @keyframes gradient {
+  to {
+    background-position: var(--bg-size, 300%) 0;
+    }
   }
 }

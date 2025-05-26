@@ -15,6 +15,7 @@ import { Progress } from "@/components/ui/progress";
 import { Check, Crown, CreditCard, FileText, Zap } from "lucide-react";
 import { resume } from "@/types/resume";
 import PremiumButton from "../SubscriptionButton";
+import Link from "next/link";
 
 export function PlanOverview({
   resume,
@@ -199,7 +200,9 @@ export function PlanOverview({
             variant="outline"
             className="w-full"
           >
+            <Link href={'/pro'}>
             Manage Subscription
+            </Link>
           </Button>
         )}
       </CardFooter>
