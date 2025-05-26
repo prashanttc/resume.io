@@ -58,15 +58,15 @@ export function ResumeEditor({
     id: id,
     slug: data.slug,
     personalInfo: {
-      fullName: data.personalInfo?.fullName || "",
-      email: data.personalInfo?.email || "",
-      jobTitle: data.personalInfo?.jobTitle || "",
-      phone: data.personalInfo?.phone || "",
-      linkedin: data.personalInfo?.linkedin || "",
-      github: data.personalInfo?.github || "",
-      website: data.personalInfo?.website || "",
-      address: data.personalInfo?.address || "",
-      summary: data.personalInfo?.summary || "",
+      fullName: data.personalInfo?.fullName || "john doe",
+      email: data.personalInfo?.email || "johndoe.gmail.com",
+      jobTitle: data.personalInfo?.jobTitle || "software engineer",
+      phone: data.personalInfo?.phone || "8989898989",
+      linkedin: data.personalInfo?.linkedin || "linkedin",
+      github: data.personalInfo?.github || "github",
+      website: data.personalInfo?.website || "website",
+      address: data.personalInfo?.address || "address",
+      summary: data.personalInfo?.summary || "hello i am john doe , a senior software developer this is my test summary.  ",
     },
     experiences: data.experiences.map((exp: any) => ({
       ...exp,
@@ -86,14 +86,18 @@ export function ResumeEditor({
     })),
     skills: data.skills,
     customSections: data.customSections,
-    sectionOrder: data.sectionOrder|| [ 
-      { title: "Personal Information", type: "core", isActive: true },
-      { title: "Experience", type: "core", isActive: true },
-      { title: "Projects", type: "core", isActive: true },
-      { title: "Education", type: "core", isActive: true },
-      { title: "Skills", type: "core", isActive: true },
-      { title: "Custom Sections", type: "custom", isActive: true },
-    ],
+    sectionOrder:
+      data.sectionOrder && data.sectionOrder.length > 0
+        ? data.sectionOrder
+        : [
+            { title: "Personal Information", type: "core", isActive: true },
+            { title: "Experience", type: "core", isActive: true },
+            { title: "Projects", type: "core", isActive: true },
+            { title: "Education", type: "core", isActive: true },
+            { title: "Skills", type: "core", isActive: true },
+            { title: "Custom Sections", type: "custom", isActive: true },
+          ],
+
     template: data.template || "modern",
   });
   // Define the section order
@@ -113,7 +117,7 @@ export function ResumeEditor({
       return;
     }
   }, [isError, error]);
-
+  console.log("eee", data.sectionOrder);
   // Handle section completion and auto-navigation
   const handleSectionComplete = (section: SectionType, data: any) => {
     setResumeData((prev) => {
@@ -241,8 +245,10 @@ export function ResumeEditor({
         return false;
     }
   };
-  const templateData =  templates.find((template) => template.id==selectedTemplate);
-  
+  const templateData = templates.find(
+    (template) => template.id == selectedTemplate
+  );
+
   return (
     <div className="flex flex-col">
       <Card className="border-0 shadow-sm p-4">
@@ -348,7 +354,10 @@ export function ResumeEditor({
                       <Card className="overflow-hidden border-0 shadow-sm">
                         <div className="relative h-40 overflow-hidden bg-white">
                           <img
-                            src={templateData?.thumbnail||"/placeholder.svg?height=160&width=120"}
+                            src={
+                              templateData?.thumbnail ||
+                              "/placeholder.svg?height=160&width=120"
+                            }
                             alt={`${selectedTemplate} template`}
                             className="w-full h-full object-cover"
                           />
@@ -357,7 +366,9 @@ export function ResumeEditor({
                           <h3 className="font-medium capitalize">
                             {selectedTemplate}
                           </h3>
-                          <p className="text-sm text-slate-300">{templateData?.description}</p>
+                          <p className="text-sm text-slate-300">
+                            {templateData?.description}
+                          </p>
                         </div>
                       </Card>
 
