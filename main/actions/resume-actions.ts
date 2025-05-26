@@ -2,7 +2,6 @@
 
 import { getUserIdFromSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { isPremium } from "@/query/user/query";
 import { ResumeData } from "@/types/resume";
 
 export async function newResume(name: string) {
