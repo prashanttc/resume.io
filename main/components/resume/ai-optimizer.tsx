@@ -45,6 +45,7 @@ export function AIOptimizer({ id }: { id: string }) {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials:'include',
       body: JSON.stringify({ id, jobDescription }),
     });
     if (!res.ok) {

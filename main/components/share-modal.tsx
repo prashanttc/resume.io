@@ -61,10 +61,12 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials:'include',
       body: JSON.stringify({ link }),
     });
 
     const data = await response.json();
+    console.log("data",data)
     setIsCustomUrlAvailable(data?.available);
     setIsCheckingUrl(false);
   };
