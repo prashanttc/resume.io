@@ -15,7 +15,7 @@ export function MinimalistTemplate({
   );
 
   return (
-    <div className="font-sans text-zinc-800 max-w-[800px] m-8">
+    <div className="font-sans text-zinc-800 max-w-[800px] print-wrapper min-h-[1123px] ">
       <header className="text-center mb-8">
         <h1 className="text-2xl font-normal uppercase tracking-widest mb-1">
           {personal.fullName}

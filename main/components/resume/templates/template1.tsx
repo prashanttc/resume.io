@@ -18,7 +18,7 @@ export function BoldTemplate({
   };
 
   return (
-    <div className="font-sans text-black max-w-[850px] mx-auto print-wrapper px-10 py-8 bg-white border border-gray-300">
+    <div className="font-sans text-zinc-800 max-w-[800px] print-wrapper min-h-[1123px] ">
       {/* Top Header */}
       <header className="text-center mb-8 border-b-4 border-black pb-4">
         <h1 className="text-4xl font-bold tracking-wide">{personal.fullName}</h1>

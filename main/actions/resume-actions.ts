@@ -343,54 +343,103 @@ export async function updateAiResults({
     if (!cleanJson || !id) {
       throw new Error("resume id is needed");
     }
-    const update = await prisma.resume.update({
-      where: {
-        id,
+
+    console.log("cleanJson", cleanJson);
+
+    // Fetch existing sub-entries from DB
+    const existingResume = await prisma.resume.findUnique({
+      where: { id },
+      include: {
+        experiences: true,
+        projects: true,
+        customSections: { include: { entries: true } },
       },
-      data: {
-        atsScore: cleanJson.atsScore,
-        personalInfo: {
-          update: {
+    });
+
+    if (!existingResume) {
+      throw new Error("Resume not found");
+    }
+
+    const dataToUpdate: any = {};
+
+    if (cleanJson.atsScore !== undefined) {
+      dataToUpdate.atsScore = cleanJson.atsScore;
+    }
+
+    if (cleanJson.personalInfo) {
+      dataToUpdate.personalInfo = {
+        update: {
+          ...(cleanJson.personalInfo.jobTitle && {
             jobTitle: cleanJson.personalInfo.jobTitle,
+          }),
+          ...(cleanJson.personalInfo.summary && {
             summary: cleanJson.personalInfo.summary,
-          },
+          }),
         },
-        experiences: {
-          update: cleanJson.experiences.map((exp: any) => ({
+      };
+    }
+
+    if (Array.isArray(cleanJson.experiences)) {
+      const existingExperienceIds = new Set(
+        existingResume.experiences.map((e) => e.id)
+      );
+      dataToUpdate.experiences = {
+        update: cleanJson.experiences
+          .filter((exp: any) => existingExperienceIds.has(exp.id))
+          .map((exp: any) => ({
             where: { id: exp.id },
             data: {
-              position: exp.position,
-              description: exp.description,
+              ...(exp.position && { position: exp.position }),
+              ...(exp.description && { description: exp.description }),
             },
           })),
-        },
-        projects: {
-          update: cleanJson.projects.map((prj: any) => ({
+      };
+    }
+
+    if (Array.isArray(cleanJson.projects)) {
+      const existingProjectIds = new Set(
+        existingResume.projects.map((p) => p.id)
+      );
+      dataToUpdate.projects = {
+        update: cleanJson.projects
+          .filter((prj: any) => existingProjectIds.has(prj.id))
+          .map((prj: any) => ({
             where: { id: prj.id },
             data: {
-              title: prj.title,
-              role: prj.role,
-              description: prj.description,
+              ...(prj.title && { title: prj.title }),
+              ...(prj.role && { role: prj.role }),
+              ...(prj.description && { description: prj.description }),
             },
           })),
-        },
-        skills: {
-          deleteMany: {},
-          create: cleanJson.skills.map((skillCategory: any) => ({
-            name: skillCategory.name,
-            skills: {
-              create: skillCategory.skills.map((s: any) => ({
-                name: s.name,
-                level: s.level,
-              })),
-            },
-          })),
-        },
-        customSections: {
-          update: cleanJson.customSections.map((cs: any) => ({
+      };
+    }
+
+    if (Array.isArray(cleanJson.skills)) {
+      dataToUpdate.skills = {
+        deleteMany: {}, // always reset and create new
+        create: cleanJson.skills.map((skillCategory: any) => ({
+          name: skillCategory.name,
+          skills: {
+            create: skillCategory.skills.map((s: any) => ({
+              name: s.name,
+              level: s.level,
+            })),
+          },
+        })),
+      };
+    }
+
+    if (Array.isArray(cleanJson.customSections)) {
+      const existingCustomSectionIds = new Set(
+        existingResume.customSections.map((cs) => cs.id)
+      );
+      dataToUpdate.customSections = {
+        update: cleanJson.customSections
+          .filter((cs: any) => existingCustomSectionIds.has(cs.id))
+          .map((cs: any) => ({
             where: { id: cs.id },
             data: {
-              title: cs.title,
+              ...(cs.title && { title: cs.title }),
               entries: {
                 deleteMany: {}, // nuke old entries
                 create: cs.entries.map((entry: any) => ({
@@ -400,24 +449,35 @@ export async function updateAiResults({
               },
             },
           })),
-        },
-        aiOptimizations: {
-          deleteMany: {},
-          create: cleanJson.aiSuggestions.map((ai: any) => ({
-            suggestion: ai.suggestion,
-          })),
-        },
-      },
+      };
+    }
+
+    if (Array.isArray(cleanJson.aiSuggestions)) {
+      dataToUpdate.aiOptimizations = {
+        deleteMany: {},
+        create: cleanJson.aiSuggestions.map((ai: any) => ({
+          suggestion: ai.suggestion,
+        })),
+      };
+    }
+
+    const update = await prisma.resume.update({
+      where: { id },
+      data: dataToUpdate,
     });
+
     if (!update) {
       throw new Error("failed to update resume");
     }
+
     return { success: true };
   } catch (error: any) {
-    console.error("soemthing went wrong");
-    throw new Error("internal server error", error.message);
+    console.error("Update error:", error);
+    throw new Error("internal server error");
   }
 }
+
+
 
 export async function updateViewCount(url: string) {
   try {

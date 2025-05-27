@@ -29,10 +29,10 @@ export function TemplateBrowser({
     category === "all" ? templates : templates.filter((template) => template.categories.includes(category))
 
   const content = (
-    <div className=" space-y-6">
-      <Tabs defaultValue="all" value={category} onValueChange={setCategory}>
-     <div className="flex  justify-between">
-         <TabsList className="mb-4 ">
+    <div className=" space-y-6 w-screen sm:w-full">
+      <Tabs defaultValue="all" value={category} onValueChange={setCategory} className="w-full">
+     <div className=" flex flex-wrap  w-full justify-between">
+         <TabsList className="mb-4 flex flex-wrap">
           <TabsTrigger value="all">All Templates</TabsTrigger>
           <TabsTrigger value="professional">Professional</TabsTrigger>
           <TabsTrigger value="modern">Modern</TabsTrigger>
@@ -42,7 +42,7 @@ export function TemplateBrowser({
           <TabsTrigger value="academic">Academic</TabsTrigger>     
         </TabsList>
        {isDialog && (
-        <div className="flex justify-end">
+        <div className="flex justify-end sm:my-0  my-10">
           <Button onClick={onClose} variant="outline" className="mr-2">
             Cancel
           </Button>
@@ -54,11 +54,11 @@ export function TemplateBrowser({
       )}
      </div>
         <TabsContent value={category} className="mt-0">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="sm:grid gap-4 grid-cols-1 items-center justify-center flex flex-col lg:grid-cols-4 ">
             {filteredTemplates.map((template) => (
               <Card
                 key={template.id}
-                className={`overflow-hidden border-0 shadow-sm hover:shadow-md transition-all cursor-pointer ${
+                className={`overflow-hidden  border-0 shadow-sm hover:shadow-md transition-all cursor-pointer ${
                   selectedTemplate === template.id ? "ring-2 ring-primary" : ""
                 }`}
                 onClick={() => onSelectTemplate(template.id)}

@@ -65,8 +65,8 @@ const page = () => {
   const Template = templateMap[resumeData.template] || ModernTemplate;
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="h-full bg-white  max-w-[800px] m-8" id="resume">
+    <div className="w-full h-full flex items-center justify-center ">
+      <div className="h-full bg-white  max-w-[800px] p-8" id="resume">
         <Template
           personal={personal}
           projects={projects}

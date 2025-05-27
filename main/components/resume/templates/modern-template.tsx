@@ -18,7 +18,7 @@ export function ModernTemplate({
     });
   };
   return (
-    <div className="font-sans text-zinc-800 max-w-[800px] print-wrapper min-h-[1123px] p-8">
+    <div className="font-sans text-zinc-800 max-w-[800px] print-wrapper min-h-[1123px] ">
       <header className="mb-6">
         <h1 className="text-3xl font-bold mb-1">{personal.fullName}</h1>
         <h2 className="text-xl text-zinc-600 mb-3">{personal.jobTitle}</h2>
@@ -121,7 +121,7 @@ export function ModernTemplate({
                     </div>
                     <div className="flex justify-between items-baseline mb-1">
                       <h5 className="text-sm font-medium text-zinc-600">
-                        {experience.company}
+                        {experience.position}
                       </h5>
                       {experience.location && (
                         <span className="text-sm text-zinc-600">

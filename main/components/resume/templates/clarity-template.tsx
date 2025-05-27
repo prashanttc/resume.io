@@ -18,7 +18,7 @@ export function SidebarTemplate({
   };
 
   return (
-    <div className="  bg-white print-wrapper border border-gray-300 flex text-gray-900 font-sans shadow-md">
+    <div className="font-sans text-zinc-800 max-w-[800px] print-wrapper min-h-[1123px]">
       {/* Left Sidebar */}
       <aside className="w-[250px] bg-gray-100 p-6 flex flex-col items-center space-y-4">
         <h1 className="text-3xl font-bold text-center">{personal.fullName}</h1>
