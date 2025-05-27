@@ -63,6 +63,7 @@ export type Experiences = {
 export type Projects = {
   title: string;
   role?: string;
+  link?:string;
   startDate: string;
   endDate?: string;
   current: boolean;

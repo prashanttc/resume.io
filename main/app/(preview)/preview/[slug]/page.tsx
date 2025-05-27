@@ -50,6 +50,7 @@ const page = () => {
   const projects = resumeData.projects.map((project) => ({
     ...project,
     role: project.role ?? undefined,
+    link:project.link??undefined,
     startDate: project.startDate.toISOString(),
     endDate: project.endDate ? project.endDate.toISOString() : undefined,
   }));
@@ -66,7 +67,7 @@ const page = () => {
 
   return (
     <div className="w-full h-full flex items-center justify-center ">
-      <div className="h-full bg-white  max-w-[800px] p-8" id="resume">
+      <div className="h-full bg-white  max-w-[800px] p-5 md:p-8" id="resume">
         <Template
           personal={personal}
           projects={projects}

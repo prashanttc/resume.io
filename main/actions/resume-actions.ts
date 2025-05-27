@@ -158,6 +158,7 @@ export async function saveResume(resume: ResumeData, resumeId: string) {
               ? new Date(project.endDate)
               : null,
             current: project.current,
+            link:project.link,
             description: project.description,
           })),
         },

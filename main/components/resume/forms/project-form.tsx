@@ -1,21 +1,31 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Card, CardContent } from "@/components/ui/card"
-import { Plus, Trash2, Check } from "lucide-react"
+import { useState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent } from "@/components/ui/card";
+import { Plus, Trash2, Check } from "lucide-react";
 
 const projectSchema = z.object({
-  role: z.string().min(2, {
-    message: "Job title must be at least 2 characters.",
-  }).optional(),
+  role: z
+    .string()
+    .min(2, {
+      message: "Job title must be at least 2 characters.",
+    })
+    .optional(),
   title: z.string().min(2, {
     message: "Company name must be at least 2 characters.",
   }),
@@ -23,20 +33,24 @@ const projectSchema = z.object({
     message: "Start date is required.",
   }),
   endDate: z.string().optional(),
+  link: z.string().optional(),
   current: z.boolean().optional(),
   description: z.string().min(10, {
     message: "Description must be at least 10 characters.",
   }),
-})
+});
 
-export type ProjectFormValues = z.infer<typeof projectSchema>
+export type ProjectFormValues = z.infer<typeof projectSchema>;
 
 interface ProjectFormProps {
-  defaultValues?: ProjectFormValues[]
-  onSubmit: (values: ProjectFormValues[]) => void
+  defaultValues?: ProjectFormValues[];
+  onSubmit: (values: ProjectFormValues[]) => void;
 }
 
-export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) {
+export function ProjectForm({
+  defaultValues = [],
+  onSubmit,
+}: ProjectFormProps) {
   const [projects, setProjects] = useState<ProjectFormValues[]>(
     defaultValues.length > 0
       ? defaultValues
@@ -46,6 +60,7 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
             title: "social media app.",
             startDate: "2020-01",
             endDate: "",
+            link:"",
             current: true,
             description:
               "Led development of cloud-based applications using React, Node.js, and AWS. Managed a team of 5 developers and implemented CI/CD pipelines that reduced deployment time by 40%.",
@@ -56,14 +71,14 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
             startDate: "2017-03",
             endDate: "2019-12",
             current: false,
+            link:"",
             description:
               "Developed and maintained web applications using JavaScript, React, and Node.js. Collaborated with UX designers to implement responsive designs and improve user experience.",
           },
-        ],
-  )
- console.log("fdeee",defaultValues)
-  const [editIndex, setEditIndex] = useState<number | null>(null)
-  const [isFormDirty, setIsFormDirty] = useState(false)
+        ]
+  );
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [isFormDirty, setIsFormDirty] = useState(false);
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
@@ -72,28 +87,29 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
       title: "",
       startDate: "",
       endDate: "",
+      link:'',
       current: false,
       description: "",
     },
-  })
+  });
 
   // Watch for form changes to track if it's dirty
   useEffect(() => {
     const subscription = form.watch(() => {
-      setIsFormDirty(form.formState.isDirty)
-    })
-    return () => subscription.unsubscribe()
-  }, [form, form.watch, form.formState.isDirty])
+      setIsFormDirty(form.formState.isDirty);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, form.watch, form.formState.isDirty]);
 
   function handleAddOrUpdate(values: ProjectFormValues) {
     if (editIndex !== null) {
       // Update existing experience
-      const updatedProjects = [...projects]
-      updatedProjects[editIndex] = values
-      setProjects(updatedProjects)
-      setEditIndex(null)
+      const updatedProjects = [...projects];
+      updatedProjects[editIndex] = values;
+      setProjects(updatedProjects);
+      setEditIndex(null);
     } else {
-      setProjects([...projects, values])
+      setProjects([...projects, values]);
     }
 
     form.reset({
@@ -103,58 +119,70 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
       endDate: "",
       current: false,
       description: "",
-    })
+      link:''
+    });
 
-    setIsFormDirty(false)
+    setIsFormDirty(false);
   }
 
   function editProjects(index: number) {
-    const project = projects[index]
-    form.reset(project)
-    setEditIndex(index)
-    setIsFormDirty(false)
+    const project = projects[index];
+    form.reset(project);
+    setEditIndex(index);
+    setIsFormDirty(false);
   }
 
   function deleteProject(index: number) {
-    const updatedProjects = projects.filter((_, i) => i !== index)
-    setProjects(updatedProjects)
+    const updatedProjects = projects.filter((_, i) => i !== index);
+    setProjects(updatedProjects);
     if (editIndex === index) {
-      setEditIndex(null)
+      setEditIndex(null);
       form.reset({
         role: "",
         title: "",
         startDate: "",
+        link:'',
         endDate: "",
         current: false,
         description: "",
-      })
-      setIsFormDirty(false)
+      });
+      setIsFormDirty(false);
     }
   }
 
   function handleSaveAll() {
-    onSubmit(projects)
+    onSubmit(projects);
   }
 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
         {projects.map((project, index) => (
-          <Card key={index} className="border-0 bg-secondary/50 shadow-sm hover:bg-secondary/80 transition-all">
+          <Card
+            key={index}
+            className="border-0 bg-secondary/50 shadow-sm hover:bg-secondary/80 transition-all"
+          >
             <CardContent className="p-4">
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <h4 className="font-medium">{project.role}</h4>
                   <p className="text-sm text-muted-foreground">
-                    {project.title} 
+                    {project.title}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {new Date(project.startDate).toLocaleDateString("en-US", { year: "numeric", month: "short" })} -
+                    {new Date(project.startDate).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                    })}{" "}
+                    -
                     {project.current
                       ? " Present"
                       : project.endDate
-                        ? ` ${new Date(project.endDate).toLocaleDateString("en-US", { year: "numeric", month: "short" })}`
-                        : ""}
+                      ? ` ${new Date(project.endDate).toLocaleDateString(
+                          "en-US",
+                          { year: "numeric", month: "short" }
+                        )}`
+                      : ""}
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -198,10 +226,14 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleAddOrUpdate)} className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-medium">{editIndex !== null ? "Edit Project" : "Add Project"}</h3>
-         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-           
+        <form
+          onSubmit={form.handleSubmit(handleAddOrUpdate)}
+          className="space-y-4 border-t pt-4"
+        >
+          <h3 className="text-lg font-medium">
+            {editIndex !== null ? "Edit Project" : "Add Project"}
+          </h3>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField
               control={form.control}
               name="title"
@@ -215,7 +247,7 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="role"
               render={({ field }) => (
@@ -227,7 +259,7 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
                   <FormMessage />
                 </FormItem>
               )}
-            /> 
+            />
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField
@@ -244,7 +276,7 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
               )}
             />
             <div className="space-y-4">
-               {!form.watch("current") && (
+              {!form.watch("current") && (
                 <FormField
                   control={form.control}
                   name="endDate"
@@ -268,9 +300,9 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={(checked) => {
-                          field.onChange(checked)
+                          field.onChange(checked);
                           if (checked) {
-                            form.setValue("endDate", "")
+                            form.setValue("endDate", "");
                           }
                         }}
                       />
@@ -281,7 +313,6 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
                   </FormItem>
                 )}
               />
-             
             </div>
           </div>
           <FormField
@@ -301,13 +332,29 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="link"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Link (optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="live link"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="flex justify-end gap-2">
             {editIndex !== null && (
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => {
-                  setEditIndex(null)
+                  setEditIndex(null);
                   form.reset({
                     role: "",
                     title: "",
@@ -315,15 +362,19 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
                     endDate: "",
                     current: false,
                     description: "",
-                  })
-                  setIsFormDirty(false)
+                  });
+                  setIsFormDirty(false);
                 }}
                 className="hover-lift"
               >
                 Cancel
               </Button>
             )}
-            <Button type="submit" className="hover-lift" disabled={!isFormDirty}>
+            <Button
+              type="submit"
+              className="hover-lift"
+              disabled={!isFormDirty}
+            >
               <Plus className="mr-2 h-4 w-4" />
               {editIndex !== null ? "Update Project" : "Add Project"}
             </Button>
@@ -338,5 +389,5 @@ export function ProjectForm({ defaultValues = [], onSubmit }: ProjectFormProps) 
         </Button>
       </div>
     </div>
-  )
+  );
 }

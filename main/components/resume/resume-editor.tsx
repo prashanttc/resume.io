@@ -117,7 +117,9 @@ export function ResumeEditor({
       return;
     }
   }, [isError, error]);
-  console.log("eee", data.sectionOrder);
+
+ console.log("sss",data.projects)
+
   // Handle section completion and auto-navigation
   const handleSectionComplete = (section: SectionType, data: any) => {
     setResumeData((prev) => {

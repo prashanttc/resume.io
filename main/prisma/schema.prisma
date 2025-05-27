@@ -82,6 +82,7 @@ model Projects {
   startDate   DateTime
   current     Boolean  @default(false)
   endDate     DateTime?
+  link        String?
   description String
 
   resume      Resume   @relation(fields: [resumeId], references: [id],onDelete: Cascade)
