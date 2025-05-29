@@ -3,14 +3,14 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 interface MobileMenuProps {
   isOpen: boolean
   onClose: () => void
-  onAuthClick: (mode: "login" | "signup") => void
 }
 
-export default function MobileMenu({ isOpen, onClose, onAuthClick }: MobileMenuProps) {
+export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const menuItems = [
     { label: "Features", href: "#features" },
     { label: "Templates", href: "#templates" },
@@ -62,26 +62,14 @@ export default function MobileMenu({ isOpen, onClose, onAuthClick }: MobileMenuP
                 <Button
                   variant="outline"
                   className="w-full border-zinc-700"
-                  onClick={() => {
-                    onAuthClick("login")
-                    onClose()
-                  }}
+
                 >
+                  <Link href={'/login'}>
                   Sign In
+                  </Link>
                 </Button>
               </motion.div>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-                <Button
-                  className="w-full bg-white text-zinc-900 hover:bg-zinc-200"
-                  onClick={() => {
-                    onAuthClick("signup")
-                    onClose()
-                  }}
-                >
-                  Get Started
-                </Button>
-              </motion.div>
             </div>
           </motion.div>
         </motion.div>

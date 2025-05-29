@@ -72,7 +72,7 @@ function TemplateCard({ template, progress, direction, index }: TemplateCardProp
     >
       <div className="w-[280px] h-[400px] rounded-lg overflow-hidden border border-zinc-800 bg-zinc-900">
         <Image
-          src={`/placeholder.svg?height=400&width=280&text=Template%20${template.id}`}
+          src={`/fake.png`}
           alt={template.name}
           width={280}
           height={400}

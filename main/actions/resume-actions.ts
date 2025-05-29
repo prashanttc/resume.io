@@ -345,8 +345,6 @@ export async function updateAiResults({
       throw new Error("resume id is needed");
     }
 
-    console.log("cleanJson", cleanJson);
-
     // Fetch existing sub-entries from DB
     const existingResume = await prisma.resume.findUnique({
       where: { id },

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ChevronRight, FileText, Check} from "lucide-react";
+import { ChevronRight, FileText, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedStats from "@/components/landing page/animated-stats";
 import FeatureCard from "@/components/landing page/feature-card";
@@ -13,17 +13,20 @@ import PlanSelector from "@/components/landing page/plan-selector";
 import TestimonialSection from "@/components/landing page/testimonial-section";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import CtaSection from "@/components/landing page/cta-section";
+import MobileMenu from "@/components/landing page/mobile-menu";
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const { status } = useSession();
   return (
-    <div className="relative min-h-screen bg-zinc-950 text-white overflow-hidden ">
+    <div className="relative min-h-screen bg-zinc-950 text-white flex flex-col  md:items-center">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.05),transparent_70%)] pointer-events-none"></div>
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-zinc-950/80 border-b border-zinc-800">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-zinc-950/80 border-b border-zinc-800 flex  items-center justify-center">
         <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2">
             <FileText className="h-6 w-6 text-white" />
@@ -59,16 +62,10 @@ export default function LandingPage() {
               variant="ghost"
               className="text-zinc-300 hover:text-white hover:bg-zinc-800"
             >
-              <Link href={'/login'}>
-              Sign In
-              </Link>
+              <Link href={"/login"}>Sign In</Link>
             </Button>
-            <Button
-              className="bg-white text-zinc-900 hover:bg-zinc-200"
-            >
-              <Link href={'/signup'}>
-              Get Started
-              </Link>
+            <Button className="bg-white text-zinc-900 hover:bg-zinc-200">
+              <Link href={"/signup"}>Get Started</Link>
             </Button>
           </nav>
 
@@ -98,11 +95,10 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* <MobileMenu
+      <MobileMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-      /> */}
-
+      />
 
       <main className="pt-16">
         {/* Hero Section */}
@@ -186,9 +182,17 @@ export default function LandingPage() {
                     size="lg"
                     className="bg-gradient-to-r from-white to-zinc-200 text-zinc-900 hover:from-zinc-200 hover:to-zinc-300 text-base font-medium"
                   >
-                    <Link href={"/dashboard"} className="flex gap-3  items-center justify-center">
-                  Create Your Resume <ChevronRight className="ml-2 h-4 w-4" />
-                   </Link>
+                    {status === "authenticated" ? (
+                      <Link href={"/dashboard"}>Create your resume</Link>
+                    ) : (
+                      <Link
+                        href={"/login"}
+                        className="flex gap-3  items-center justify-center"
+                      >
+                        Create Your Resume{" "}
+                        <ChevronRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    )}
                   </Button>
                 </motion.div>
 
@@ -231,9 +235,9 @@ export default function LandingPage() {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.03),transparent_70%)]"></div>
           <div className="container px-4 md:px-6 relative">
             <div className="text-center mb-16">
-               <AnimatedShinyText className="inline-flex items-center justify-center px-4 mb-2 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400 border-2 rounded-2xl">
-          <span>✨ features</span>
-      </AnimatedShinyText>
+              <AnimatedShinyText className="inline-flex items-center justify-center px-4 mb-2 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400 border-2 rounded-2xl">
+                <span>✨ features</span>
+              </AnimatedShinyText>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight max-w-3xl mx-auto ">
                 Everything you need to build a standout resume
               </h1>
@@ -288,7 +292,6 @@ export default function LandingPage() {
                 delay={0.6}
               />
             </div>
-
           </div>
         </section>
 
@@ -296,13 +299,11 @@ export default function LandingPage() {
         <section id="templates" className="py-20 md:py-32 relative">
           <div className="container px-4 md:px-6">
             <div className="text-center mb-16">
-        <AnimatedShinyText className="inline-flex items-center justify-center px-4 mb-2 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400 border-2 rounded-2xl">
-          <span>✨ Templates</span>
-      </AnimatedShinyText>
-              <h1
-                className="text-3xl md:text-4xl font-bold tracking-tight"
-              >
-              Professional templates for every career
+              <AnimatedShinyText className="inline-flex items-center justify-center px-4 mb-2 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400 border-2 rounded-2xl">
+                <span>✨ Templates</span>
+              </AnimatedShinyText>
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+                Professional templates for every career
               </h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -339,9 +340,9 @@ export default function LandingPage() {
               >
                 Pricing
               </motion.div>
-              <h1
-                className="text-3xl md:text-4xl font-bold tracking-tight"
-              >Simple, transparent pricing</h1>
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+                Simple, transparent pricing
+              </h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -357,63 +358,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-20 md:py-32 relative">
-          <div className="container px-4 md:px-6">
-            <div className="max-w-4xl mx-auto bg-zinc-900 rounded-3xl p-8 md:p-12 border border-zinc-800 relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.1),transparent_70%)]"></div>
-
-              <div className="relative grid gap-6 md:grid-cols-2 items-center">
-                <div className="space-y-6">
-                  <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                    className="text-3xl font-bold tracking-tight"
-                  >
-                    Ready to build your professional resume?
-                  </motion.h2>
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="text-zinc-400"
-                  >
-                    Join thousands of professionals who have elevated their job
-                    search with ResuMate.
-                  </motion.p>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                  >
-                    <Button
-                      size="lg"
-                      className="bg-white text-zinc-900 hover:bg-zinc-200 w-full md:w-auto"
-                    >
-                      <Link href={'login'}>
-                      Get Started For Frxee
-                      </Link>
-                    </Button>
-                  </motion.div>
-                </div>
-
-                <div className="relative h-64 md:h-auto">
-                  <Image
-                    src="/placeholder.svg?height=300&width=400"
-                    alt="Resume example"
-                    width={400}
-                    height={300}
-                    className="rounded-lg object-cover h-full w-full"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+<CtaSection/>
       </main>
 
       <footer className="border-t border-zinc-800 py-12 bg-zinc-950">

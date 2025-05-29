@@ -1,8 +1,8 @@
 "use client"
-import NewResume from "../NewResume";
-import { SidebarTrigger } from "../ui/sidebar";
-import { ModeToggle } from "../mode-toggle";
-import { AnimatedGradientText } from "../magicui/animated-gradient-text";
+import NewResume from "./NewResume";
+import { SidebarTrigger } from "./ui/sidebar";
+import { ModeToggle } from "./mode-toggle";
+import { AnimatedGradientText } from "./magicui/animated-gradient-text";
 import { cn } from "@/lib/utils";
 import { isPremium } from "@/query/user/query";
 

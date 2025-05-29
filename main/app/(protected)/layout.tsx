@@ -1,6 +1,6 @@
 import type React from "react";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { DashboardHeader } from "@/components/header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import SessionProvider from "@/providers/SessionProvider";
 import ProtectedLayout from "@/providers/ProtectedRoute";

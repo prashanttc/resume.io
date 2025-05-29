@@ -60,3 +60,27 @@ export const downloadPdf = async ({
       day: "numeric",
     })
   }
+
+  // helper.ts
+export async function callResumeAI(prompt: string, type: "summary" | "job-desc" | "project") {
+  try {
+    const res = await fetch("/api/ai-generate-res", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt, type }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || "Failed to fetch AI response");
+    }
+
+    const data = await res.json();
+    return data.res;
+  } catch (err: any) {
+    console.error("callResumeAI error:", err.message);
+    throw err;
+  }
+}

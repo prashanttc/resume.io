@@ -1,12 +1,25 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Sparkles } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { callResumeAI } from "@/lib/utils";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
@@ -21,9 +34,12 @@ const formSchema = z.object({
   phone: z.string().min(5, {
     message: "Phone number must be at least 5 characters.",
   }),
-  location: z.string().min(2, {
-    message: "Location must be at least 2 characters.",
-  }).optional(),
+  location: z
+    .string()
+    .min(2, {
+      message: "Location must be at least 2 characters.",
+    })
+    .optional(),
   website: z
     .string()
     .url({
@@ -41,16 +57,19 @@ const formSchema = z.object({
   summary: z.string().min(10, {
     message: "Summary must be at least 10 characters.",
   }),
-})
+});
 
-export type PersonalInfoFormValues = z.infer<typeof formSchema>
+export type PersonalInfoFormValues = z.infer<typeof formSchema>;
 
 interface PersonalInfoFormProps {
-  defaultValues: Partial<PersonalInfoFormValues>
-  onSubmit: (values: PersonalInfoFormValues) => void
+  defaultValues: Partial<PersonalInfoFormValues>;
+  onSubmit: (values: PersonalInfoFormValues) => void;
 }
 
-export function PersonalInfoForm({ defaultValues, onSubmit }: PersonalInfoFormProps) {
+export function PersonalInfoForm({
+  defaultValues,
+  onSubmit,
+}: PersonalInfoFormProps) {
   const form = useForm<PersonalInfoFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues || {
@@ -64,8 +83,25 @@ export function PersonalInfoForm({ defaultValues, onSubmit }: PersonalInfoFormPr
       summary:
         "Experienced software engineer with a passion for building scalable web applications and solving complex problems.",
     },
-  })
+  });
 
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handlesummary = async () => {
+    try {
+      setLoading(true);
+      const aisummary = await callResumeAI(aiPrompt, "summary");
+      form.setValue("summary", aisummary);
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+      toast.success('generated successfully')
+      setIsOpen(false)
+    }
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -158,7 +194,10 @@ export function PersonalInfoForm({ defaultValues, onSubmit }: PersonalInfoFormPr
               <FormItem>
                 <FormLabel>LinkedIn</FormLabel>
                 <FormControl>
-                  <Input placeholder="https://linkedin.com/in/johndoe" {...field} />
+                  <Input
+                    placeholder="https://linkedin.com/in/johndoe"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>Optional</FormDescription>
                 <FormMessage />
@@ -171,11 +210,35 @@ export function PersonalInfoForm({ defaultValues, onSubmit }: PersonalInfoFormPr
           name="summary"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Professional Summary</FormLabel>
+              <FormLabel className="flex justify-between items-center">
+                Professional Summary
+                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                  <DialogTrigger className=" p-1 border border-white rounded-xl">
+                    <Sparkles className="size-5" />
+                  </DialogTrigger>
+                  <DialogContent>
+                    <p className="text-sm font-medium mb-2">
+                      Enter prompt for summary
+                    </p>
+                    <Textarea
+                      placeholder="E.g., I have 2 years experience in frontend with React and Node.js"
+                      className="min-h-[100px] resize-none"
+                      value={aiPrompt}
+                      onChange={(e) => setAiPrompt(e.target.value)}
+                    />
+                    <Button
+                      disabled={loading || !aiPrompt}
+                      onClick={handlesummary}
+                    >
+                      {loading ? "Generating..." : "Generate"}
+                    </Button>
+                  </DialogContent>
+                </Dialog>
+              </FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Write a brief summary of your professional background and key strengths..."
-                  className="min-h-[100px] resize-none"
+                  className="min-h-[200px] resize-none"
                   {...field}
                 />
               </FormControl>
@@ -188,5 +251,5 @@ export function PersonalInfoForm({ defaultValues, onSubmit }: PersonalInfoFormPr
         </Button>
       </form>
     </Form>
-  )
+  );
 }

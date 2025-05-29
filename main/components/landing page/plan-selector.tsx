@@ -56,32 +56,8 @@ export default function PlanSelector() {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-center">
-        <div className="inline-flex items-center rounded-full border border-zinc-800 p-1 bg-zinc-900">
-          <button
-            onClick={() => setBillingPeriod("monthly")}
-            className={`px-4 py-2 text-sm rounded-full transition-colors ${
-              billingPeriod === "monthly"
-                ? "bg-white text-zinc-900"
-                : "text-zinc-400 hover:text-white"
-            }`}
-          >
-            Monthly
-          </button>
-          <button
-            onClick={() => setBillingPeriod("yearly")}
-            className={`px-4 py-2 text-sm rounded-full transition-colors ${
-              billingPeriod === "yearly"
-                ? "bg-white text-zinc-900"
-                : "text-zinc-400 hover:text-white"
-            }`}
-          >
-            Yearly <span className="text-xs opacity-80">Save 20%</span>
-          </button>
-        </div>
-      </div>
 
-      <div className="grid md:grid-cols-2 px-32  gap-8">
+      <div className="grid md:grid-cols-2 md:px-32  gap-8">
         <AnimatePresence mode="wait">
           {plans.map((plan) => (
             <motion.div

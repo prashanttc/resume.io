@@ -139,7 +139,7 @@ Instructions:
 } catch (error) {
       console.error("No JSON found in the response.");
     }
-   
+   console.log("raw",raw)
     return NextResponse.json({ cleanJson }, { status: 200 });
   } catch (err) {
     console.error("Server error:", err);
