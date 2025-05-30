@@ -17,7 +17,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Trash2, Check } from "lucide-react";
+import { Plus, Trash2, Check, Sparkles } from "lucide-react";
+import { callResumeAI } from "@/lib/utils";
+import { toast } from "sonner";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 
 const projectSchema = z.object({
   role: z
@@ -79,6 +82,24 @@ export function ProjectForm({
   );
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [isFormDirty, setIsFormDirty] = useState(false);
+    const [aiPrompt, setAiPrompt] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+  
+    const haandleDescription = async () => {
+      try {
+        setLoading(true);
+        const aidescription = await callResumeAI(aiPrompt, "job-desc");
+        form.setValue("description", aidescription);
+      } catch (err: any) {
+        toast.error(err.message || "Something went wrong");
+      } finally {
+        setLoading(false);
+        toast.success("generated successfully");
+        setIsOpen(false);
+      }
+    };
+  
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
@@ -320,7 +341,29 @@ export function ProjectForm({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+              <FormLabel className="flex items-center justify-between">Description
+                  <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                  <DialogTrigger className=" p-1 border border-white rounded-xl">
+                    <Sparkles className="size-5" />
+                  </DialogTrigger>
+                  <DialogContent>
+                    <p className="text-sm font-medium mb-2">
+                      Enter prompt for description
+                    </p>
+                    <Textarea
+                      placeholder="worked for xyz company as xyz intern"
+                      className="min-h-[100px] resize-none"
+                      value={aiPrompt}
+                      onChange={(e) => setAiPrompt(e.target.value)}
+                    />
+                    <Button
+                      disabled={loading || !aiPrompt}
+                      onClick={haandleDescription}
+                    >
+                      {loading ? "Generating..." : "Generate"}
+                    </Button>
+                  </DialogContent>
+                </Dialog></FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Describe your responsibilities and achievements..."

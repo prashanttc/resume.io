@@ -415,7 +415,7 @@ export function ResumeEditor({
                 </div>
               </div>
 
-              <div className="lg:col-span-7">
+              <div className="lg:col-span-7 ">
                 <div className="sticky top-20">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-base font-medium">Preview</h3>
@@ -443,22 +443,10 @@ export function ResumeEditor({
                           </div>
                         )}
                       </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="hover-lift"
-                      >
-                        <Link
-                          href={`/optimise/${id}`}
-                          className="flex gap-2 items-center justify-center"
-                        >
-                          <Sparkles className="mr-2 h-4 w-4" />
-                          Optimize with AI
-                        </Link>
-                      </Button>
+                   
                     </div>
                   </div>
-                  <Card className="border-0 shadow-sm p-0">
+                  <Card className="border-0 shadow-sm p-0 ">
                     <ResumePreview
                       template={resumeData.template || selectedTemplate}
                       resumeData={resumeData}

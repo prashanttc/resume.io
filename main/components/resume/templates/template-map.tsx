@@ -3,8 +3,12 @@ import { ModernTemplate } from "@/components/resume/templates/modern-template";
 import { MinimalistTemplate } from "@/components/resume/templates/minimalist-template";
 import { CreativeTemplate } from "@/components/resume/templates/creative-template";
 import { TemplateProps } from "@/types/resume";
-import { BoldTemplate } from "./template1";
+import { BoldTemplate } from "./boldline-template";
 import { SidebarTemplate } from "./clarity-template";
+import { ATSFriendlyTemplate } from "./ats-template";
+import { ModernBlockTemplate } from "./modernblock-template";
+import { SleekSideAccentTemplate } from "./sleekaccent-template";
+import { CompactModernTemplate } from "./compact-template";
 // import more templates...
 
 export const templateMap: Record<
@@ -14,6 +18,10 @@ export const templateMap: Record<
   modern: ModernTemplate,
   BoldLine:BoldTemplate,
   minimalist: MinimalistTemplate,
+  Executive: ATSFriendlyTemplate,
+  ModernBlock:ModernBlockTemplate,
   Clarity: SidebarTemplate,
+  CompactModern:CompactModernTemplate,
+  SleekAccent:SleekSideAccentTemplate,
   creative: CreativeTemplate,
 };

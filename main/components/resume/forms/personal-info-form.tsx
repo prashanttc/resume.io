@@ -47,6 +47,13 @@ const formSchema = z.object({
     })
     .optional()
     .or(z.literal("")),
+  github: z
+    .string()
+    .url({
+      message: "Please enter a valid URL.",
+    })
+    .optional()
+    .or(z.literal("")),
   linkedin: z
     .string()
     .url({
@@ -80,6 +87,7 @@ export function PersonalInfoForm({
       location: "San Francisco, CA",
       website: "https://johndoe.com",
       linkedin: "https://linkedin.com/in/johndoe",
+      github:"https://github/johndoe",
       summary:
         "Experienced software engineer with a passion for building scalable web applications and solving complex problems.",
     },
@@ -196,6 +204,23 @@ export function PersonalInfoForm({
                 <FormControl>
                   <Input
                     placeholder="https://linkedin.com/in/johndoe"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Optional</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="github"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Github</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="https://github.com/in/johndoe"
                     {...field}
                   />
                 </FormControl>

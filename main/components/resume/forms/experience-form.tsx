@@ -1,16 +1,26 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Card, CardContent } from "@/components/ui/card"
-import { Plus, Trash2, Check } from "lucide-react"
+import { useState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent } from "@/components/ui/card";
+import { Plus, Trash2, Check, Sparkles } from "lucide-react";
+import { callResumeAI } from "@/lib/utils";
+import { toast } from "sonner";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const experienceSchema = z.object({
   position: z.string().min(2, {
@@ -25,19 +35,25 @@ const experienceSchema = z.object({
   }),
   endDate: z.string().optional(),
   current: z.boolean().optional(),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }).optional(),
-})
+  description: z
+    .string()
+    .min(10, {
+      message: "Description must be at least 10 characters.",
+    })
+    .optional(),
+});
 
-export type ExperienceFormValues = z.infer<typeof experienceSchema>
+export type ExperienceFormValues = z.infer<typeof experienceSchema>;
 
 interface ExperienceFormProps {
-  defaultValues?: ExperienceFormValues[]
-  onSubmit: (values: ExperienceFormValues[]) => void
+  defaultValues?: ExperienceFormValues[];
+  onSubmit: (values: ExperienceFormValues[]) => void;
 }
 
-export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormProps) {
+export function ExperienceForm({
+  defaultValues = [],
+  onSubmit,
+}: ExperienceFormProps) {
   const [experiences, setExperiences] = useState<ExperienceFormValues[]>(
     defaultValues.length > 0
       ? defaultValues
@@ -62,11 +78,28 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
             description:
               "Developed and maintained web applications using JavaScript, React, and Node.js. Collaborated with UX designers to implement responsive designs and improve user experience.",
           },
-        ],
-  )
+        ]
+  );
 
-  const [editIndex, setEditIndex] = useState<number | null>(null)
-  const [isFormDirty, setIsFormDirty] = useState(false)
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [isFormDirty, setIsFormDirty] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const haandleDescription = async () => {
+    try {
+      setLoading(true);
+      const aidescription = await callResumeAI(aiPrompt, "job-desc");
+      form.setValue("description", aidescription);
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+      toast.success("generated successfully");
+      setIsOpen(false);
+    }
+  };
 
   const form = useForm<ExperienceFormValues>({
     resolver: zodResolver(experienceSchema),
@@ -79,26 +112,26 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
       current: false,
       description: "",
     },
-  })
+  });
 
   // Watch for form changes to track if it's dirty
   useEffect(() => {
     const subscription = form.watch(() => {
-      setIsFormDirty(form.formState.isDirty)
-    })
-    return () => subscription.unsubscribe()
-  }, [form, form.watch, form.formState.isDirty])
+      setIsFormDirty(form.formState.isDirty);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, form.watch, form.formState.isDirty]);
 
   function handleAddOrUpdate(values: ExperienceFormValues) {
     if (editIndex !== null) {
       // Update existing experience
-      const updatedExperiences = [...experiences]
-      updatedExperiences[editIndex] = values
-      setExperiences(updatedExperiences)
-      setEditIndex(null)
+      const updatedExperiences = [...experiences];
+      updatedExperiences[editIndex] = values;
+      setExperiences(updatedExperiences);
+      setEditIndex(null);
     } else {
       // Add new experience
-      setExperiences([...experiences, values])
+      setExperiences([...experiences, values]);
     }
 
     form.reset({
@@ -109,23 +142,23 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
       endDate: "",
       current: false,
       description: "",
-    })
+    });
 
-    setIsFormDirty(false)
+    setIsFormDirty(false);
   }
 
   function editExperience(index: number) {
-    const experience = experiences[index]
-    form.reset(experience)
-    setEditIndex(index)
-    setIsFormDirty(false)
+    const experience = experiences[index];
+    form.reset(experience);
+    setEditIndex(index);
+    setIsFormDirty(false);
   }
 
   function deleteExperience(index: number) {
-    const updatedExperiences = experiences.filter((_, i) => i !== index)
-    setExperiences(updatedExperiences)
+    const updatedExperiences = experiences.filter((_, i) => i !== index);
+    setExperiences(updatedExperiences);
     if (editIndex === index) {
-      setEditIndex(null)
+      setEditIndex(null);
       form.reset({
         position: "",
         company: "",
@@ -134,34 +167,45 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
         endDate: "",
         current: false,
         description: "",
-      })
-      setIsFormDirty(false)
+      });
+      setIsFormDirty(false);
     }
   }
 
   function handleSaveAll() {
-    onSubmit(experiences)
+    onSubmit(experiences);
   }
 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
         {experiences.map((experience, index) => (
-          <Card key={index} className="border-0 bg-secondary/50 shadow-sm hover:bg-secondary/80 transition-all">
+          <Card
+            key={index}
+            className="border-0 bg-secondary/50 shadow-sm hover:bg-secondary/80 transition-all"
+          >
             <CardContent className="p-4">
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <h4 className="font-medium">{experience.position}</h4>
                   <p className="text-sm text-muted-foreground">
-                    {experience.company} {experience.location ? `• ${experience.location}` : ""}
+                    {experience.company}{" "}
+                    {experience.location ? `• ${experience.location}` : ""}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {new Date(experience.startDate).toLocaleDateString("en-US", { year: "numeric", month: "short" })} -
+                    {new Date(experience.startDate).toLocaleDateString(
+                      "en-US",
+                      { year: "numeric", month: "short" }
+                    )}{" "}
+                    -
                     {experience.current
                       ? " Present"
                       : experience.endDate
-                        ? ` ${new Date(experience.endDate).toLocaleDateString("en-US", { year: "numeric", month: "short" })}`
-                        : ""}
+                      ? ` ${new Date(experience.endDate).toLocaleDateString(
+                          "en-US",
+                          { year: "numeric", month: "short" }
+                        )}`
+                      : ""}
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -205,8 +249,13 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleAddOrUpdate)} className="space-y-4 border-t pt-4">
-          <h3 className="text-lg font-medium">{editIndex !== null ? "Edit Experience" : "Add Experience"}</h3>
+        <form
+          onSubmit={form.handleSubmit(handleAddOrUpdate)}
+          className="space-y-4 border-t pt-4"
+        >
+          <h3 className="text-lg font-medium">
+            {editIndex !== null ? "Edit Experience" : "Add Experience"}
+          </h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField
               control={form.control}
@@ -263,7 +312,7 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
               )}
             />
             <div className="space-y-4">
-               {!form.watch("current") && (
+              {!form.watch("current") && (
                 <FormField
                   control={form.control}
                   name="endDate"
@@ -287,9 +336,9 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={(checked) => {
-                          field.onChange(checked)
+                          field.onChange(checked);
                           if (checked) {
-                            form.setValue("endDate", "")
+                            form.setValue("endDate", "");
                           }
                         }}
                       />
@@ -300,7 +349,6 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
                   </FormItem>
                 )}
               />
-             
             </div>
           </div>
           <FormField
@@ -308,7 +356,29 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <FormLabel className="flex items-center justify-between">Description
+                  <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                  <DialogTrigger className=" p-1 border border-white rounded-xl">
+                    <Sparkles className="size-5" />
+                  </DialogTrigger>
+                  <DialogContent>
+                    <p className="text-sm font-medium mb-2">
+                      Enter prompt for description
+                    </p>
+                    <Textarea
+                      placeholder="worked for xyz company as xyz intern"
+                      className="min-h-[100px] resize-none"
+                      value={aiPrompt}
+                      onChange={(e) => setAiPrompt(e.target.value)}
+                    />
+                    <Button
+                      disabled={loading || !aiPrompt}
+                      onClick={haandleDescription}
+                    >
+                      {loading ? "Generating..." : "Generate"}
+                    </Button>
+                  </DialogContent>
+                </Dialog></FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Describe your responsibilities and achievements..."
@@ -326,7 +396,7 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
                 type="button"
                 variant="outline"
                 onClick={() => {
-                  setEditIndex(null)
+                  setEditIndex(null);
                   form.reset({
                     position: "",
                     company: "",
@@ -335,15 +405,19 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
                     endDate: "",
                     current: false,
                     description: "",
-                  })
-                  setIsFormDirty(false)
+                  });
+                  setIsFormDirty(false);
                 }}
                 className="hover-lift"
               >
                 Cancel
               </Button>
             )}
-            <Button type="submit" className="hover-lift" disabled={!isFormDirty}>
+            <Button
+              type="submit"
+              className="hover-lift"
+              disabled={!isFormDirty}
+            >
               <Plus className="mr-2 h-4 w-4" />
               {editIndex !== null ? "Update Experience" : "Add Experience"}
             </Button>
@@ -358,5 +432,5 @@ export function ExperienceForm({ defaultValues = [], onSubmit }: ExperienceFormP
         </Button>
       </div>
     </div>
-  )
+  );
 }

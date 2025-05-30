@@ -24,15 +24,18 @@ export async function POST(req: Request) {
         userPrompt = `Write a professional resume summary based on the following details:\n\n${prompt}`;
         break;
       case "job-desc":
-        userPrompt = `Write a professional resume job description in bullet points. Job description:\n\n${prompt}`;
+        userPrompt = `Write a short and concise professional resume job description in bullet points (dont add bulletins). Job description:\n\n${prompt}`;
         break;
       case "project":
-        userPrompt = `Write a professional resume project description in bullet points. Project description:\n\n${prompt}`;
+        userPrompt = `Write a short and concise professional resume project description first small para then in bullet points  (dont add bulletins).. Project description:\n\n${prompt}`;
         break;
       default:
-        return NextResponse.json({ error: "Invalid type provided" }, { status: 400 });
+        return NextResponse.json(
+          { error: "Invalid type provided" },
+          { status: 400 }
+        );
     }
-     const systemPrompt = `you are proffesional ai resume ${type} writer. give only main content dont add your thinking process and extra information . just give plain ${type} `
+    const systemPrompt = `You are a professional AI resume ${type} writer. Respond with only the ${type} content. Do not include any explanations, thoughts, or additional information. Output should be a plain, concise ${type} only. ${type} should be ats friendly`;
 
     const response = await openai.chat.completions.create({
       model: "meta-llama/Meta-Llama-3.1-8B-Instruct",

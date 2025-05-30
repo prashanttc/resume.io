@@ -104,7 +104,7 @@ export function MinimalistTemplate({
                         </span>
                       )}
                     </div>
-                    <p className="text-xs">{experience.description}</p>
+                    <p className="text-sm sm:text-sm text-gray-800 leading-relaxed mt-1 whitespace-pre-line">{experience.description}</p>
                   </div>
                 ))}
               </section>
@@ -135,7 +135,7 @@ export function MinimalistTemplate({
                         {project.role}
                       </h5>
                     </div>
-                    <p className="text-xs">{project.description}</p>
+                    <p className="text-sm sm:text-sm text-gray-800 leading-relaxed mt-1 whitespace-pre-line">{project.description}</p>
                   </div>
                 ))}
               </section>
