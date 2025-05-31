@@ -256,7 +256,7 @@ export function ResumeEditor({
         <div className="">
           <div className="lg:col-span-3">
             <div className="sticky top-20">
-              <div className="space-y-1 md:flex">
+              <div className="space-y-1 md:flex ">
                 {sectionOrder.map((section, index) => (
                   <button
                     key={section}

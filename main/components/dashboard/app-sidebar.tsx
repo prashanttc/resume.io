@@ -168,8 +168,8 @@ export function AppSidebar() {
         <SidebarSeparator />
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="flex mb-5 mt-5">
-              <Avatar className="h-8 w-8   ring-2 ring-background">
+            <SidebarMenuButton className="flex mb-5 mt-5 items-center justify-start px-0 ">
+              <Avatar className="h-6 w-6   ring-2 ring-background">
                 <AvatarImage
                   src={user?.image || "/placeholder.svg?height=32&width=32"}
                   alt="User"

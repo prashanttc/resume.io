@@ -17,10 +17,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Trash2, Check, Sparkles } from "lucide-react";
+import { Plus, Trash2, Check, Sparkles, Grip } from "lucide-react";
 import { callResumeAI } from "@/lib/utils";
 import { toast } from "sonner";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 
 const projectSchema = z.object({
   role: z
@@ -174,76 +175,115 @@ export function ProjectForm({
   function handleSaveAll() {
     onSubmit(projects);
   }
+  const handleDragEnd = (result:any) => {
+    if (!result.destination) return;
+    const reordered = Array.from(projects);
+    const [movedItem] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, movedItem);
+    setProjects(reordered);}
 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        {projects.map((project, index) => (
-          <Card
-            key={index}
-            className="border-0 bg-secondary/50 shadow-sm hover:bg-secondary/80 transition-all"
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <Droppable droppableId="projects">
+        {(provided:any) => (
+          <div
+            className="space-y-4"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
           >
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h4 className="font-medium">{project.role}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {project.title}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {new Date(project.startDate).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                    })}{" "}
-                    -
-                    {project.current
-                      ? " Present"
-                      : project.endDate
-                      ? ` ${new Date(project.endDate).toLocaleDateString(
-                          "en-US",
-                          { year: "numeric", month: "short" }
-                        )}`
-                      : ""}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 rounded-full"
-                    onClick={() => editProjects(index)}
+            {projects.map((project, index) => (
+              <Draggable
+                key={project.title ?? index}
+                draggableId={String(project.title ?? index)}
+                index={index}
+              >
+                {(dragProps:any) => (
+                  <div
+                    ref={dragProps.innerRef}
+                    {...dragProps.draggableProps}
+                    {...dragProps.dragHandleProps}
                   >
-                    <span className="sr-only">Edit</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                      <path d="m15 5 4 4" />
-                    </svg>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 rounded-full text-destructive"
-                    onClick={() => deleteProject(index)}
-                  >
-                    <span className="sr-only">Delete</span>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              <p className="text-sm mt-2">{project.description}</p>
-            </CardContent>
-          </Card>
-        ))}
+                    <Card className="border-0 bg-secondary/50 shadow-sm hover:bg-secondary/80 transition-all">
+                      <CardContent className="p-4">
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                  <div className="flex gap-5 items-center justify-center mb-5">
+                      <Grip className="h-5 w-5 text-muted-foreground" />
+
+                            <h4 className="font-medium">{project.title}</h4>
+                  </div>
+                            <p className="text-sm text-muted-foreground">
+                              {project.role}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(project.startDate).toLocaleDateString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "short",
+                                }
+                              )}{" "}
+                              -
+                              {project.current
+                                ? " Present"
+                                : project.endDate
+                                ? ` ${new Date(
+                                    project.endDate
+                                  ).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                  })}`
+                                : ""}
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 rounded-full"
+                              onClick={() => editProjects(index)}
+                            >
+                              <span className="sr-only">Edit</span>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                <path d="m15 5 4 4" />
+                              </svg>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 rounded-full text-destructive"
+                              onClick={() => deleteProject(index)}
+                            >
+                              <span className="sr-only">Delete</span>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <p className="text-sm mt-2">{project.description}</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
       </div>
 
       <Form {...form}>

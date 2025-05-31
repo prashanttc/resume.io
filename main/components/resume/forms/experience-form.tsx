@@ -17,10 +17,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Trash2, Check, Sparkles } from "lucide-react";
+import { Plus, Trash2, Check, Sparkles, Grip } from "lucide-react";
 import { callResumeAI } from "@/lib/utils";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 const experienceSchema = z.object({
   position: z.string().min(2, {
@@ -175,77 +176,115 @@ export function ExperienceForm({
   function handleSaveAll() {
     onSubmit(experiences);
   }
+    const handleDragEnd = (result:any) => {
+    if (!result.destination) return;
+    const reordered = Array.from(experiences);
+    const [movedItem] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, movedItem);
+    setExperiences(reordered);}
 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        {experiences.map((experience, index) => (
-          <Card
-            key={index}
-            className="border-0 bg-secondary/50 shadow-sm hover:bg-secondary/80 transition-all"
+      <DragDropContext onDragEnd={handleDragEnd}>
+      <Droppable droppableId="projects">
+        {(provided:any) => (
+          <div
+            className="space-y-4"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
           >
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h4 className="font-medium">{experience.position}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {experience.company}{" "}
-                    {experience.location ? `• ${experience.location}` : ""}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {new Date(experience.startDate).toLocaleDateString(
-                      "en-US",
-                      { year: "numeric", month: "short" }
-                    )}{" "}
-                    -
-                    {experience.current
-                      ? " Present"
-                      : experience.endDate
-                      ? ` ${new Date(experience.endDate).toLocaleDateString(
-                          "en-US",
-                          { year: "numeric", month: "short" }
-                        )}`
-                      : ""}
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 rounded-full"
-                    onClick={() => editExperience(index)}
+            {experiences.map((exp, index) => (
+              <Draggable
+                key={exp.company ?? index}
+                draggableId={String(exp.company ?? index)}
+                index={index}
+              >
+                {(dragProps:any) => (
+                  <div
+                    ref={dragProps.innerRef}
+                    {...dragProps.draggableProps}
+                    {...dragProps.dragHandleProps}
                   >
-                    <span className="sr-only">Edit</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                      <path d="m15 5 4 4" />
-                    </svg>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 rounded-full text-destructive"
-                    onClick={() => deleteExperience(index)}
-                  >
-                    <span className="sr-only">Delete</span>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              <p className="text-sm mt-2">{experience.description}</p>
-            </CardContent>
-          </Card>
-        ))}
+                    <Card className="border-0 bg-secondary/50 shadow-sm hover:bg-secondary/80 transition-all">
+                      <CardContent className="p-4">
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                  <div className="flex gap-5 items-center justify-center mb-5">
+                      <Grip className="h-5 w-5 text-muted-foreground" />
+
+                            <h4 className="font-medium">{exp.company}</h4>
+                  </div>
+                            <p className="text-sm text-muted-foreground">
+                              {exp.position}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(exp.startDate).toLocaleDateString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "short",
+                                }
+                              )}{" "}
+                              -
+                              {exp.current
+                                ? " Present"
+                                : exp.endDate
+                                ? ` ${new Date(
+                                    exp.endDate
+                                  ).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                  })}`
+                                : ""}
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 rounded-full"
+                              onClick={() => editExperience(index)}
+                            >
+                              <span className="sr-only">Edit</span>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                <path d="m15 5 4 4" />
+                              </svg>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 rounded-full text-destructive"
+                              onClick={() => deleteExperience(index)}
+                            >
+                              <span className="sr-only">Delete</span>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <p className="text-sm mt-2">{exp.description}</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
       </div>
 
       <Form {...form}>

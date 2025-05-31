@@ -1,5 +1,4 @@
 "use client";
-import { QuickStart } from "@/components/dashboard/quick-start";
 import { ResumeList } from "@/components/dashboard/resume-list";
 import { useGetAllResumes } from "@/query/resume/query";
 import { LoaderCircle } from "lucide-react";
@@ -56,7 +55,6 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <QuickStart />
       <DashboardStats resume={resumes} premium={premium||false}/>
       <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-4">
         <div className="md:col-span-2 lg:col-span-2 space-y-8">

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, X, Crown, Star, Clock } from "lucide-react";
-import { Confetti } from "./magicui/confetti";
 
 interface PremiumActivationPopupProps {
   isOpen?: boolean;
@@ -136,9 +135,7 @@ export default function Component({
           exit="exit"
           onClick={handleClose}
         >
-          {/* Confetti Overlay */}
-          <Confetti />
-          <motion.div
+                <motion.div
             className="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden"
             variants={modalVariants}
             onClick={(e) => e.stopPropagation()}

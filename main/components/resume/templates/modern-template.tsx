@@ -116,7 +116,7 @@ export function ModernTemplate({
               );
             case "Experience":
               return (
-                <section key={section.title} className="mb-6 resume-section">
+                <section key={section.title} className="mb-6">
                   <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                     Experience
                   </h3>
@@ -124,7 +124,7 @@ export function ModernTemplate({
                   {experiences.map((experience, index) => (
                     <div
                       key={index}
-                      className={index < experiences.length - 1 ? "mb-4" : ""}
+                      className={index < experiences.length - 1 ? "mb-4 resume-section" : ""}
                     >
                       <div className="flex justify-between items-baseline mb-1">
                         <h4 className="text-base font-medium">
@@ -154,7 +154,7 @@ export function ModernTemplate({
               );
             case "Projects":
               return (
-                <section key={section.title} className="mb-6 resume-section">
+                <section key={section.title} className="mb-6 ">
                   <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                     Projects
                   </h3>
@@ -162,7 +162,7 @@ export function ModernTemplate({
                   {projects.map((project, index) => (
                     <div
                       key={index}
-                      className={index < projects.length - 1 ? "mb-4" : ""}
+                      className={index < projects.length - 1 ? "mb-4 resume-section" : "resume-section"}
                     >
                       <div className="flex justify-between items-baseline mb-1">
                         <h4 className="text-base font-medium">{project.title}</h4>
@@ -185,13 +185,13 @@ export function ModernTemplate({
               );
             case "Education":
               return (
-                <section key={section.title} className="mb-6 resume-section">
+                <section key={section.title} className="mb-6 ">
                   <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                     Education
                   </h3>
 
                   {education.map((edu, index) => (
-                    <div key={index} className=" mb-5">
+                    <div key={index} className=" mb-5 resume-section">
                       <div className="flex justify-between items-baseline ">
                         <h4 className="text-base font-medium">{edu.degree}</h4>
                         <span className="text-sm text-zinc-600">
@@ -218,7 +218,7 @@ export function ModernTemplate({
               );
             case "Skills":
               return (
-                <section key={section.title} className="mb-6 resume-section">
+                <section key={section.title} className="mb-6 ">
                   <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                     Skills
                   </h3>
@@ -226,7 +226,7 @@ export function ModernTemplate({
                   {skills.map((category, categoryIndex) => (
                     <div
                       key={categoryIndex}
-                      className={categoryIndex < skills.length - 1 ? "mb-2" : ""}
+                      className={categoryIndex < skills.length - 1 ? "mb-2 resume-section" : ""}
                     >
                       <h4 className="text-sm font-medium mb-1">
                         {category.name}
@@ -255,7 +255,7 @@ export function ModernTemplate({
                       </h3>
                       <div className="space-y-4">
                         {customSection.entries.map((entry: EntryType) => (
-                          <div key={entry.id} className="mb-3">
+                          <div key={entry.id} className="mb-3 ">
                             <div className="flex justify-between items-baseline mb-1">
                               <h4 className="text-base font-medium">
                                 {entry.title}

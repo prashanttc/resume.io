@@ -61,7 +61,7 @@ export function CompactModernTemplate({
         switch (section.title) {
           case "Experience":
             return experiences.length > 0 && (
-              <section key={section.title} className="mb-5">
+              <section key={section.title} className="mb-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Experience</h2>
                 <div className="space-y-3">
                   {experiences.map((exp, idx) => (
@@ -90,7 +90,7 @@ export function CompactModernTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className="mb-5">
+              <section key={section.title} className="mb-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Education</h2>
                 <div className="space-y-3">
                   {education.map((edu, idx) => (
@@ -115,7 +115,7 @@ export function CompactModernTemplate({
 
           case "Projects":
             return projects.length > 0 && (
-              <section key={section.title} className="mb-5">
+              <section key={section.title} className="mb-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Projects</h2>
                 <div className="space-y-3">
                   {projects.map((proj, idx) => (
@@ -147,7 +147,7 @@ export function CompactModernTemplate({
 
           case "Skills":
             return skills.length > 0 && (
-              <section key={section.title} className="mb-5">
+              <section key={section.title} className="mb-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Skills</h2>
                 <div className="space-y-2">
                   {skills.map((category, idx) => (
@@ -174,7 +174,7 @@ export function CompactModernTemplate({
               <div key={section.title}>
                 {custom.map((customSection) => (
                   customSection.entries.length > 0 && (
-                    <section key={customSection.id} className="mb-5">
+                    <section key={customSection.id} className="mb-5 page-break">
                       <h2 className="text-[14px] font-semibold mb-1 text-gray-800">{customSection.title}</h2>
                       <div className="space-y-3">
                         {customSection.entries.map((entry: EntryType) => (
