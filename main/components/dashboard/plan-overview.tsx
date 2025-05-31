@@ -173,16 +173,6 @@ export function PlanOverview({
                 </div>
               </div>
             </div>
-
-            <div className="rounded-lg border bg-card p-3 mt-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <CreditCard className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Next billing date</span>
-                </div>
-                <span className="text-sm font-medium">June 15, 2025</span>
-              </div>
-            </div>
           </div>
         )}
       </CardContent>

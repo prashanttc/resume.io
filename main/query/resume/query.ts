@@ -1,5 +1,4 @@
 import {
-  deleteResume,
   getAllResume,
   getResumeById,
   getresumeBySlug,
@@ -53,19 +52,6 @@ export function useGetAllResumes() {
   return useQuery({
     queryKey: ["getallresume"],
     queryFn: getAllResume,
-  });
-}
-
-export function useDeleteResume() {
-  const queryclient = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => deleteResume(id),
-    onSuccess: (_,id) => {
-      queryclient.invalidateQueries({ queryKey: ["getallresume"] });
-      queryclient.invalidateQueries({ queryKey: ["getResumeByid",id] });
-      queryclient.invalidateQueries({ queryKey: ["resumecount"] });
-      queryclient.invalidateQueries({ queryKey: ["getResumeByurl"] });
-    },
   });
 }
 

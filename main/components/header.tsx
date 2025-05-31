@@ -14,7 +14,7 @@ export function DashboardHeader() {
     const premium = data?.isPremium;
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur-sm px-4 md:px-6 justify-between">
-      <SidebarTrigger />
+      <SidebarTrigger/>
    {premium &&    <div className="flex items-center gap-4">
            <div className="group relative mx-auto flex items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f] ">
       <span

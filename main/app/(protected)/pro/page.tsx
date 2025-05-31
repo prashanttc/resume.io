@@ -307,7 +307,7 @@ export default function PlanOverview() {
                           Cancel Subscription
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="bg-gray-800 border-gray-700">
+                      <DialogContent className="">
                         <DialogHeader>
                           <DialogTitle>Cancel Subscription</DialogTitle>
                           <DialogDescription>
@@ -321,7 +321,7 @@ export default function PlanOverview() {
                             <AlertTriangle className="h-4 w-4" />
                             <AlertDescription className="text-yellow-400">
                               Your subscription will remain active until{" "}
-                              {currentSubscription.nextBillingDate}
+                              {formatDate(currentSubscription.nextBillingDate)}
                             </AlertDescription>
                           </Alert>
                         </div>

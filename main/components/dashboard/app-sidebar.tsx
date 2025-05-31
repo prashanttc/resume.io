@@ -47,9 +47,9 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar variant="inset" collapsible="icon">
+    <Sidebar variant="inset" collapsible="icon" >
       <SidebarHeader className="flex items-center justify-between">
-        <SidebarMenu>
+        <SidebarMenu >
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="">
               <Link href="/dashboard">
@@ -109,7 +109,7 @@ export function AppSidebar() {
                 <SidebarMenuButton
                   asChild
                   isActive={isActive("/pro")}
-                  tooltip="Analytics"
+                  tooltip="Premium"
                   >
                   <Link href="/pro">
                     <Star className="h-4 w-4" />
@@ -130,10 +130,10 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={isActive("/integrations/linkedin")}
+                  isActive={isActive("/integration/linkedin")}
                   tooltip="LinkedIn"
                 >
-                  <Link href="/integrations/linkedin">
+                  <Link href="/integration/linkedin">
                     <Linkedin className="h-4 w-4" />
                     <span>LinkedIn</span>
                   </Link>
@@ -143,10 +143,10 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={isActive("/integrations/github")}
+                  isActive={isActive("/integration/github")}
                   tooltip="GitHub"
                 >
-                  <Link href="/integrations/github">
+                  <Link href="/integration/github">
                     <Github className="h-4 w-4" />
                     <span>GitHub</span>
                   </Link>

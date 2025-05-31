@@ -24,24 +24,14 @@ import { cn, downloadPdf, formatDate } from "@/lib/utils";
 import { resume } from "@/types/resume";
 import NewResume from "../NewResume";
 import { ShareModal } from "../share-modal";
-import { useDeleteResume } from "@/query/resume/query";
 import { toast } from "sonner";
 
 export type resumeProps = {
   resumes: resume[];
 };
 export function ResumeList({ resumes }: resumeProps) {
-  const { mutate } = useDeleteResume();
   const [isDownloading, setIsDownloading] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-
-  const handleDelete = (id: string) => {
-    mutate(id, {
-      onSuccess: () => {
-        toast.success("resume deleted.");
-      },
-    });
-  };
 
   const handledownload = async (e: React.MouseEvent, resume: resume) => {
     e.preventDefault();
@@ -146,11 +136,6 @@ export function ResumeList({ resumes }: resumeProps) {
                           <h3 className="font-medium text-sm">
                             {resume.title}
                           </h3>
-                          {resume.isDefault && (
-                            <Badge variant="outline" className="text-xs">
-                              Default
-                            </Badge>
-                          )}
                         </div>
                         <p className="text-xs text-muted-foreground">
                           {/* Last updated: {resume.} */}
@@ -192,40 +177,6 @@ export function ResumeList({ resumes }: resumeProps) {
                           )}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        {!resume.isDefault && (
-                          <DropdownMenuItem
-                            onClick={(e) => {
-                              e.preventDefault();
-                              // handleSetDefault(resume.id);
-                            }}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="mr-2"
-                            >
-                              <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6z" />
-                            </svg>
-                            Set as Default
-                          </DropdownMenuItem>
-                        )}
-                        <DropdownMenuItem
-                          className="text-destructive cursor-pointer"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleDelete(resume.id);
-                          }}
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
-                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
@@ -256,11 +207,6 @@ export function ResumeList({ resumes }: resumeProps) {
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="font-medium text-sm">{resume.title}</h3>
-                        {resume.isDefault && (
-                          <Badge variant="outline" className="text-xs">
-                            Default
-                          </Badge>
-                        )}
                       </div>
                       <div className="flex items-center gap-3 text-xs text-muted-foreground">
                         <span>
@@ -310,40 +256,6 @@ export function ResumeList({ resumes }: resumeProps) {
                           )}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        {!resume.isDefault && (
-                          <DropdownMenuItem
-                            onClick={(e) => {
-                              e.preventDefault();
-                              // handleSetDefault(resume.id);
-                            }}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="mr-2"
-                            >
-                              <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6z" />
-                            </svg>
-                            Set as Default
-                          </DropdownMenuItem>
-                        )}
-                        <DropdownMenuItem
-                          className="text-destructive cursor-pointer"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleDelete(resume.id);
-                          }}
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
-                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>

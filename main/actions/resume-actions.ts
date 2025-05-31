@@ -246,28 +246,6 @@ export async function getAllResume() {
   }
 }
 
-export async function deleteResume(id: string) {
-  const user = await getUserIdFromSession();
-  if (!user) {
-    throw new Error("unauthorized");
-  }
-  if (!id) throw new Error("invalid resume id!");
-  try {
-    const deleteResume = await prisma.resume.delete({
-      where: {
-        id,
-      },
-    });
-    if (!deleteResume) {
-      throw new Error("unable to delete resume");
-    }
-    return { success: true };
-  } catch (error: any) {
-    console.log("something went wrong");
-    throw new Error("something went wrong", error.message);
-  }
-}
-
 export async function setSlug({ url, id }: { url: string; id: string }) {
   const user = await getUserIdFromSession();
   if (!user) {
