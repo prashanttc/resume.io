@@ -252,7 +252,7 @@ export function ResumeEditor({
 
   return (
     <div className="flex flex-col">
-      <Card className="border-0 shadow-sm p-4">
+      <Card className="border-0 shadow-sm md:p-4">
         <div className="">
           <div className="lg:col-span-3">
             <div className="sticky top-20">

@@ -34,7 +34,7 @@ const formSchema = z.object({
   phone: z.string().min(5, {
     message: "Phone number must be at least 5 characters.",
   }),
-  location: z
+  address: z
     .string()
     .min(2, {
       message: "Location must be at least 2 characters.",
@@ -84,7 +84,7 @@ export function PersonalInfoForm({
       jobTitle: "Software Engineer",
       email: "john@example.com",
       phone: "(123) 456-7890",
-      location: "San Francisco, CA",
+      address: "San Francisco, CA",
       website: "https://johndoe.com",
       linkedin: "https://linkedin.com/in/johndoe",
       github:"https://github/johndoe",
@@ -169,10 +169,10 @@ export function PersonalInfoForm({
         </div>
         <FormField
           control={form.control}
-          name="location"
+          name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Location</FormLabel>
+              <FormLabel>Address</FormLabel>
               <FormControl>
                 <Input placeholder="San Francisco, CA" {...field} />
               </FormControl>

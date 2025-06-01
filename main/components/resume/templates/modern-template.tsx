@@ -19,7 +19,7 @@ export function ModernTemplate({
   };
   
   return (
-    <div className="font-sans text-zinc-800   mx-auto  print-wrapper">
+    <div className="font-sans text-zinc-800  w-[800px] mx-auto  print-wrapper">
       
       <div className="scale-[0.8] md:scale-100 origin-top-left w-[125%] md:w-full h-[125%] md:h-full">
         <header className="mb-6">
@@ -29,8 +29,8 @@ export function ModernTemplate({
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-zinc-600">
             <div>{personal.email}</div>
             <div>{personal.phone}</div>
-            <div>{personal.address}</div>
-            {personal.website && (
+{personal.address &&             <div>{personal.address}</div>
+}            {personal.website && (
               <p className="text-xs break-words flex gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

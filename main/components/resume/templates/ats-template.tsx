@@ -18,15 +18,13 @@ export function ATSFriendlyTemplate({
   };
 
   return (
-    <div className="font-sans text-gray-800 max-w-[800px] print-wrapper min-h-[1123px] mx-auto px-4 py-6">
+    <div className="font-sans text-gray-800 w-[800px] p-6 bg-white">
       {/* Header */}
       <header className="mb-6 text-center">
         <h1 className="text-2xl font-bold text-gray-900 mb-1">{personal.fullName}</h1>
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 text-sm text-gray-600">
+        <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-sm text-gray-600">
           {personal.email && <span>{personal.email}</span>}
-          {personal.phone && <span className="hidden sm:block">•</span>}
           {personal.phone && <span>{personal.phone}</span>}
-          {personal.address && <span className="hidden sm:block">•</span>}
           {personal.address && <span>{personal.address}</span>}
         </div>
         {personal.jobTitle && (
@@ -151,7 +149,7 @@ export function ATSFriendlyTemplate({
             return skills.length > 0 && (
               <section key={section.title} className={commonSectionClasses}>
                 <h2 className={commonTitleClasses}>Skills</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   {skills.map((category, catIdx) => (
                     <div key={catIdx}>
                       <h4 className="text-sm font-semibold text-gray-900 mb-1">{category.name}</h4>

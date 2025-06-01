@@ -19,7 +19,7 @@ export function BoldTemplate({
 
 
   return (
-    <div className="font-sans text-zinc-800 max-w-[800px] print-wrapper min-h-[1123px] mx-auto ">
+    <div className="font-sans text-zinc-800 w-[800px] print-wrapper min-h-[1123px] mx-auto ">
       {/* Top Header */}
       <header className="text-center mb-6 sm:mb-8 border-b-2 sm:border-b-4 border-black pb-3 sm:pb-4">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-normal sm:tracking-wide">

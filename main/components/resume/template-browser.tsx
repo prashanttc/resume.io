@@ -30,7 +30,7 @@ export function TemplateBrowser({
       : templates.filter((template) => template.categories.includes(category))
 
   const content = (
-    <div className="space-y-6 w-screen sm:w-full">
+    <div className="space-y-6  w-full">
       <Tabs defaultValue="all" value={category} onValueChange={setCategory} className="w-full">
         <div className="flex flex-wrap w-full justify-between">
           <TabsList className="mb-4 flex flex-wrap">
@@ -43,7 +43,7 @@ export function TemplateBrowser({
             <TabsTrigger value="academic">Academic</TabsTrigger>
           </TabsList>
           {isDialog && (
-            <div className="flex justify-end sm:my-0 my-10">
+            <div className="flex justify-end sm:my-0 my-10 fixed top-20 right-10">
               <Button onClick={onClose} variant="outline" className="mr-2">
                 Cancel
               </Button>
@@ -55,9 +55,9 @@ export function TemplateBrowser({
           )}
         </div>
 
-        <TabsContent value={category} className="mt-0">
+        <TabsContent value={category} className="mt-20">
           {/* Mobile: Horizontal Scroll */}
-          <div className="flex gap-4 overflow-x-auto sm:hidden pb-2 -mx-2 px-2">
+          {/* <div className="flex gap-4 overflow-x-auto sm:hidden pb-2 -mx-2 px-2">
             {filteredTemplates.map((template) => (
               <Card
                 key={template.id}
@@ -83,10 +83,10 @@ export function TemplateBrowser({
                 </CardContent>
               </Card>
             ))}
-          </div>
+          </div> */}
 
           {/* Desktop: Grid */}
-          <div className="hidden sm:grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {filteredTemplates.map((template) => (
               <Card
                 key={template.id}

@@ -18,14 +18,14 @@ export function ModernBlockTemplate({
   };
 
   return (
-    <div className="font-sans text-gray-800 max-w-[800px] mx-auto p-6 bg-white">
+    <div className="font-sans text-gray-800 w-[800px] p-6 bg-white" >
       {/* Header with accent bar */}
-      <header className="mb-8 border-l-4 border-blue-600 pl-4">
-        <h1 className="text-3xl font-bold text-gray-900">{personal.fullName}</h1>
+      <header className="mb-6 border-l-4 border-blue-600 pl-4">
+        <h1 className="text-2xl font-bold text-gray-900">{personal.fullName}</h1>
         {personal.jobTitle && (
-          <p className="text-lg text-gray-600 mt-1">{personal.jobTitle}</p>
+          <p className="text-base text-gray-600 mt-1">{personal.jobTitle}</p>
         )}
-        <div className="flex flex-wrap gap-x-4 gap-y-2 mt-3 text-sm text-gray-600">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-gray-600">
           {personal.email && <span>{personal.email}</span>}
           {personal.phone && <span>{personal.phone}</span>}
           {personal.website && (
@@ -48,9 +48,9 @@ export function ModernBlockTemplate({
 
       {/* Summary Section */}
       {personal.summary && (
-        <section className="mb-8 bg-gray-50 p-4 rounded-lg">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Professional Summary</h2>
-          <p className="text-gray-700 leading-relaxed">{personal.summary}</p>
+        <section className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-800 mb-2 pb-1 border-b border-gray-200">Professional Summary</h2>
+          <p className="text-gray-700 text-sm leading-snug">{personal.summary}</p>
         </section>
       )}
 
@@ -61,24 +61,24 @@ export function ModernBlockTemplate({
         switch (section.title) {
           case "Experience":
             return experiences.length > 0 && (
-              <section key={section.title} className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Work Experience</h2>
-                <div className="space-y-6">
+              <section key={section.title} className="mb-6">
+                <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Work Experience</h2>
+                <div className="space-y-4">
                   {experiences.map((exp, idx) => (
-                    <div key={idx} className="pl-4 border-l-2 border-gray-200">
+                    <div key={idx} className="pl-3 border-l-2 border-gray-200">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900">{exp.position}</h3>
-                          <p className="text-gray-700">
+                          <h3 className="text-base font-semibold text-gray-900">{exp.position}</h3>
+                          <p className="text-gray-700 text-sm">
                             {exp.company} {exp.location && `• ${exp.location}`}
                           </p>
                         </div>
-                        <span className="text-sm text-gray-500 whitespace-nowrap">
+                        <span className="text-xs text-gray-500 whitespace-nowrap">
                           {formatDate(exp.startDate)} - {exp.current ? "Present" : formatDate(exp.endDate || "")}
                         </span>
                       </div>
                       {exp.description && (
-                        <ul className="mt-3 space-y-2 text-gray-700">
+                        <ul className="mt-2 space-y-1 text-gray-700 text-sm">
                           {exp.description.split('\n').filter(line => line.trim()).map((line, i) => (
                             <li key={i} className="flex">
                               <span className="mr-2 text-blue-600">•</span>
@@ -95,24 +95,24 @@ export function ModernBlockTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Education</h2>
-                <div className="space-y-4">
+              <section key={section.title} className="mb-6">
+                <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Education</h2>
+                <div className="space-y-3">
                   {education.map((edu, idx) => (
-                    <div key={idx} className="pl-4 border-l-2 border-gray-200">
+                    <div key={idx} className="pl-3 border-l-2 border-gray-200">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900">{edu.degree}</h3>
-                          <p className="text-gray-700">
+                          <h3 className="text-base font-semibold text-gray-900">{edu.degree}</h3>
+                          <p className="text-gray-700 text-sm">
                             {edu.institution} {edu.location && `• ${edu.location}`}
                           </p>
                         </div>
-                        <span className="text-sm text-gray-500 whitespace-nowrap">
+                        <span className="text-xs text-gray-500 whitespace-nowrap">
                           {formatDate(edu.startDate)} - {edu.current ? "Present" : formatDate(edu.endDate!)}
                         </span>
                       </div>
                       {edu.description && (
-                        <p className="mt-2 text-gray-700">{edu.description}</p>
+                        <p className="mt-1 text-gray-700 text-sm">{edu.description}</p>
                       )}
                     </div>
                   ))}
@@ -122,27 +122,27 @@ export function ModernBlockTemplate({
 
           case "Projects":
             return projects.length > 0 && (
-              <section key={section.title} className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Projects</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <section key={section.title} className="mb-6">
+                <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Projects</h2>
+                <div className="grid grid-cols-1 gap-3">
                   {projects.map((proj, idx) => (
-                    <div key={idx} className="bg-gray-50 p-4 rounded-lg">
+                    <div key={idx} className="pl-3 border-l-2 border-gray-200">
                       <div className="flex justify-between items-start">
-                        <h3 className="text-lg font-semibold text-gray-900">{proj.title}</h3>
+                        <h3 className="text-base font-semibold text-gray-900">{proj.title}</h3>
                         {proj.link && (
-                          <a href={proj.link} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-sm">
+                          <a href={proj.link} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs">
                             View
                           </a>
                         )}
                       </div>
-                      {proj.role && <p className="text-sm text-gray-600 mt-1">{proj.role}</p>}
-                      <div className="flex justify-between text-sm text-gray-500 mt-1">
+                      {proj.role && <p className="text-gray-700 text-xs mt-1">{proj.role}</p>}
+                      <div className="flex justify-between text-xs text-gray-500 mt-1">
                         <span>
                           {formatDate(proj.startDate)} - {proj.current ? "Present" : formatDate(proj.endDate || "")}
                         </span>
                       </div>
                       {proj.description && (
-                        <ul className="mt-2 space-y-1 text-gray-700">
+                        <ul className="mt-1 space-y-1 text-gray-700 text-sm">
                           {proj.description.split('\n').filter(line => line.trim()).map((line, i) => (
                             <li key={i} className="flex">
                               <span className="mr-2 text-blue-600">•</span>
@@ -159,17 +159,17 @@ export function ModernBlockTemplate({
 
           case "Skills":
             return skills.length > 0 && (
-              <section key={section.title} className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Skills</h2>
-                <div className="space-y-4">
+              <section key={section.title} className="mb-6">
+                <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Skills</h2>
+                <div className="space-y-3">
                   {skills.map((category, catIdx) => (
                     <div key={catIdx}>
-                      <h3 className="text-md font-medium text-gray-800 mb-2">{category.name}</h3>
-                      <div className="flex flex-wrap gap-2">
+                      <h3 className="text-sm font-medium text-gray-800 mb-1">{category.name}</h3>
+                      <div className="flex flex-wrap gap-1">
                         {category.skills.map((skill, skillIdx) => (
                           <span
                             key={skillIdx}
-                            className="bg-blue-50 text-blue-800 px-3 py-1 rounded-full text-sm"
+                            className="bg-blue-50 text-blue-800 px-2 py-0.5 rounded-full text-xs"
                           >
                             {skill.name}{skill.level && ` (${skill.level})`}
                           </span>
@@ -186,17 +186,17 @@ export function ModernBlockTemplate({
               <div key={section.title}>
                 {custom.map((customSection) => (
                   customSection.entries.length > 0 && (
-                    <section key={customSection.id} className="mb-8">
-                      <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">{customSection.title}</h2>
-                      <div className="space-y-4">
+                    <section key={customSection.id} className="mb-6">
+                      <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">{customSection.title}</h2>
+                      <div className="space-y-3">
                         {customSection.entries.map((entry: EntryType) => (
-                          <div key={entry.id} className="pl-4 border-l-2 border-gray-200">
+                          <div key={entry.id} className="pl-3 border-l-2 border-gray-200">
                             <div className="flex justify-between items-start">
-                              <h3 className="text-lg font-semibold text-gray-900">{entry.title}</h3>
-                              {entry.date && <span className="text-sm text-gray-500">{entry.date}</span>}
+                              <h3 className="text-base font-semibold text-gray-900">{entry.title}</h3>
+                              {entry.date && <span className="text-xs text-gray-500">{entry.date}</span>}
                             </div>
                             {entry.description && (
-                              <ul className="mt-2 space-y-1 text-gray-700">
+                              <ul className="mt-1 space-y-1 text-gray-700 text-sm">
                                 {entry.description.split('\n').filter(line => line.trim()).map((line, i) => (
                                   <li key={i} className="flex">
                                     <span className="mr-2 text-blue-600">•</span>
@@ -206,7 +206,7 @@ export function ModernBlockTemplate({
                               </ul>
                             )}
                             {entry.link && (
-                              <a href={entry.link} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-sm mt-1 inline-block">
+                              <a href={entry.link} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs mt-1 inline-block">
                                 Learn more
                               </a>
                             )}

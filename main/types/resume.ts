@@ -47,7 +47,7 @@ export type PersonalInfo = {
   linkedin: string | null;
   github: string | null;
   website: string | null;
-  address: string; // Maps to `address` in Prisma
+  address?: string; // Maps to `address` in Prisma
   summary: string; // Optional: included in Prisma
 };
 
