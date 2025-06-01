@@ -18,7 +18,7 @@ export function ModernBlockTemplate({
   };
 
   return (
-    <div className="font-sans text-gray-800 w-[800px] p-6 bg-white" >
+    <div className="font-sans text-gray-800 " >
       {/* Header with accent bar */}
       <header className="mb-6 border-l-4 border-blue-600 pl-4">
         <h1 className="text-2xl font-bold text-gray-900">{personal.fullName}</h1>

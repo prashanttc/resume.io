@@ -415,7 +415,7 @@ export function ResumeEditor({
                 </div>
               </div>
 
-              <div className="lg:col-span-7 ">
+              <div className="lg:col-span-7">
                 <div className="sticky top-20">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-base font-medium">Preview</h3>
@@ -446,7 +446,7 @@ export function ResumeEditor({
                    
                     </div>
                   </div>
-                  <Card className="border-0 shadow-sm p-0 ">
+                  <Card className="border-0   shadow-sm  ">
                     <ResumePreview
                       template={resumeData.template || selectedTemplate}
                       resumeData={resumeData}

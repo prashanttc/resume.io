@@ -18,7 +18,7 @@ export function SidebarTemplate({
   };
 
   return (
-    <div className="font-sans text-zinc-800  w-[800px]  print-wrapper">
+    <div className="font-sans text-zinc-800  print-wrapper">
 
       <div className="scale-[0.8] md:scale-100 origin-top-left w-[125%] md:w-full h-[125%] md:h-full flex">
         {/* Left Sidebar */}

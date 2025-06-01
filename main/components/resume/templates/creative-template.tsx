@@ -28,7 +28,7 @@ export function CreativeTemplate({personal,education,experiences,skills,custom,p
   const sidebarSections = ["Personal Infomation", "Skills", "Education"]
   const mainSections = ["Experience", "Custom Sections","Projects"]
   return (
-    <div className="font-sans text-zinc-800 w-[800px] print-wrapper min-h-[1123px] ">
+    <div className="font-sans text-zinc-800 print-wrapper min-h-[1123px] ">
       <div className="grid grid-cols-3 gap-2">
         <div className=" bg-zinc-100 p-6 px-2 h-full">
           <header className="mb-8">

@@ -18,7 +18,7 @@ export function CompactModernTemplate({
   };
 
   return (
-    <div className="font-sans text-[12px] text-gray-800 w-[800px] mx-auto p-4 bg-white " >
+    <div className="font-sans text-[12px] text-gray-800  " >
       {/* Header */}
       <header className="mb-5 border-b border-gray-300 pb-2">
         <h1 className="text-[22px] font-bold text-gray-900">{personal.fullName}</h1>

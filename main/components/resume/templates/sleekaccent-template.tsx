@@ -18,8 +18,7 @@ export function SleekSideAccentTemplate({
   };
 
   return (
-    <div className="font-serif text-gray-900  w-[800px] p-8 bg-white border-l-8 border-blue-500" 
-         style={{ width: '210mm', minHeight: '297mm', margin: '0 auto' }}>
+    <div className="font-serif text-gray-900  border-l-8 border-blue-500 p-3" >
       {/* Name & Contact */}
       <header className="mb-8">
         <h1 className="text-3xl font-bold">{personal.fullName}</h1>
