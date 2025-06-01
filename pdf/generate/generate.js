@@ -1,36 +1,25 @@
-import puppeteer from "puppeteer-core";
-import chromium from "@sparticuz/chromium";
+await page.setViewport({ width: 1200, height: 1600 });
+await page.emulateMediaType("print");
 
-export async function generatePDF({ slug, title }) {
-  const executablePath = await chromium.executablePath();
+await page.goto(slug, { waitUntil: "networkidle2", timeout: 30000 });
 
-  const browser = await puppeteer.launch({
-    executablePath,
-    args: [...chromium.args, "--no-sandbox", "--disable-setuid-sandbox"],
-    headless: chromium.headless,
-  });
+await page.addStyleTag({
+  content: `
+    html, body {
+      background: white !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  `,
+});
 
-  try {
-    const page = await browser.newPage();
+await page.waitForSelector("#resume", { timeout: 15000 });
 
-    await page.setViewport({ width: 1200, height: 1600 });
-    await page.emulateMediaType("screen"); // Try "print" if screen doesn't work
-    await page.goto(slug, { waitUntil: "networkidle2", timeout: 30000 });
-
-    await page.waitForSelector("#resume", { timeout: 15000 });
- 
-    // Force background to be white
-    await page.addStyleTag({
-      content: 'body { background: white !important; }',
-    });
-
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true,
-    });
-
-    return pdfBuffer;
-  } finally {
-    await browser.close();
-  }
-}
+const pdfBuffer = await page.pdf({
+  format: "A4",
+  printBackground: true,
+  margin: {
+    top: "0.3in",
+    bottom: "0.3in",
+  },
+});
