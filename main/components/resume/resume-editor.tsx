@@ -446,7 +446,7 @@ export function ResumeEditor({
                    
                     </div>
                   </div>
-                  <Card className="border-0   shadow-sm  ">
+                  <Card className="border-0 w-full overflow-auto shadow-sm  ">
                     <ResumePreview
                       template={resumeData.template || selectedTemplate}
                       resumeData={resumeData}

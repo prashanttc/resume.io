@@ -100,7 +100,7 @@ export function ResumePreview({
     return <div className="text-red-500">Unknown template selected.</div>;
   }
   return (
-    <div className="h-full w-[800px] bg-white p-5  md:p-8">
+<div className="w-[800px] bg-white p-5 md:p-8 mx-auto">
       <TemplateComponent
         personal={personal}
         experiences={experiences}
