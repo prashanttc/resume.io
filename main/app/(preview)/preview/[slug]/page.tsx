@@ -1,8 +1,8 @@
 "use client";
 import { ResumeNotFound } from "@/components/error";
 import Loader from "@/components/Loader";
-import { ModernTemplate } from "@/components/resume/templates/modern-template";
-import { templateMap } from "@/components/resume/templates/template-map";
+import { ModernTemplate } from "@/components/templates/modern-template";
+import { templateMap } from "@/components/templates/template-map";
 import { useGetResumeBySlug, useViewUpdate } from "@/query/resume/query";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";

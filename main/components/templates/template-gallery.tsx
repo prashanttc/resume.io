@@ -6,9 +6,9 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Check, Download } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { ModernTemplate } from "@/components/resume/templates/modern-template"
-import { MinimalistTemplate } from "@/components/resume/templates/minimalist-template"
-import { CreativeTemplate } from "@/components/resume/templates/creative-template"
+import { ModernTemplate } from "@/components/templates/modern-template"
+import { MinimalistTemplate } from "@/components/templates/minimalist-template"
+import { CreativeTemplate } from "@/components/templates/creative-template"
 export function TemplateGallery() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)

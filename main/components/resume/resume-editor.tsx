@@ -338,10 +338,7 @@ export function ResumeEditor({
                               Browse Templates
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-7xl  overflow-y-auto max-h-[95%]">
-                            <DialogHeader>
-                              <DialogTitle>Select a Template</DialogTitle>
-                            </DialogHeader>
+                          <DialogContent className="max-w-7xl p-0  overflow-y-auto max-h-[95%]">
                             <TemplateBrowser
                               selectedTemplate={selectedTemplate}
                               onSelectTemplate={handleTemplateSelect}

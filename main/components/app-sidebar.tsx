@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { signOut, useSession } from "next-auth/react";
-import { Separator } from "../ui/separator";
+import { Separator } from "./ui/separator";
 
 export function AppSidebar() {
   const router = useRouter();

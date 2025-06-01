@@ -1,5 +1,5 @@
 import type React from "react";
-import { AppSidebar } from "@/components/dashboard/app-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 import { DashboardHeader } from "@/components/header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import SessionProvider from "@/providers/SessionProvider";

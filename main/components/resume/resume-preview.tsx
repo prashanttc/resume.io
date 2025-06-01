@@ -1,6 +1,6 @@
 "use client";
 import type { ResumeSection } from "@/components/resume/section-reorder";
-import { templateMap } from "./templates/template-map";
+import { templateMap } from "../templates/template-map";
 import { ResumeData } from "@/types/resume";
 
 interface ResumePreviewProps {

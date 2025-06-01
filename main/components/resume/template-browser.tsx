@@ -30,62 +30,38 @@ export function TemplateBrowser({
       : templates.filter((template) => template.categories.includes(category))
 
   const content = (
-    <div className="space-y-6  w-full">
-      <Tabs defaultValue="all" value={category} onValueChange={setCategory} className="w-full">
-        <div className="flex flex-wrap w-full justify-between">
-          <TabsList className="mb-4 flex flex-wrap">
-            <TabsTrigger value="all">All Templates</TabsTrigger>
-            <TabsTrigger value="professional">Professional</TabsTrigger>
-            <TabsTrigger value="modern">Modern</TabsTrigger>
-            <TabsTrigger value="minimal">Minimal</TabsTrigger>
-            <TabsTrigger value="creative">Creative</TabsTrigger>
-            <TabsTrigger value="technical">Technical</TabsTrigger>
-            <TabsTrigger value="academic">Academic</TabsTrigger>
-          </TabsList>
-          {isDialog && (
-            <div className="flex justify-end sm:my-0 my-10 fixed top-20 right-10">
-              <Button onClick={onClose} variant="outline" className="mr-2">
-                Cancel
-              </Button>
-              <Button onClick={onClose} disabled={!selectedTemplate}>
-                Apply Template
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          )}
+    <div className="space-y-6 w-full">
+      <Tabs defaultValue="all" value={category} onValueChange={setCategory} className="w-full ">
+        {/* Fixed Top Bar */}
+        <div className="sticky top-0 bg-background left-0 w-full z-10 border-b py-4 shadow-sm ">
+            <h1 className="px-4 mb-5 text-xl font-se">select a template</h1>
+          <div className="max-w-7xl mx-auto px-4 py-2 flex flex-wrap justify-between items-center">
+            <TabsList className="flex flex-wrap gap-2">
+              <TabsTrigger value="all">All Templates</TabsTrigger>
+              <TabsTrigger value="professional">Professional</TabsTrigger>
+              <TabsTrigger value="modern">Modern</TabsTrigger>
+              <TabsTrigger value="minimal">Minimal</TabsTrigger>
+              <TabsTrigger value="creative">Creative</TabsTrigger>
+              <TabsTrigger value="technical">Technical</TabsTrigger>
+              <TabsTrigger value="academic">Academic</TabsTrigger>
+            </TabsList>
+
+            {isDialog && (
+              <div className="flex gap-2">
+                <Button onClick={onClose} variant="outline">  
+                  Cancel
+                </Button>
+                <Button onClick={onClose} disabled={!selectedTemplate}>
+                  Apply Template
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
 
-        <TabsContent value={category} className="mt-20">
-          {/* Mobile: Horizontal Scroll */}
-          {/* <div className="flex gap-4 overflow-x-auto sm:hidden pb-2 -mx-2 px-2">
-            {filteredTemplates.map((template) => (
-              <Card
-                key={template.id}
-                className={`min-w-[180px] max-w-[200px] flex-shrink-0 rounded-xl shadow-sm transition-all cursor-pointer ${
-                  selectedTemplate === template.id ? "ring-2 ring-primary" : ""
-                }`}
-                onClick={() => onSelectTemplate(template.id)}
-              >
-                <div className="relative aspect-[3/4] bg-muted">
-                  <img
-                    src={template.thumbnail || "/placeholder.svg"}
-                    alt={template.name}
-                    className="w-full h-full object-cover"
-                  />
-                  {selectedTemplate === template.id && (
-                    <div className="absolute top-2 right-2 bg-primary text-white rounded-full p-1 shadow">
-                      <Check className="h-4 w-4" />
-                    </div>
-                  )}
-                </div>
-                <CardContent className="p-3">
-                  <h3 className="text-sm font-medium truncate">{template.name}</h3>
-                </CardContent>
-              </Card>
-            ))}
-          </div> */}
-
-          {/* Desktop: Grid */}
+        {/* Content below fixed bar */}
+        <TabsContent value={category} className="pt-28 px-5">
           <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {filteredTemplates.map((template) => (
               <Card
@@ -132,10 +108,7 @@ export function TemplateBrowser({
 
   return (
     <Dialog>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Select a Template</DialogTitle>
-        </DialogHeader>
+      <DialogContent className="relative">
         {content}
       </DialogContent>
     </Dialog>
