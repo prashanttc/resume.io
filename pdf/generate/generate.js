@@ -18,7 +18,7 @@ export async function generatePDF({ slug, title }) {
     await page.goto(slug, { waitUntil: "networkidle2", timeout: 30000 });
 
     await page.waitForSelector("#resume", { timeout: 15000 });
-
+ 
     // Force background to be white
     await page.addStyleTag({
       content: 'body { background: white !important; }',
@@ -27,9 +27,6 @@ export async function generatePDF({ slug, title }) {
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
-       margin: {
-      top: '0.3in',
-      bottom: '0.3in',}
     });
 
     return pdfBuffer;
