@@ -21,6 +21,7 @@ import { useGetResumebyId, useSetSlug } from "@/query/resume/query";
 import { toast } from "sonner";
 import Loader from "./Loader";
 import { downloadPdf } from "@/lib/utils";
+import { Skeleton } from "./ui/skeleton";
 
 interface ShareModalProps {
   resumeId: string;
@@ -61,12 +62,12 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials:'include',
+      credentials: "include",
       body: JSON.stringify({ link }),
     });
 
     const data = await response.json();
-    console.log("data",data)
+    console.log("data", data);
     setIsCustomUrlAvailable(data?.available);
     setIsCheckingUrl(false);
   };
@@ -110,7 +111,11 @@ export function ShareModal({ resumeId, resumeName }: ShareModalProps) {
   };
 
   if (isPending) {
-    return <Loader />;
+    return (
+      <Skeleton className="w-full h-full">
+        <div className="w-full h-5 rounded-2xl"></div>
+      </Skeleton>
+    );
   }
 
   return (

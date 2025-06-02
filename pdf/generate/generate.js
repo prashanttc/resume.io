@@ -38,7 +38,7 @@ export async function generatePDF({ slug, title }) {
 
     const pdfBuffer = await page.pdf({
       format: "A4",
-      printBackground: true,
+      printBackground: false,
       margin: {
         top: "0.3in",
         bottom: "0.3in",
