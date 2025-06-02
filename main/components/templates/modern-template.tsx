@@ -218,7 +218,7 @@ export function ModernTemplate({
               );
             case "Skills":
               return (
-                <section key={section.title} className="mt-6 ">
+                <section key={section.title} className="pt-6 ">
                   <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                     Skills
                   </h3>

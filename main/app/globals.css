@@ -179,7 +179,6 @@
   .resume-section {
     page-break-inside: avoid;
     break-inside: avoid;
-    padding: 20px 0px;
   }
 
     body {
