@@ -67,7 +67,7 @@ const page = () => {
 
   return (
     <div className="w-full h-full md:flex items-center justify-center ">
-      <div className="h-full bg-white w-[800px]  p-5 md:p-8 print:py-0  " id="resume">
+      <div className=" bg-white w-[800px]  p-5 md:p-8 h-[1123px] " id="resume">
         <Template
           personal={personal}
           projects={projects}
