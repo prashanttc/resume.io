@@ -19,7 +19,7 @@ export function BoldTemplate({
 
 
   return (
-    <div className="font-sans text-zinc-800  print-wrapper min-h-[1123px]  ">
+    <div className="font-sans text-zinc-800  print-wrapper min-h-[1123px]">
       {/* Top Header */}
       <header className="text-center mb-6 sm:mb-8 border-b-2 sm:border-b-4 border-black pb-3 sm:pb-4">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-normal sm:tracking-wide">
@@ -119,7 +119,7 @@ export function BoldTemplate({
       {sectionOrder.map((section) => {
         if (!section.isActive) return null;
 
-        const commonSectionClasses = "mb-6 sm:mb-8";
+        const commonSectionClasses = "mt-6 sm:mt-8";
         const commonTitleClasses = "text-lg sm:text-xl font-bold uppercase border-b border-gray-300 pb-1.5 mb-2 sm:pb-2 sm:mb-3";
         const commonEntryWrapperClasses = "mb-4 last:mb-0"; // reduce bottom margin for the last entry in a section
         const commonEntryTitleClasses = "text-base sm:text-base font-semibold"; // Kept base same, bold enough
@@ -130,7 +130,7 @@ export function BoldTemplate({
         switch (section.title) {
           case "Personal Information": // This template uses it for Summary
             return personal.summary ? (
-              <section key={section.title} className={commonSectionClasses}>
+              <section key={section.title} className={`${commonSectionClasses} resume-section`}>
                 <h2 className={commonTitleClasses}>Summary</h2>
                 <p className="text-sm sm:text-base text-gray-800 leading-relaxed whitespace-pre-line">{personal.summary}</p>
               </section>
@@ -141,7 +141,7 @@ export function BoldTemplate({
               <section key={section.title} className={commonSectionClasses}>
                 <h2 className={commonTitleClasses}>Experience</h2>
                 {experiences.map((exp, idx) => (
-                  <div key={idx} className={commonEntryWrapperClasses}>
+                  <div key={idx} className={`${commonEntryWrapperClasses} resume-section`}>
                     <div className="flex justify-between items-center">
                       <h3 className={commonEntryTitleClasses}>{exp.company}</h3> {/* Changed to company first for this style */}
                       <span className={`${commonEntryMetaClasses} mt-0.5 sm:mt-0`}>
@@ -163,7 +163,7 @@ export function BoldTemplate({
               <section key={section.title} className={commonSectionClasses}>
                 <h2 className={commonTitleClasses}>Projects</h2>
                 {projects.map((proj, idx) => (
-                  <div key={idx} className={commonEntryWrapperClasses}>
+                  <div key={idx} className={`${commonEntryWrapperClasses} resume-section`}>
                     <div className="flex  items-center justify-between">
                       <h3 className={commonEntryTitleClasses}>{proj.title}</h3>
                       <span className={`${commonEntryMetaClasses} mt-0.5 sm:mt-0`}>
@@ -192,7 +192,7 @@ export function BoldTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className={commonSectionClasses}>
+              <section key={section.title} className={`${commonSectionClasses} resume-section`}>
                 <h2 className={commonTitleClasses}>Education</h2>
                 {education.map((edu, idx) => (
                   <div key={idx} className={commonEntryWrapperClasses}>
@@ -218,7 +218,7 @@ export function BoldTemplate({
                   {skills.map((category, catIdx) => (
                     // Each category can be its own block, or skills can flow continuously
                     // This approach makes each category distinct with its title
-                    <div key={catIdx} className="w-full sm:w-auto"> {/* Full width on mobile for category title, auto on larger */}
+                    <div key={catIdx} className="w-full sm:w-auto resume-section"> {/* Full width on mobile for category title, auto on larger */}
                       <h4 className="text-sm sm:text-base font-semibold mb-1 sm:mb-1.5">{category.name}</h4>
                       <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {category.skills.map((skill, skillIdx) => (
@@ -245,7 +245,7 @@ export function BoldTemplate({
                     <section key={customSection.id} className={commonSectionClasses}>
                     <h2 className={commonTitleClasses}>{customSection.title}</h2>
                     {customSection.entries.map((entry: EntryType) => (
-                      <div key={entry.id} className={commonEntryWrapperClasses}>
+                      <div key={entry.id} className={`${commonEntryWrapperClasses} resume-section`}>
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
                           <h3 className={commonEntryTitleClasses}>{entry.title}</h3>
                           {entry.date && <span className={`${commonEntryMetaClasses} mt-0.5 sm:mt-0`}>{entry.date}</span>}

@@ -104,7 +104,7 @@ export function ATSFriendlyTemplate({
       {sectionOrder.map((section) => {
         if (!section.isActive) return null;
 
-        const commonSectionClasses = "mb-6";
+        const commonSectionClasses = "mt-6";
         const commonTitleClasses = "text-lg font-bold uppercase border-b border-gray-300 pb-1 mb-3 text-gray-900";
         const commonEntryWrapperClasses = "mb-4 last:mb-0";
         const commonEntryTitleClasses = "text-base font-semibold text-gray-900";
@@ -114,7 +114,7 @@ export function ATSFriendlyTemplate({
         switch (section.title) {
           case "Personal Information":
             return personal.summary ? (
-              <section key={section.title} className={commonSectionClasses}>
+              <section key={section.title} className={`${commonSectionClasses} resume-section`}>
                 <h2 className={commonTitleClasses}>Professional Summary</h2>
                 <p className={commonEntryDescriptionClasses}>{personal.summary}</p>
               </section>
@@ -186,7 +186,7 @@ export function ATSFriendlyTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className={commonSectionClasses}>
+              <section key={section.title} className={`${commonSectionClasses} resume-section`}>
                 <h2 className={commonTitleClasses}>Education</h2>
                 {education.map((edu, idx) => (
                   <div key={idx} className={commonEntryWrapperClasses}>
@@ -215,7 +215,7 @@ export function ATSFriendlyTemplate({
 
           case "Skills":
             return skills.length > 0 && (
-              <section key={section.title} className={commonSectionClasses}>
+              <section key={section.title} className={`${commonSectionClasses} resume-section`}>
                 <h2 className={commonTitleClasses}>Skills</h2>
                 <div className="grid grid-cols-2 gap-4">
                   {skills.map((category, catIdx) => (
@@ -245,7 +245,7 @@ export function ATSFriendlyTemplate({
                     <section key={customSection.id} className={commonSectionClasses}>
                       <h2 className={commonTitleClasses}>{customSection.title}</h2>
                       {customSection.entries.map((entry: EntryType) => (
-                        <div key={entry.id} className={commonEntryWrapperClasses}>
+                        <div key={entry.id} className={`${commonEntryWrapperClasses} resume-section`}>
                           <div className="flex justify-between items-start">
                             <h3 className={commonEntryTitleClasses}>{entry.title}</h3>
                             {entry.date && <span className={commonEntryMetaClasses}>{entry.date}</span>}

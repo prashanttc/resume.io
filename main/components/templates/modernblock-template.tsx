@@ -20,7 +20,7 @@ export function ModernBlockTemplate({
   return (
     <div className="font-sans text-gray-800 " >
       {/* Header with accent bar */}
-      <header className="mb-6 border-l-4 border-blue-600 pl-4">
+      <header className=" border-l-4 border-blue-600 pl-4">
         <h1 className="text-2xl font-bold text-gray-900">{personal.fullName}</h1>
         {personal.jobTitle && (
           <p className="text-base text-gray-600 mt-1">{personal.jobTitle}</p>
@@ -48,7 +48,7 @@ export function ModernBlockTemplate({
 
       {/* Summary Section */}
       {personal.summary && (
-        <section className="mb-6">
+        <section className="mt-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-2 pb-1 border-b border-gray-200">Professional Summary</h2>
           <p className="text-gray-700 text-sm leading-snug">{personal.summary}</p>
         </section>
@@ -61,11 +61,11 @@ export function ModernBlockTemplate({
         switch (section.title) {
           case "Experience":
             return experiences.length > 0 && (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mt-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Work Experience</h2>
                 <div className="space-y-4">
                   {experiences.map((exp, idx) => (
-                    <div key={idx} className="pl-3 border-l-2 border-gray-200">
+                    <div key={idx} className="pl-3 border-l-2 border-gray-200 resume-section">
                       <div className="flex justify-between items-start">
                         <div>
                           <h3 className="text-base font-semibold text-gray-900">{exp.position}</h3>
@@ -95,7 +95,7 @@ export function ModernBlockTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mt-6 resume-section" >
                 <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Education</h2>
                 <div className="space-y-3">
                   {education.map((edu, idx) => (
@@ -122,11 +122,11 @@ export function ModernBlockTemplate({
 
           case "Projects":
             return projects.length > 0 && (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mt-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Projects</h2>
                 <div className="grid grid-cols-1 gap-3">
                   {projects.map((proj, idx) => (
-                    <div key={idx} className="pl-3 border-l-2 border-gray-200">
+                    <div key={idx} className="pl-3 border-l-2 border-gray-200 resume-section">
                       <div className="flex justify-between items-start">
                         <h3 className="text-base font-semibold text-gray-900">{proj.title}</h3>
                         {proj.link && (
@@ -159,11 +159,11 @@ export function ModernBlockTemplate({
 
           case "Skills":
             return skills.length > 0 && (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mt-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Skills</h2>
                 <div className="space-y-3">
                   {skills.map((category, catIdx) => (
-                    <div key={catIdx}>
+                    <div key={catIdx} className="resume-section">
                       <h3 className="text-sm font-medium text-gray-800 mb-1">{category.name}</h3>
                       <div className="flex flex-wrap gap-1">
                         {category.skills.map((skill, skillIdx) => (
@@ -186,11 +186,11 @@ export function ModernBlockTemplate({
               <div key={section.title}>
                 {custom.map((customSection) => (
                   customSection.entries.length > 0 && (
-                    <section key={customSection.id} className="mb-6">
+                    <section key={customSection.id} className="mt-6">
                       <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">{customSection.title}</h2>
                       <div className="space-y-3">
                         {customSection.entries.map((entry: EntryType) => (
-                          <div key={entry.id} className="pl-3 border-l-2 border-gray-200">
+                          <div key={entry.id} className="pl-3 border-l-2 border-gray-200 resume-section">
                             <div className="flex justify-between items-start">
                               <h3 className="text-base font-semibold text-gray-900">{entry.title}</h3>
                               {entry.date && <span className="text-xs text-gray-500">{entry.date}</span>}

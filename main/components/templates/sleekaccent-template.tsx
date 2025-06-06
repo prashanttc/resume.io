@@ -20,7 +20,7 @@ export function SleekSideAccentTemplate({
   return (
     <div className="font-serif text-gray-900  border-l-8 border-blue-500 p-3" >
       {/* Name & Contact */}
-      <header className="mb-8">
+      <header className="">
         <h1 className="text-3xl font-bold">{personal.fullName}</h1>
         {personal.jobTitle && <p className="text-lg text-gray-600 mt-1">{personal.jobTitle}</p>}
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
@@ -34,7 +34,7 @@ export function SleekSideAccentTemplate({
 
       {/* Summary */}
       {personal.summary && (
-        <section className="mb-8">
+        <section className="mt-8 resume-section">
           <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">Summary</h2>
           <p className="text-gray-700 text-sm leading-relaxed">{personal.summary}</p>
         </section>
@@ -47,11 +47,11 @@ export function SleekSideAccentTemplate({
         switch (section.title) {
           case "Experience":
             return experiences.length > 0 && (
-              <section key={section.title} className="mb-8">
+              <section key={section.title} className="mt-8">
                 <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-3">Experience</h2>
                 <div className="space-y-5">
                   {experiences.map((exp, i) => (
-                    <div key={i}>
+                    <div key={i} className="resume-section">
                       <div className="flex justify-between">
                         <div>
                           <h3 className="text-base font-bold">{exp.position}</h3>
@@ -76,7 +76,7 @@ export function SleekSideAccentTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className="mb-8">
+              <section key={section.title} className="mt-8 resume-section">
                 <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-3">Education</h2>
                 <div className="space-y-4">
                   {education.map((edu, i) => (
@@ -99,11 +99,11 @@ export function SleekSideAccentTemplate({
 
           case "Projects":
             return projects.length > 0 && (
-              <section key={section.title} className="mb-8">
+              <section key={section.title} className="mt-8 ">
                 <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-3">Projects</h2>
                 <div className="space-y-4">
                   {projects.map((proj, i) => (
-                    <div key={i}>
+                    <div key={i} className="resume-section">
                       <div className="flex justify-between items-start">
                         <h3 className="text-base font-bold">{proj.title}</h3>
                         {proj.link && (
@@ -129,11 +129,11 @@ export function SleekSideAccentTemplate({
 
           case "Skills":
             return skills.length > 0 && (
-              <section key={section.title} className="mb-8">
+              <section key={section.title} className="mt-8">
                 <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-3">Skills</h2>
                 <div className="space-y-3">
                   {skills.map((category, i) => (
-                    <div key={i}>
+                    <div key={i} className="resume-section">
                       <h3 className="text-sm font-medium text-gray-800">{category.name}</h3>
                       <div className="flex flex-wrap gap-1.5 mt-1">
                         {category.skills.map((skill, j) => (
@@ -150,14 +150,14 @@ export function SleekSideAccentTemplate({
 
           case "Custom Sections":
             return custom.length > 0 && (
-              <section key={section.title} className="mb-8">
+              <section key={section.title} className="mt-8">
                 {custom.map((customSection) => (
                   customSection.entries.length > 0 && (
                     <div key={customSection.id} className="mb-6">
                       <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-3">{customSection.title}</h2>
                       <div className="space-y-4">
                         {customSection.entries.map((entry: EntryType) => (
-                          <div key={entry.id}>
+                          <div key={entry.id} className="resume-section">
                             <div className="flex justify-between items-start">
                               <h3 className="text-base font-bold">{entry.title}</h3>
                               {entry.date && (

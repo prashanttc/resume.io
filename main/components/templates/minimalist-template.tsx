@@ -9,14 +9,10 @@ export function MinimalistTemplate({
   projects,
   sectionOrder,
 }: TemplateProps) {
-  // Flatten skills for minimalist display
-  const flattenedSkills = skills.flatMap((category) =>
-    category.skills.map((skill: any) => skill.name)
-  );
 
   return (
     <div className="font-sans text-zinc-800  print-wrapper min-h-[1123px] ">
-      <header className="text-center mb-8">
+      <header className="text-center ">
         <h1 className="text-2xl font-normal uppercase tracking-widest mb-1">
           {personal.fullName}
         </h1>
@@ -61,7 +57,7 @@ export function MinimalistTemplate({
         switch (section.title) {
           case "Personal Information":
             return (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mt-6 resume-section">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Summary
                 </h3>
@@ -73,7 +69,7 @@ export function MinimalistTemplate({
             );
           case "Experience":
             return (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mt-6">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Experience
                 </h3>
@@ -81,7 +77,7 @@ export function MinimalistTemplate({
                 {experiences.map((experience, index) => (
                   <div
                     key={index}
-                    className={index < experiences.length - 1 ? "mb-5" : ""}
+                    className={index < experiences.length - 1 ? "mb-5 resume-section" : ""}
                   >
                     <div className="flex justify-between items-baseline mb-1">
                       <h4 className="text-sm font-medium">
@@ -111,7 +107,7 @@ export function MinimalistTemplate({
             );
           case "Projects":
             return (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mt-6">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Projects
                 </h3>
@@ -119,7 +115,7 @@ export function MinimalistTemplate({
                 {projects.map((project, index) => (
                   <div
                     key={index}
-                    className={index < projects.length - 1 ? "mb-5" : ""}
+                    className={index < projects.length - 1 ? "mb-5 resume-section" : ""}
                   >
                     <div className="flex justify-between items-baseline mb-1">
                       <h4 className="text-sm font-medium">{project.title}</h4>
@@ -142,7 +138,7 @@ export function MinimalistTemplate({
             );
           case "Education":
             return (
-              <section key={section.title} className="mb-6">
+              <section key={section.title} className="mt-6 resume-section">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Education
                 </h3>
@@ -175,13 +171,13 @@ export function MinimalistTemplate({
             );
           case "Skills":
             return (
-              <section key="skills" className="mb-6">
+              <section key="skills" className="mt-6">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Skills
                 </h3>
 
                 {skills.map((category, idx) => (
-                  <div key={idx} className="mb-3">
+                  <div key={idx} className="mb-3 resume-section">
                     <h4 className="text-xs font-semibold text-zinc-600 text-center mb-2">
                       {category.name}
                     </h4>
@@ -203,7 +199,7 @@ export function MinimalistTemplate({
 
           case "Custom Sections":
             return (
-              <section key="Extra Activities" className="mb-6">
+              <section key="Extra Activities" className="mt-6">
                 {custom.map((activity, idx) => (
                   <div key={idx} className="mb-2 text-xs text-center">
                     <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">

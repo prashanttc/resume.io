@@ -20,7 +20,7 @@ export function CompactModernTemplate({
   return (
     <div className="font-sans text-[12px] text-gray-800  " >
       {/* Header */}
-      <header className="mb-5 border-b border-gray-300 pb-2">
+      <header className=" border-b border-gray-300 pb-2">
         <h1 className="text-[22px] font-bold text-gray-900">{personal.fullName}</h1>
         {personal.jobTitle && (
           <p className="text-[13px] text-gray-600">{personal.jobTitle}</p>
@@ -48,7 +48,7 @@ export function CompactModernTemplate({
 
       {/* Summary */}
       {personal.summary && (
-        <section className="mb-5">
+        <section className="mt-5">
           <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Summary</h2>
           <p className="leading-snug text-gray-700">{personal.summary}</p>
         </section>
@@ -61,11 +61,11 @@ export function CompactModernTemplate({
         switch (section.title) {
           case "Experience":
             return experiences.length > 0 && (
-              <section key={section.title} className="mb-5 page-break">
+              <section key={section.title} className="mt-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Experience</h2>
                 <div className="space-y-3">
                   {experiences.map((exp, idx) => (
-                    <div key={idx}>
+                    <div key={idx} className="resume-section">
                       <div className="flex justify-between items-start">
                         <div>
                           <p className="font-medium text-[13px]">{exp.position}</p>
@@ -90,7 +90,7 @@ export function CompactModernTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className="mb-5 page-break">
+              <section key={section.title} className="mt-5 page-break resume-section">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Education</h2>
                 <div className="space-y-3">
                   {education.map((edu, idx) => (
@@ -115,11 +115,11 @@ export function CompactModernTemplate({
 
           case "Projects":
             return projects.length > 0 && (
-              <section key={section.title} className="mb-5 page-break">
+              <section key={section.title} className="mt-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Projects</h2>
                 <div className="space-y-3">
                   {projects.map((proj, idx) => (
-                    <div key={idx}>
+                    <div key={idx} className="resume-section">
                       <div className="flex justify-between items-start">
                         <p className="font-medium text-[13px]">{proj.title}</p>
                         {proj.link && (
@@ -147,11 +147,11 @@ export function CompactModernTemplate({
 
           case "Skills":
             return skills.length > 0 && (
-              <section key={section.title} className="mb-5 page-break">
+              <section key={section.title} className="mt-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Skills</h2>
                 <div className="space-y-2">
                   {skills.map((category, idx) => (
-                    <div key={idx}>
+                    <div key={idx} className="resume-section">
                       <p className="font-medium text-[12px]">{category.name}</p>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {category.skills.map((skill, i) => (
@@ -174,7 +174,7 @@ export function CompactModernTemplate({
               <div key={section.title}>
                 {custom.map((customSection) => (
                   customSection.entries.length > 0 && (
-                    <section key={customSection.id} className="mb-5 page-break">
+                    <section key={customSection.id} className="mt-5 page-break">
                       <h2 className="text-[14px] font-semibold mb-1 text-gray-800">{customSection.title}</h2>
                       <div className="space-y-3">
                         {customSection.entries.map((entry: EntryType) => (
