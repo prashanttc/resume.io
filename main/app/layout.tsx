@@ -13,7 +13,7 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: "ResumeForge - Create Professional Resumes That Get You Hired",
+  title: "Resumate - Create Professional Resumes That Get You Hired",
   description:
     "Our AI-powered resume builder helps you create professional, ATS-optimized resumes in minutes. Stand out and get more interviews.",
     generator: 'v0.dev'
