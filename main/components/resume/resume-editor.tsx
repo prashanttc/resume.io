@@ -254,16 +254,16 @@ export function ResumeEditor({
   console.log("rpre",isPreviewOpen)
   return (
     <div className="flex flex-col">
-    <div className="flex md:hidden  justify-end">
+    <div className="flex md:hidden  justify-end mb-5">
         {isPreviewOpen ? (
           <Button onClick={() => setIsPreviewOpen(false)}>Edit</Button>
         ) : (
-        <Button onClick={() => setIsPreviewOpen(true)}>Preview</Button>
+        <Button onClick={() => setIsPreviewOpen(true)}>Preview and save</Button>
       )}
     </div>
       <div className="md:hidden flex justify-end"></div>
       {!isPreviewOpen && (
-        <Card className="border-0 shadow-sm md:p-4 ">
+        <Card className="border-0 shadow-sm px-2">
           <div className="">
             <div className="lg:col-span-3">
               <div className="sticky top-20">
@@ -423,7 +423,7 @@ export function ResumeEditor({
                   </div>
                 </div>
 
-                <div className="lg:col-span-7">
+                <div className="lg:col-span-7 hidden md:flex">
                   <div className="sticky top-20">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-base font-medium">Preview</h3>
@@ -470,13 +470,47 @@ export function ResumeEditor({
         </Card>
       )}
       {isPreviewOpen && (
-        <Card className="border-0 w-full overflow-auto shadow-sm  ">
-          <ResumePreview
-            template={resumeData.template || selectedTemplate}
-            resumeData={resumeData}
-            sectionOrder={resumeData.sectionOrder.filter((s) => s.isActive)}
-          />
-        </Card>
+       <div className="lg:col-span-7 md:hidden">
+                  <div className="sticky top-20">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-base font-medium">Preview</h3>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="hover-lift"
+                        >
+                          <ShareModal resumeId={id} resumeName={title} />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="hover-lift"
+                          onClick={handleSaveResume}
+                          disabled={isPending}
+                        >
+                          {isPending ? (
+                            <LoaderCircle className="animate-spin" />
+                          ) : (
+                            <div className="flex gap-2 justify-center items-center">
+                              <FileText className="mr-2 h-4 w-4" />
+                              Save
+                            </div>
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                    <Card className="border-0 w-full overflow-auto shadow-sm ">
+                      <ResumePreview
+                        template={resumeData.template || selectedTemplate}
+                        resumeData={resumeData}
+                        sectionOrder={resumeData.sectionOrder.filter(
+                          (s) => s.isActive
+                        )}
+                      />
+                    </Card>
+                  </div>
+                </div>
       )}
     </div>
   );
