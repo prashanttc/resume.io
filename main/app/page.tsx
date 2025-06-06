@@ -1,7 +1,4 @@
-"use client";
-
-import { useState } from "react";
-import Image from "next/image";
+"use client";;
 import { motion } from "framer-motion";
 import { ChevronRight, FileText, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,10 +13,13 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import CtaSection from "@/components/landing page/cta-section";
 import MobileMenu from "@/components/landing page/mobile-menu";
+import Loader from "@/components/Loader";
 
 export default function LandingPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { status } = useSession();
+  if(status==='loading'){
+    return <Loader/>
+  }
   return (
     <div className="relative min-h-screen bg-zinc-950 text-white flex flex-col  md:items-center">
       {/* Background gradient */}
@@ -68,37 +68,10 @@ export default function LandingPage() {
               <Link href={"/signup"}>Get Started</Link>
             </Button>
           </nav>
-
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              className="p-2"
-              onClick={() => setIsMenuOpen(true)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="4" x2="20" y1="12" y2="12"></line>
-                <line x1="4" x2="20" y1="6" y2="6"></line>
-                <line x1="4" x2="20" y1="18" y2="18"></line>
-              </svg>
-            </Button>
-          </div>
         </div>
+      <MobileMenu     />
       </header>
 
-      <MobileMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-      />
 
       <main className="pt-16">
         {/* Hero Section */}
@@ -186,7 +159,7 @@ export default function LandingPage() {
                       <Link href={"/dashboard"}>Create your resume</Link>
                     ) : (
                       <Link
-                        href={"/login"}
+                        href={"/login"} prefetch={false}
                         className="flex gap-3  items-center justify-center"
                       >
                         Create Your Resume{" "}

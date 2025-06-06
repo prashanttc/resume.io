@@ -1,5 +1,4 @@
 import { EntryType, TemplateProps } from "@/types/resume";
-
 export function ModernTemplate({
   personal,
   education,

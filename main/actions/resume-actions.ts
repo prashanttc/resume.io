@@ -454,17 +454,13 @@ export async function updateAiResults({
   }
 }
 
-
-
 export async function updateViewCount(url: string) {
   try {
     const userId = await getUserIdFromSession();
     if (!url) {
       throw new Error("not url found");
     }
-    if (!userId) {
-      throw new Error("unauthorized");
-    }
+    if(userId){
     const sameUser = await prisma.resume.findUnique({
       where: {
         id: userId,
@@ -473,7 +469,7 @@ export async function updateViewCount(url: string) {
     });
     if (sameUser) {
       return { success: false };
-    }
+    }}
     const resume = await prisma.resume.update({
       where: {
         slug: url,
