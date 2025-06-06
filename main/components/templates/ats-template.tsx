@@ -106,7 +106,7 @@ export function ATSFriendlyTemplate({
 
         const commonSectionClasses = "pt-6";
         const commonTitleClasses = "text-lg font-bold uppercase border-b border-gray-300 pb-1 mb-3 text-gray-900";
-        const commonEntryWrapperClasses = "mb-4 last:mb-0";
+        const commonEntryWrapperClasses = "pt-4";
         const commonEntryTitleClasses = "text-base font-semibold text-gray-900";
         const commonEntryMetaClasses = "text-sm text-gray-600";
         const commonEntryDescriptionClasses = "text-sm text-gray-800 mt-1 whitespace-pre-line";

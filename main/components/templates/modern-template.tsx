@@ -123,7 +123,7 @@ export function ModernTemplate({
                   {experiences.map((experience, index) => (
                     <div
                       key={index}
-                      className={index < experiences.length - 1 ? "mb-4 resume-section" : ""}
+                      className={index < experiences.length - 1 ? "pt-4 resume-section" : ""}
                     >
                       <div className="flex justify-between items-baseline mb-1">
                         <h4 className="text-base font-medium">
@@ -161,7 +161,7 @@ export function ModernTemplate({
                   {projects.map((project, index) => (
                     <div
                       key={index}
-                      className={index < projects.length - 1 ? "mb-4 resume-section" : "resume-section"}
+                      className={index < projects.length - 1 ? "pt-4 resume-section" : "resume-section"}
                     >
                       <div className="flex justify-between items-baseline mb-1">
                         <h4 className="text-base font-medium">{project.title}</h4>

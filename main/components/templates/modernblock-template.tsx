@@ -126,7 +126,7 @@ export function ModernBlockTemplate({
                 <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Projects</h2>
                 <div className="grid grid-cols-1 gap-3">
                   {projects.map((proj, idx) => (
-                    <div key={idx} className="pl-3 border-l-2 border-gray-200 resume-section">
+                    <div key={idx} className="pl-3 border-l-2 pt-6 border-gray-200 resume-section">
                       <div className="flex justify-between items-start">
                         <h3 className="text-base font-semibold text-gray-900">{proj.title}</h3>
                         {proj.link && (
