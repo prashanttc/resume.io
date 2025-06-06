@@ -151,7 +151,7 @@ export function CompactModernTemplate({
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Skills</h2>
                 <div className="space-y-2">
                   {skills.map((category, idx) => (
-                    <div key={idx} className="resume-section">
+                    <div key={idx} className="resume-section pt-6">
                       <p className="font-medium text-[12px]">{category.name}</p>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {category.skills.map((skill, i) => (
