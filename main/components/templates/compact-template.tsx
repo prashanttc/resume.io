@@ -48,7 +48,7 @@ export function CompactModernTemplate({
 
       {/* Summary */}
       {personal.summary && (
-        <section className="mt-5">
+        <section className="pt-5">
           <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Summary</h2>
           <p className="leading-snug text-gray-700">{personal.summary}</p>
         </section>
@@ -61,7 +61,7 @@ export function CompactModernTemplate({
         switch (section.title) {
           case "Experience":
             return experiences.length > 0 && (
-              <section key={section.title} className="mt-5 page-break">
+              <section key={section.title} className="pt-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Experience</h2>
                 <div className="space-y-3">
                   {experiences.map((exp, idx) => (
@@ -90,7 +90,7 @@ export function CompactModernTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className="mt-5 page-break resume-section">
+              <section key={section.title} className="pt-5 page-break resume-section">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Education</h2>
                 <div className="space-y-3">
                   {education.map((edu, idx) => (
@@ -115,7 +115,7 @@ export function CompactModernTemplate({
 
           case "Projects":
             return projects.length > 0 && (
-              <section key={section.title} className="mt-5 page-break">
+              <section key={section.title} className="pt-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Projects</h2>
                 <div className="space-y-3">
                   {projects.map((proj, idx) => (
@@ -147,7 +147,7 @@ export function CompactModernTemplate({
 
           case "Skills":
             return skills.length > 0 && (
-              <section key={section.title} className="mt-5 page-break">
+              <section key={section.title} className="pt-5 page-break">
                 <h2 className="text-[14px] font-semibold mb-1 text-gray-800">Skills</h2>
                 <div className="space-y-2">
                   {skills.map((category, idx) => (
@@ -174,7 +174,7 @@ export function CompactModernTemplate({
               <div key={section.title}>
                 {custom.map((customSection) => (
                   customSection.entries.length > 0 && (
-                    <section key={customSection.id} className="mt-5 page-break">
+                    <section key={customSection.id} className="pt-5 page-break">
                       <h2 className="text-[14px] font-semibold mb-1 text-gray-800">{customSection.title}</h2>
                       <div className="space-y-3">
                         {customSection.entries.map((entry: EntryType) => (
