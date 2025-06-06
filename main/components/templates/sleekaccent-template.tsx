@@ -34,7 +34,7 @@ export function SleekSideAccentTemplate({
 
       {/* Summary */}
       {personal.summary && (
-        <section className="mt-8 resume-section">
+        <section className="pt-8 resume-section">
           <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-2">Summary</h2>
           <p className="text-gray-700 text-sm leading-relaxed">{personal.summary}</p>
         </section>
@@ -47,7 +47,7 @@ export function SleekSideAccentTemplate({
         switch (section.title) {
           case "Experience":
             return experiences.length > 0 && (
-              <section key={section.title} className="mt-8">
+              <section key={section.title} className="pt-8">
                 <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-3">Experience</h2>
                 <div className="space-y-5">
                   {experiences.map((exp, i) => (
@@ -76,7 +76,7 @@ export function SleekSideAccentTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className="mt-8 resume-section">
+              <section key={section.title} className="pt-8 resume-section">
                 <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-3">Education</h2>
                 <div className="space-y-4">
                   {education.map((edu, i) => (
@@ -99,7 +99,7 @@ export function SleekSideAccentTemplate({
 
           case "Projects":
             return projects.length > 0 && (
-              <section key={section.title} className="mt-8 ">
+              <section key={section.title} className="pt-8 ">
                 <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-3">Projects</h2>
                 <div className="space-y-4">
                   {projects.map((proj, i) => (
@@ -129,7 +129,7 @@ export function SleekSideAccentTemplate({
 
           case "Skills":
             return skills.length > 0 && (
-              <section key={section.title} className="mt-8">
+              <section key={section.title} className="pt-8">
                 <h2 className="text-xl font-semibold border-b border-gray-300 pb-1 mb-3">Skills</h2>
                 <div className="space-y-3">
                   {skills.map((category, i) => (
@@ -150,7 +150,7 @@ export function SleekSideAccentTemplate({
 
           case "Custom Sections":
             return custom.length > 0 && (
-              <section key={section.title} className="mt-8">
+              <section key={section.title} className="pt-8">
                 {custom.map((customSection) => (
                   customSection.entries.length > 0 && (
                     <div key={customSection.id} className="mb-6">

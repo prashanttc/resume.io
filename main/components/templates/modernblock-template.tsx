@@ -48,7 +48,7 @@ export function ModernBlockTemplate({
 
       {/* Summary Section */}
       {personal.summary && (
-        <section className="mt-6">
+        <section className="pt-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-2 pb-1 border-b border-gray-200">Professional Summary</h2>
           <p className="text-gray-700 text-sm leading-snug">{personal.summary}</p>
         </section>
@@ -61,7 +61,7 @@ export function ModernBlockTemplate({
         switch (section.title) {
           case "Experience":
             return experiences.length > 0 && (
-              <section key={section.title} className="mt-6">
+              <section key={section.title} className="pt-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Work Experience</h2>
                 <div className="space-y-4">
                   {experiences.map((exp, idx) => (
@@ -95,7 +95,7 @@ export function ModernBlockTemplate({
 
           case "Education":
             return education.length > 0 && (
-              <section key={section.title} className="mt-6 resume-section" >
+              <section key={section.title} className="pt-6 resume-section" >
                 <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Education</h2>
                 <div className="space-y-3">
                   {education.map((edu, idx) => (
@@ -122,7 +122,7 @@ export function ModernBlockTemplate({
 
           case "Projects":
             return projects.length > 0 && (
-              <section key={section.title} className="mt-6">
+              <section key={section.title} className="pt-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Projects</h2>
                 <div className="grid grid-cols-1 gap-3">
                   {projects.map((proj, idx) => (
@@ -159,7 +159,7 @@ export function ModernBlockTemplate({
 
           case "Skills":
             return skills.length > 0 && (
-              <section key={section.title} className="mt-6">
+              <section key={section.title} className="pt-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">Skills</h2>
                 <div className="space-y-3">
                   {skills.map((category, catIdx) => (
@@ -186,7 +186,7 @@ export function ModernBlockTemplate({
               <div key={section.title}>
                 {custom.map((customSection) => (
                   customSection.entries.length > 0 && (
-                    <section key={customSection.id} className="mt-6">
+                    <section key={customSection.id} className="pt-6">
                       <h2 className="text-lg font-semibold text-gray-800 mb-3 pb-1 border-b border-gray-200">{customSection.title}</h2>
                       <div className="space-y-3">
                         {customSection.entries.map((entry: EntryType) => (

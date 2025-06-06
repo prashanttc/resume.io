@@ -119,7 +119,7 @@ export function BoldTemplate({
       {sectionOrder.map((section) => {
         if (!section.isActive) return null;
 
-        const commonSectionClasses = "mt-6 sm:mt-8";
+        const commonSectionClasses = "pt-8";
         const commonTitleClasses = "text-lg sm:text-xl font-bold uppercase border-b border-gray-300 pb-1.5 mb-2 sm:pb-2 sm:mb-3";
         const commonEntryWrapperClasses = "mb-4 last:mb-0"; // reduce bottom margin for the last entry in a section
         const commonEntryTitleClasses = "text-base sm:text-base font-semibold"; // Kept base same, bold enough

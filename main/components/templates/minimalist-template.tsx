@@ -57,7 +57,7 @@ export function MinimalistTemplate({
         switch (section.title) {
           case "Personal Information":
             return (
-              <section key={section.title} className="mt-6 resume-section">
+              <section key={section.title} className="pt-6 resume-section">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Summary
                 </h3>
@@ -69,7 +69,7 @@ export function MinimalistTemplate({
             );
           case "Experience":
             return (
-              <section key={section.title} className="mt-6">
+              <section key={section.title} className="pt-6">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Experience
                 </h3>
@@ -107,7 +107,7 @@ export function MinimalistTemplate({
             );
           case "Projects":
             return (
-              <section key={section.title} className="mt-6">
+              <section key={section.title} className="pt-6">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Projects
                 </h3>
@@ -138,7 +138,7 @@ export function MinimalistTemplate({
             );
           case "Education":
             return (
-              <section key={section.title} className="mt-6 resume-section">
+              <section key={section.title} className="pt-6 resume-section">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Education
                 </h3>
@@ -171,7 +171,7 @@ export function MinimalistTemplate({
             );
           case "Skills":
             return (
-              <section key="skills" className="mt-6">
+              <section key="skills" className="pt-6">
                 <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">
                   Skills
                 </h3>
@@ -199,7 +199,7 @@ export function MinimalistTemplate({
 
           case "Custom Sections":
             return (
-              <section key="Extra Activities" className="mt-6">
+              <section key="Extra Activities" className="pt-6">
                 {custom.map((activity, idx) => (
                   <div key={idx} className="mb-2 text-xs text-center">
                     <h3 className="text-sm font-normal uppercase tracking-wider text-center mb-4">

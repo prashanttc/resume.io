@@ -104,7 +104,7 @@ export function ATSFriendlyTemplate({
       {sectionOrder.map((section) => {
         if (!section.isActive) return null;
 
-        const commonSectionClasses = "mt-6";
+        const commonSectionClasses = "pt-6";
         const commonTitleClasses = "text-lg font-bold uppercase border-b border-gray-300 pb-1 mb-3 text-gray-900";
         const commonEntryWrapperClasses = "mb-4 last:mb-0";
         const commonEntryTitleClasses = "text-base font-semibold text-gray-900";

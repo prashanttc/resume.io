@@ -115,7 +115,7 @@ export function ModernTemplate({
               );
             case "Experience":
               return (
-                <section key={section.title} className="mt-6">
+                <section key={section.title} className="pt-6">
                   <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                     Experience
                   </h3>
@@ -153,7 +153,7 @@ export function ModernTemplate({
               );
             case "Projects":
               return (
-                <section key={section.title} className="mt-6 ">
+                <section key={section.title} className="pt-6 ">
                   <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                     Projects
                   </h3>
@@ -184,7 +184,7 @@ export function ModernTemplate({
               );
             case "Education":
               return (
-                <section key={section.title} className="mt-6 ">
+                <section key={section.title} className="pt-6 ">
                   <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                     Education
                   </h3>
@@ -248,7 +248,7 @@ export function ModernTemplate({
               return custom.length > 0 ? (
                 <div key={section.title}>
                   {custom.map((customSection) => (
-                    <section key={customSection.id} className="mt-6 resume-section">
+                    <section key={customSection.id} className="pt-6 resume-section">
                       <h3 className="text-lg font-semibold border-b border-zinc-300 pb-1 mb-3">
                         {customSection.title}
                       </h3>
