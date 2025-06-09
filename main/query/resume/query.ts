@@ -9,7 +9,8 @@ import {
   updateAiResults,
   updateViewCount,
 } from "@/actions/resume-actions";
-import { ResumeData } from "@/types/resume";
+import { generateCoverletter } from "@/lib/utils";
+import { CoverLetterProps, ResumeData } from "@/types/resume";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useCreateNewResume() {
@@ -60,10 +61,10 @@ export function useSetSlug() {
   return useMutation({
     mutationFn: ({ url, id }: { url: string; id: string }) =>
       setSlug({ url, id }),
-    onSuccess: (_,{id}) => {
+    onSuccess: (_, { id }) => {
       queryclient.invalidateQueries({ queryKey: ["getallresume"] });
-      queryclient.invalidateQueries({ queryKey: ["getResumeByid",id] });
-      queryclient.invalidateQueries({ queryKey: ["getResumeByurl",id] });
+      queryclient.invalidateQueries({ queryKey: ["getResumeByid", id] });
+      queryclient.invalidateQueries({ queryKey: ["getResumeByurl", id] });
     },
   });
 }
@@ -72,26 +73,30 @@ export function useUpdateAI() {
   return useMutation({
     mutationFn: ({ cleanJson, id }: { cleanJson: any; id: string }) =>
       updateAiResults({ cleanJson, id }),
-    onSuccess: (_,{id}) => {
-      queryclient.invalidateQueries({ queryKey: ["getResumeByid",id] });
+    onSuccess: (_, { id }) => {
+      queryclient.invalidateQueries({ queryKey: ["getResumeByid", id] });
     },
   });
 }
 
-export function useViewUpdate(){
-   const queryclient = useQueryClient();
+export function useViewUpdate() {
+  const queryclient = useQueryClient();
   return useMutation({
-    mutationFn: (url:string ) =>
-      updateViewCount(url),
+    mutationFn: (url: string) => updateViewCount(url),
     onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ["getallresume"] });
     },
-  }); 
+  });
 }
 
-export function useResumeCount(){
+export function useResumeCount() {
   return useQuery({
-    queryKey:['resumecount'],
-    queryFn: resumeCount
-  })
+    queryKey: ["resumecount"],
+    queryFn: resumeCount,
+  });
+}
+export function useGetaiCoverLetter() {
+  return useMutation({
+    mutationFn: ({input}:{ input:CoverLetterProps}) => generateCoverletter({input}),
+  });
 }

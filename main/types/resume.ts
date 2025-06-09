@@ -113,3 +113,16 @@ export type SectionType =
   categories: string[]
   thumbnail: string
 }
+
+
+export interface CoverLetterProps {
+  fullName: string
+  email: string
+  phone: string
+  companyName: string
+  jobTitle: string
+  hiringManager: string
+  preferences: string
+  experience: string
+  template: string
+}

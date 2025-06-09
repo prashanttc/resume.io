@@ -10,6 +10,7 @@ import {
   Layers,
   Linkedin,
   LogOut,
+  Newspaper,
   Star,
 } from "lucide-react";
 import {
@@ -47,9 +48,9 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar variant="inset" collapsible="icon" >
+    <Sidebar variant="inset" collapsible="icon">
       <SidebarHeader className="flex items-center justify-between">
-        <SidebarMenu >
+        <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="">
               <Link href="/dashboard">
@@ -91,7 +92,18 @@ export function AppSidebar() {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive("/cover-letter")}
+                  tooltip="cover Letter"
+                >
+                  <Link href="/coverLetter">
+                    <Newspaper className="h-4 w-4" />
+                    <span>Cover Letter</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
@@ -110,14 +122,14 @@ export function AppSidebar() {
                   asChild
                   isActive={isActive("/pro")}
                   tooltip="Premium"
-                  >
+                >
                   <Link href="/pro">
                     <Star className="h-4 w-4" />
                     <span>Pro</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-                  </SidebarMenu>
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 

@@ -4,7 +4,7 @@ import { Sparkles, Zap, FileCheck, Share } from "lucide-react"
 
 export function UpcomingFeatures() {
   return (
-    <Card className="border-0 shadow-sm">
+    <Card className="border-0 shadow-sm flex-1 ">
       <CardHeader className="pb-2">
         <CardTitle className="text-base font-medium">Coming Soon</CardTitle>
       </CardHeader>

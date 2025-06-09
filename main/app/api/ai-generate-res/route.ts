@@ -44,12 +44,12 @@ export async function POST(req: Request) {
       max_tokens: 800,
       messages: [
         {
-          role: "user",
-          content: userPrompt.trim(),
-        },
-        {
           role: "system",
           content: systemPrompt,
+        },
+         {
+          role: "user",
+          content: userPrompt.trim(),
         },
       ],
     });

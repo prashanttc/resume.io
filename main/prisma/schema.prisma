@@ -18,6 +18,7 @@ model User {
   subscriptionId String?
   lastSubscriptionDate DateTime?
   resumes        Resume[]
+  coverLetter    CoverLetter[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -44,6 +45,25 @@ model Resume {
   updatedAt       DateTime     @updatedAt
 
   user            User         @relation(fields: [userId], references: [id])
+}
+
+model CoverLetter {
+  id             String @id @default(uuid())
+  title          String
+  userId         String
+  fullName       String
+  email          String
+  content        Json
+  phone          String
+  companyName    String
+  jobTitle       String
+  hiringManager  String?
+  preferences    String?
+  experience     String
+  template       String
+
+  user            User         @relation(fields: [userId], references: [id])
+
 }
 
 model PersonalInfo {

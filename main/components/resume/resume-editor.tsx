@@ -251,7 +251,6 @@ export function ResumeEditor({
     (template) => template.id == selectedTemplate
   );
 
-  console.log("rpre",isPreviewOpen)
   return (
     <div className="flex flex-col">
     <div className="flex md:hidden  justify-end mb-5">

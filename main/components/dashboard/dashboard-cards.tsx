@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { Download, Eye, FileText, Share2 } from "lucide-react"
+import { Download, Eye, FileText, Newspaper, Share2 } from "lucide-react"
 import { ResumeLimitIndicator } from "./resume-limit-indicator"
 import { resume } from "@/types/resume"
 
@@ -12,7 +12,7 @@ const totalDownloads = resume.reduce((acc, res) => acc + (res.downloads || 0), 0
 const totalShares = resume.reduce((acc, res) => acc + (res.shares || 0), 0);
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="hidden md:grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card className="border-0 shadow-sm">
         <CardContent className="p-6">
           <div className="flex items-center gap-4">
@@ -50,10 +50,10 @@ const totalShares = resume.reduce((acc, res) => acc + (res.shares || 0), 0);
         <CardContent className="p-6">
           <div className="flex items-center gap-4">
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <Download className="h-6 w-6 text-primary" />
+              <Newspaper className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Downloads</p>
+              <p className="text-sm text-muted-foreground">Total Cover Letters</p>
               <h3 className="text-2xl font-semibold">{totalDownloads}</h3>
             </div>
           </div>

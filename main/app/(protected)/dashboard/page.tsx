@@ -29,9 +29,9 @@ export default function DashboardPage() {
     } else if (!resumes?.length && !isPending) {
       toast.error("No resumes found");
     }
-  }, [isError, error,isPremiumError,premiumerror, resumes, isPending]);
+  }, [isError, error, isPremiumError, premiumerror, resumes, isPending]);
 
-  if (isPending||premiumloading) {
+  if (isPending || premiumloading) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <LoaderCircle className="animate-spin" />
@@ -55,16 +55,15 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <DashboardStats resume={resumes} premium={premium||false}/>
-      <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-4">
-        <div className="md:col-span-2 lg:col-span-2 space-y-8">
+      <DashboardStats resume={resumes} premium={premium || false} />
+      <div className=" flex flex-col md:flex-row w-full  md:items-center justify-between gap-10 ">
           <ResumeList resumes={resumes} />
+          <ResumeList resumes={resumes} />
+      </div>
+        <div className=" flex flex-col md:flex-row gap-10  justify-between">
+          <PlanOverview resume={resumes} premium={premium || false} />
           <UpcomingFeatures />
         </div>
-        <div className="md:col-span-2">
-          <PlanOverview resume={resumes} premium={premium||false}/>
-        </div>
-      </div>
     </div>
   );
 }

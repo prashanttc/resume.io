@@ -48,7 +48,7 @@ export function ResumeList({ resumes }: resumeProps) {
     });
   };
   return (
-    <Card className="border-0 shadow-sm">
+    <Card className="border-0 shadow-sm flex-1">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base font-medium">Your Resumes</CardTitle>
         <div className="flex items-center gap-2">
