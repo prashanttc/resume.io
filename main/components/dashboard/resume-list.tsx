@@ -116,10 +116,11 @@ export function ResumeList({ resumes }: resumeProps) {
             <p className="text-muted-foreground mb-4">
               Create your first resume to get started
             </p>
-    <div className="flex gap-2 items-center justify-center bg-white rounded-lg text-black px-5 py-3 font-semibold">
-              <Plus/>
+            <div className="flex gap-2 items-center justify-center bg-white rounded-lg text-black px-5 py-3 font-semibold">
+              <Plus />
               <NewResume type="resume" />
-            </div>{" "}          </div>
+            </div>{" "}
+          </div>
         ) : viewMode === "grid" ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {resumes.map((resume) => (

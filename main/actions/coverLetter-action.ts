@@ -41,7 +41,6 @@ export async function newCoverLetter(name: string) {
         email: "johndoe@mail.com",
         jobTitle: "software engineer",
         companyName: "xyz enterprises",
-        hiringManager: "jony doe",
         preferences: "friendly",
         template: "minimal",
         experience: "two year of frontend",

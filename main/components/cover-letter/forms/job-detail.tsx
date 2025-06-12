@@ -28,7 +28,7 @@ interface PersonalInfoCoverLetterFormProps {
   onSubmit: (values: jobDetailValues) => void;
 }
 
-export default function PersonalInfoCoverLetterForm({
+export default function JobDetailsForm({
   defaultValues,
   onSubmit,
 }: PersonalInfoCoverLetterFormProps) {

@@ -136,7 +136,7 @@ export interface CoverLetterProps {
   jobTitle: string
   hiringManager: string
   preferences: string
-  content:string
+  content: string
   experience: string
   template: string
 }

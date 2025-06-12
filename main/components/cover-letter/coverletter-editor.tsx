@@ -1,36 +1,33 @@
-"use client";
-
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowLeft, FileText } from "lucide-react";
-
-import JobDetailsForm from "@/components/cover-letter/forms/job-detail";
-import PreferencesForm from "@/components/cover-letter/forms/prefrence";
-import TemplateSelectionForm from "@/components/cover-letter/forms/template-section";
-import PersonalInfoCoverLetterForm from "@/components/cover-letter/forms/personal-info";
-import StepIndicator from "@/components/cover-letter/forms/step-indicator";
-import { CoverLetterProps } from "@/types/resume";
 import { useGetaiCoverLetter } from "@/query/resume/query";
+import { CoverLetterProps } from "@/types/resume";
+import { ArrowLeft, FileText } from "lucide-react";
+import React, { useState } from "react";
 import { toast } from "sonner";
-import Clpreview from "@/components/cover-letter/cl-preview";
+import { Card } from "../ui/card";
+import Clpreview from "./cl-preview";
+import PreferencesForm from "./forms/prefrence";
+import StepIndicator from "./forms/step-indicator";
+import TemplateSelectionForm from "./forms/template-section";
+import { Button } from "../ui/button";
+import PersonalInfoCoverLetterForm from "./forms/personal-info";
+import JobDetailsForm from "./forms/job-detail";
 
-export default function CoverLetterBuilder() {
+const ClEditor = ({data}:{data:CoverLetterProps}) => {
   const { mutateAsync, isPending } = useGetaiCoverLetter();
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
   const [showPreview, setShowPreview] = useState(false);
   const [formData, setFormData] = useState<CoverLetterProps>({
-    fullName: "",
-    email: "",
-    phone: "",
-    companyName: "",
-    jobTitle: "",
-    hiringManager: "",
-    preferences: "",
-    experience: "",
-    template: "minimal",
-    content:"",
+    fullName: data.fullName,
+    email: data.email,
+    phone: data.phone,
+    companyName: data.companyName,
+    jobTitle: data.jobTitle,
+    hiringManager: data.hiringManager || "",
+    preferences: data.preferences || "friendly",
+    experience: data.experience,
+    template: data.template,
+    content: data.content,
   });
 
   const handleNext = () => {
@@ -84,7 +81,7 @@ export default function CoverLetterBuilder() {
 
   const handleGenerate = async () => {
     try {
-      await mutateAsync({ input: formData }); 
+      await mutateAsync({ input: formData });
       toast.success("cover letter generated succesfully");
       setShowPreview(true);
     } catch (error) {
@@ -109,16 +106,16 @@ export default function CoverLetterBuilder() {
   };
 
   const canProceed = isStepComplete(currentStep);
-  return (
-    <div className="min-h-screen flex flex-col relative">
-      <main className="flex-1 py-8">
-        <div className=" mx-auto px-4 flex flex-col gap-20  ">
-          {/* Step Indicator */}
-          <StepIndicator currentStep={currentStep} totalSteps={totalSteps} />
 
-          {/* Form Card */}
-       <div className="flex items-start  w-full justify-between gap-20">
-           <Card className="flex-1">
+  return (
+    <main className="flex-1 py-8">
+      <div className=" mx-auto px-4 flex flex-col gap-20  ">
+        {/* Step Indicator */}
+        <StepIndicator currentStep={currentStep} totalSteps={totalSteps} />
+
+        {/* Form Card */}
+        <div className="flex items-start  w-full justify-between gap-20">
+          <Card className="flex-1">
             <div className="p-6 relative">
               {/* Step 1: Personal Information */}
               {currentStep === 1 && (
@@ -199,10 +196,11 @@ export default function CoverLetterBuilder() {
               </div>
             </div>
           </Card>
-         <Clpreview coverLetterData={formData} />
-       </div>
+          <Clpreview coverLetterData={formData} />
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
-}
+};
+
+export default ClEditor;

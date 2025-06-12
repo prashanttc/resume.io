@@ -6,7 +6,7 @@ interface LetterPreviewProps {
   coverLetterData: CoverLetterProps;
 }
 
-const Clpreview = ({ coverLetterData }: LetterPreviewProps) => {
+export default function Clpreview({ coverLetterData }: LetterPreviewProps){
   const TemplateComponent = CoverLettertemplateMap[coverLetterData.template];
 
   return (
@@ -27,5 +27,3 @@ const Clpreview = ({ coverLetterData }: LetterPreviewProps) => {
     </div>
   );
 };
-
-export default Clpreview;

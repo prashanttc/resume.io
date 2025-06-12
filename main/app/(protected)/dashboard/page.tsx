@@ -34,8 +34,6 @@ export default function DashboardPage() {
   useEffect(() => {
     if (isError || isPremiumError ) {
       toast.error(error?.message || premiumerror?.message);
-    } else if (!resumes?.length && !isPending) {
-      toast.error("No resumes found");
     }
   }, [
     isError,

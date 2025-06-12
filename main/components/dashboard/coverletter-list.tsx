@@ -143,8 +143,10 @@ export function CoverLetterList({ coverLetters }: coverProp) {
                             {coverLetter.title}
                           </h3>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                          {/* Last updated: {coverLetter.} */}
+                        <p className="text-xs text-muted-foreground mt-2 flex flex-col ">
+                          Last updated:
+                          <div></div>
+                          {formatDate(coverLetter.updatedAt.toISOString())}
                         </p>
                       </div>
                     </div>
