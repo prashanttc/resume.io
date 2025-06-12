@@ -1,4 +1,11 @@
 import {
+  coverLetterCount,
+  getAllCoverLetter,
+  getCoverLetterById,
+  newCoverLetter,
+  saveCoverLetter,
+} from "@/actions/coverLetter-action";
+import {
   getAllResume,
   getResumeById,
   getresumeBySlug,
@@ -24,6 +31,23 @@ export function useCreateNewResume() {
   });
 }
 
+export function useCreateNewCoverLetter() {
+  const queryclient = useQueryClient();
+  return useMutation({
+    mutationFn: (name: string) => newCoverLetter(name),
+    onSuccess: () => {
+      queryclient.invalidateQueries({ queryKey: ["getallcoverletter"] });
+      queryclient.invalidateQueries({ queryKey: ["coverlettercount"] });
+    },
+  });
+}
+
+export function useCoverLetterById(id: string) {
+  return useQuery({
+    queryKey: ["getcoverletterbyid", id],
+    queryFn: () => getCoverLetterById(id),
+  });
+}
 export function useGetResumebyId(id: string) {
   return useQuery({
     queryKey: ["getResumeByid", id],
@@ -48,11 +72,28 @@ export function useSaveResume() {
     }) => saveResume(resume, resumeId),
   });
 }
+export function useSaveCoverLetter() {
+  return useMutation({
+    mutationFn: ({
+      coverLetter,
+      coverLetterId,
+    }: {
+      coverLetter: CoverLetterProps;
+      coverLetterId: string;
+    }) => saveCoverLetter(coverLetter, coverLetterId),
+  });
+}
 
 export function useGetAllResumes() {
   return useQuery({
     queryKey: ["getallresume"],
     queryFn: getAllResume,
+  });
+}
+export function useGetAllCoverLetter() {
+  return useQuery({
+    queryKey: ["getallcoverletter"],
+    queryFn: getAllCoverLetter,
   });
 }
 
@@ -95,8 +136,15 @@ export function useResumeCount() {
     queryFn: resumeCount,
   });
 }
+export function useCoverLetterCount() {
+  return useQuery({
+    queryKey: ["coverlettercount"],
+    queryFn: coverLetterCount,
+  });
+}
 export function useGetaiCoverLetter() {
   return useMutation({
-    mutationFn: ({input}:{ input:CoverLetterProps}) => generateCoverletter({input}),
+    mutationFn: ({ input }: { input: CoverLetterProps }) =>
+      generateCoverletter({ input }),
   });
 }

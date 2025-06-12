@@ -1,6 +1,6 @@
 "use client";
 import { ResumeList } from "@/components/dashboard/resume-list";
-import { useGetAllResumes } from "@/query/resume/query";
+import { useGetAllCoverLetter, useGetAllResumes } from "@/query/resume/query";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect } from "react";
@@ -10,9 +10,17 @@ import { DashboardStats } from "@/components/dashboard/dashboard-cards";
 import { UpcomingFeatures } from "@/components/dashboard/upcoming-features";
 import { useSession } from "next-auth/react";
 import { isPremium } from "@/query/user/query";
+import { CoverLetterList } from "@/components/dashboard/coverletter-list";
+import { CoverLetterNotFound } from "@/components/coverletter-error";
 
 export default function DashboardPage() {
   const { data: resumes, isError, error, isPending } = useGetAllResumes();
+  const {
+    data: coverLetters,
+    isError: clIsError,
+    error: clError,
+    isPending: clPending,
+  } = useGetAllCoverLetter();
   const {
     data,
     isError: isPremiumError,
@@ -24,14 +32,24 @@ export default function DashboardPage() {
   const user = session.data?.user;
   const premium = data?.isPremium;
   useEffect(() => {
-    if (isError || isPremiumError) {
+    if (isError || isPremiumError ) {
       toast.error(error?.message || premiumerror?.message);
     } else if (!resumes?.length && !isPending) {
       toast.error("No resumes found");
     }
-  }, [isError, error, isPremiumError, premiumerror, resumes, isPending]);
+  }, [
+    isError,
+    error,
+    isPremiumError,
+    premiumerror,
+    resumes,
+    isPending,
+    clError,
+    clIsError,
+    clPending,
+  ]);
 
-  if (isPending || premiumloading) {
+  if (isPending || premiumloading || clPending) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <LoaderCircle className="animate-spin" />
@@ -39,7 +57,10 @@ export default function DashboardPage() {
     );
   }
   if (!resumes) {
-    return <ResumeNotFound variant="error" />;
+    return <ResumeNotFound variant="empty" />;
+  }
+  if (!coverLetters ) {
+    return <CoverLetterNotFound variant="empty" />;
   }
 
   return (
@@ -57,13 +78,13 @@ export default function DashboardPage() {
 
       <DashboardStats resume={resumes} premium={premium || false} />
       <div className=" flex flex-col md:flex-row w-full  md:items-center justify-between gap-10 ">
-          <ResumeList resumes={resumes} />
-          <ResumeList resumes={resumes} />
+        <ResumeList resumes={resumes} />
+        <CoverLetterList coverLetters={coverLetters} />
       </div>
-        <div className=" flex flex-col md:flex-row gap-10  justify-between">
-          <PlanOverview resume={resumes} premium={premium || false} />
-          <UpcomingFeatures />
-        </div>
+      <div className=" flex flex-col md:flex-row gap-10  justify-between">
+        <PlanOverview resume={resumes} premium={premium || false} />
+        <UpcomingFeatures />
+      </div>
     </div>
   );
 }

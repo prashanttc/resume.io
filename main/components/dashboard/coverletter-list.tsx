@@ -22,36 +22,38 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { cn, downloadPdf, formatDate } from "@/lib/utils";
-import { resume } from "@/types/resume";
-import NewResume from "../NewResume";
 import { ShareModal } from "../share-modal";
 import { toast } from "sonner";
+import { CoverLetter } from "@prisma/client";
+import NewResume from "../NewResume";
 
-export type resumeProps = {
-  resumes: resume[];
+export type coverProp = {
+  coverLetters: CoverLetter[];
 };
-export function ResumeList({ resumes }: resumeProps) {
+export function CoverLetterList({ coverLetters }: coverProp) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  const handledownload = async (e: React.MouseEvent, resume: resume) => {
-    e.preventDefault();
-    toast.success("downloading");
-    await downloadPdf({
-      resumeId: resume.id,
-      title: resume.title,
-      onStart: () => setIsDownloading(true),
-      onSuccess: () => setIsDownloading(false),
-      onError: () => {
-        setIsDownloading(false);
-        toast.error("Download failed. Try again.");
-      },
-    });
-  };
+  //   const handledownload = async (e: React.MouseEvent, coverLetter: coverLetter) => {
+  //     e.preventDefault();
+  //     toast.success("downloading");
+  //     await downloadPdf({
+  //       coverLetterId: coverLetter.id,
+  //       title: coverLetter.title,
+  //       onStart: () => setIsDownloading(true),
+  //       onSuccess: () => setIsDownloading(false),
+  //       onError: () => {
+  //         setIsDownloading(false);
+  //         toast.error("Download failed. Try again.");
+  //       },
+  //     });
+  //   };
   return (
     <Card className="border-0 shadow-sm flex-1">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-base font-medium">Your Resumes</CardTitle>
+        <CardTitle className="text-base font-medium">
+          Your Cover Letters
+        </CardTitle>
         <div className="flex items-center gap-2">
           <div className="flex border rounded-md overflow-hidden">
             <Button
@@ -109,23 +111,24 @@ export function ResumeList({ resumes }: resumeProps) {
         </div>
       </CardHeader>
       <CardContent>
-        {resumes.length === 0 ? (
+        {coverLetters.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <FileText className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium mb-2">No resumes yet</h3>
+            <h3 className="text-lg font-medium mb-2">No cover letters yet</h3>
             <p className="text-muted-foreground mb-4">
-              Create your first resume to get started
+              Create your first cover letter to get started
             </p>
-    <div className="flex gap-2 items-center justify-center bg-white rounded-lg text-black px-5 py-3 font-semibold">
+            <div className="flex gap-2 items-center justify-center bg-white rounded-lg text-black px-5 py-3 font-semibold">
               <Plus/>
-              <NewResume type="resume" />
-            </div>{" "}          </div>
+              <NewResume type="cover letter" />
+            </div>{" "}
+          </div>
         ) : viewMode === "grid" ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {resumes.map((resume) => (
+            {coverLetters.map((coverLetter) => (
               <Link
-                href={`/resume/${resume.id}`}
-                key={resume.id}
+                href={`/coverLetter/${coverLetter.id}`}
+                key={coverLetter.id}
                 className="block group"
               >
                 <div className="border-0 bg-secondary/30 rounded-lg p-4 hover:bg-secondary/50 transition-all h-full">
@@ -137,11 +140,11 @@ export function ResumeList({ resumes }: resumeProps) {
                       <div>
                         <div className="flex items-center gap-2">
                           <h3 className="font-medium text-sm">
-                            {resume.title}
+                            {coverLetter.title}
                           </h3>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          {/* Last updated: {resume.} */}
+                          {/* Last updated: {coverLetter.} */}
                         </p>
                       </div>
                     </div>
@@ -157,17 +160,17 @@ export function ResumeList({ resumes }: resumeProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem
+                        {/* <DropdownMenuItem
                           className="cursor-pointer"
                           onClick={(e) => e.preventDefault()}
                         >
                           <ShareModal
-                            resumeId={resume.id}
-                            resumeName={resume.title}
+                            coverLetterId={coverLetter.id}
+                            coverLetterName={coverLetter.title}
                           />
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={(e) => handledownload(e, resume)}
+                          onClick={(e) => handledownload(e, coverLetter)}
                           className="cursor-pointer"
                         >
                           {isDownloading ? (
@@ -178,17 +181,10 @@ export function ResumeList({ resumes }: resumeProps) {
                               Download
                             </div>
                           )}
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuSeparator />
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs text-muted-foreground mt-4 mb-1">
-                    <div className="flex items-center">
-                      <Eye className="mr-1 h-3 w-3" />
-                      <span>{resume.views} views</span>
-                    </div>
                   </div>
                 </div>
               </Link>
@@ -196,10 +192,10 @@ export function ResumeList({ resumes }: resumeProps) {
           </div>
         ) : (
           <div className="space-y-2">
-            {resumes.map((resume) => (
+            {coverLetters.map((coverLetter) => (
               <Link
-                href={`/resume/${resume.id}`}
-                key={resume.id}
+                href={`/coverLetter/${coverLetter.id}`}
+                key={coverLetter.id}
                 className="block group"
               >
                 <div className="flex items-center justify-between p-3 rounded-md bg-secondary/30 hover:bg-secondary/50 transition-all">
@@ -209,16 +205,14 @@ export function ResumeList({ resumes }: resumeProps) {
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="font-medium text-sm">{resume.title}</h3>
+                        <h3 className="font-medium text-sm">
+                          {coverLetter.title}
+                        </h3>
                       </div>
                       <div className="flex items-center gap-3 text-xs text-muted-foreground">
                         <span>
                           Last updated:{" "}
-                          {formatDate(resume.updatedAt.toDateString())}
-                        </span>
-                        <span className="flex items-center">
-                          <Eye className="mr-1 h-3 w-3" />
-                          {resume.views} views
+                          {formatDate(coverLetter.updatedAt.toDateString())}
                         </span>
                       </div>
                     </div>
@@ -236,17 +230,17 @@ export function ResumeList({ resumes }: resumeProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem
+                        {/* <DropdownMenuItem
                           className="cursor-pointer"
                           onClick={(e) => e.preventDefault()}
                         >
                           <ShareModal
-                            resumeId={resume.id}
-                            resumeName={resume.title}
+                            coverLetterId={coverLetter.id}
+                            coverLetterName={coverLetter.title}
                           />
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={(e) => handledownload(e, resume)}
+                          onClick={(e) => handledownload(e, coverLetter)}
                           className="cursor-pointer"
                         >
                           {isDownloading ? (
@@ -257,7 +251,7 @@ export function ResumeList({ resumes }: resumeProps) {
                               Download
                             </div>
                           )}
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuSeparator />
                       </DropdownMenuContent>
                     </DropdownMenu>

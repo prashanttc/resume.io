@@ -13,6 +13,7 @@ import StepIndicator from "@/components/cover-letter/forms/step-indicator";
 import { CoverLetterProps } from "@/types/resume";
 import { useGetaiCoverLetter } from "@/query/resume/query";
 import { toast } from "sonner";
+import Clpreview from "@/components/cover-letter/cl-preview";
 
 export default function CoverLetterBuilder() {
   const { mutateAsync, isPending } = useGetaiCoverLetter();
@@ -29,6 +30,7 @@ export default function CoverLetterBuilder() {
     preferences: "",
     experience: "",
     template: "minimal",
+    content:"",
   });
 
   const handleNext = () => {
@@ -80,7 +82,6 @@ export default function CoverLetterBuilder() {
     }
   };
 
-  console.log("f", formData);
   const handleGenerate = async () => {
     try {
       await mutateAsync({ input: formData }); 
@@ -111,12 +112,13 @@ export default function CoverLetterBuilder() {
   return (
     <div className="min-h-screen flex flex-col relative">
       <main className="flex-1 py-8">
-        <div className="max-w-3xl mx-auto px-4 flex flex-col gap-20">
+        <div className=" mx-auto px-4 flex flex-col gap-20  ">
           {/* Step Indicator */}
           <StepIndicator currentStep={currentStep} totalSteps={totalSteps} />
 
           {/* Form Card */}
-          <Card className="mt-8">
+       <div className="flex items-start  w-full justify-between gap-20">
+           <Card className="flex-1">
             <div className="p-6 relative">
               {/* Step 1: Personal Information */}
               {currentStep === 1 && (
@@ -164,7 +166,7 @@ export default function CoverLetterBuilder() {
               )}
 
               {/* Navigation Buttons */}
-              <div className="mt-8 flex justify-between">
+              <div className="mt-8 flex justify-between ">
                 <Button
                   variant="outline"
                   onClick={handlePrevious}
@@ -197,6 +199,8 @@ export default function CoverLetterBuilder() {
               </div>
             </div>
           </Card>
+         <Clpreview coverLetterData={formData} />
+       </div>
         </div>
       </main>
     </div>

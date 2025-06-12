@@ -96,6 +96,19 @@ export type TemplateProps = {
   sectionOrder: ResumeSection[];
 };
 
+export type CoverLetterTemplateProps={
+  jobTitle:string;
+  fullName:string;
+  template:string;
+  companyName:string;
+  content:string;
+  email:string;
+  title:string;
+  phone:string;
+  preferences:string;
+  experience:string;
+  hiringManager?:string;
+}
 export type SectionType =
   | "personal"
   | "experience"
@@ -123,6 +136,21 @@ export interface CoverLetterProps {
   jobTitle: string
   hiringManager: string
   preferences: string
+  content:string
+  experience: string
+  template: string
+}
+export interface CoverLetter{
+  id:string
+  updatedAt:string
+  fullName: string
+  email: string
+  phone: string
+  companyName: string
+  jobTitle: string
+  hiringManager: string
+  preferences: string
+  content:string
   experience: string
   template: string
 }
