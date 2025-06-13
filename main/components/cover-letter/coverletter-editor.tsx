@@ -1,6 +1,12 @@
-import { useGetaiCoverLetter } from "@/query/resume/query";
+import { useGetaiCoverLetter, useSaveCoverLetter } from "@/query/resume/query";
 import { CoverLetterProps } from "@/types/resume";
-import { ArrowLeft, FileText } from "lucide-react";
+import {
+  ArrowLeft,
+  Download,
+  FileText,
+  Loader,
+  LoaderCircle,
+} from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { Card } from "../ui/card";
@@ -11,10 +17,18 @@ import TemplateSelectionForm from "./forms/template-section";
 import { Button } from "../ui/button";
 import PersonalInfoCoverLetterForm from "./forms/personal-info";
 import JobDetailsForm from "./forms/job-detail";
+import { downloadCoverLetter } from "@/lib/utils";
 
-const ClEditor = ({data}:{data:CoverLetterProps}) => {
-  const { mutateAsync, isPending } = useGetaiCoverLetter();
+type ClEditorProps = {
+  data: CoverLetterProps;
+  coverLetterId: string;
+  refetchData: () => void; // 👈 add this
+};
+const ClEditor = ({ data, coverLetterId, refetchData }: ClEditorProps) => {
+  const { mutateAsync, isPending, error } = useGetaiCoverLetter();
+  const { mutate, isPending: isSaving } = useSaveCoverLetter();
   const [currentStep, setCurrentStep] = useState(1);
+  const [isDownloading, setIsDownloading] = useState(false);
   const totalSteps = 4;
   const [showPreview, setShowPreview] = useState(false);
   const [formData, setFormData] = useState<CoverLetterProps>({
@@ -81,15 +95,30 @@ const ClEditor = ({data}:{data:CoverLetterProps}) => {
 
   const handleGenerate = async () => {
     try {
-      await mutateAsync({ input: formData });
-      toast.success("cover letter generated succesfully");
+      const aicontent = await mutateAsync({ input: formData, coverLetterId });
+      toast.success("Cover letter generated successfully");
       setShowPreview(true);
+      setFormData((prev) => ({
+        ...prev,
+        content: aicontent,
+      }));
     } catch (error) {
-      toast.error("failed to generate cover letter");
+      toast.error("Failed to generate cover letter");
       console.error("Error generating cover letter:", error);
     }
   };
-
+  const handleExport = async () => {
+    await downloadCoverLetter({
+      coverLetterId,
+      title: formData.title || "title",
+      onStart: () => setIsDownloading(true),
+      onSuccess: () => setIsDownloading(false),
+      onError: () => {
+        setIsDownloading(false);
+        toast.error("Download failed. Try again.");
+      },
+    });
+  };
   const isStepComplete = (step: number) => {
     switch (step) {
       case 1:
@@ -106,6 +135,20 @@ const ClEditor = ({data}:{data:CoverLetterProps}) => {
   };
 
   const canProceed = isStepComplete(currentStep);
+
+  const handlecoverletterSave = () => {
+    mutate(
+      { coverLetter: formData, coverLetterId },
+      {
+        onSuccess: () => {
+          toast.success("cover letter saved succesdfully");
+        },
+        onError: () => {
+          toast.error(error?.message);
+        },
+      }
+    );
+  };
 
   return (
     <main className="flex-1 py-8">
@@ -196,7 +239,48 @@ const ClEditor = ({data}:{data:CoverLetterProps}) => {
               </div>
             </div>
           </Card>
-          <Clpreview coverLetterData={formData} />
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-base font-medium">Preview</h3>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hover-lift"
+                  onClick={handleExport}
+                >
+                  {isDownloading ? (
+                    <div className="flex gap-3 items-center">
+                      <Loader className="animate-spin h-8 w-8" />
+                      dowloading
+                    </div>
+                  ) : (
+                    <div className="flex gap-3">
+                      <Download />
+                      <h1>Downlaod</h1>
+                    </div>
+                  )}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="hover-lift"
+                  onClick={handlecoverletterSave}
+                  disabled={isSaving}
+                >
+                  {isSaving ? (
+                    <LoaderCircle className="animate-spin" />
+                  ) : (
+                    <div className="flex gap-2 justify-center items-center">
+                      <FileText className="mr-2 h-4 w-4" />
+                      Save
+                    </div>
+                  )}
+                </Button>
+              </div>
+            </div>
+            <Clpreview coverLetterData={formData} />
+          </div>
         </div>
       </div>
     </main>

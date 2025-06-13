@@ -23,14 +23,14 @@ export const downloadPdf = async ({
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_RENDER_URL!}generate`, {
       method: "POST",
-      headers:{
-        "Content-Type": "application/json"
+      headers: {
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ resumeId, title }),
     });
-
+    console.log("resse", res);
     if (!res.ok) {
-      console.log("res",res)
+      console.log("res", res);
       throw new Error("Something went wrong");
     }
 
@@ -51,7 +51,7 @@ export const downloadPdf = async ({
     onError?.();
   }
 };
-export const downloadResume = async ({
+export const downloadCoverLetter = async ({
   coverLetterId,
   title,
   onStart,
@@ -66,17 +66,18 @@ export const downloadResume = async ({
 }) => {
   try {
     onStart?.(); // trigger loading state
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_RENDER_URL!}generate-coverLetter`, {
-      method: "POST",
-      headers:{
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ coverLetterId, title }),
-    });
-
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_RENDER_URL!}generateCl`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ coverLetterId, title }),
+      }
+    );
+     console.log("res",res)
     if (!res.ok) {
-      console.log("res",res)
       throw new Error("Something went wrong");
     }
 
@@ -98,18 +99,20 @@ export const downloadResume = async ({
   }
 };
 
+export const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
 
- export  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })
-  }
-
-  // helper.ts
-export async function callResumeAI(prompt: string, type: "summary" | "job-desc" | "project") {
+// helper.ts
+export async function callResumeAI(
+  prompt: string,
+  type: "summary" | "job-desc" | "project"
+) {
   try {
     const res = await fetch("/api/ai-generate-res", {
       method: "POST",
@@ -125,22 +128,26 @@ export async function callResumeAI(prompt: string, type: "summary" | "job-desc" 
     }
 
     const data = await res.json();
-    console.log("data",data.res)
     return data.res;
-
   } catch (err: any) {
     console.error("callResumeAI error:", err.message);
     throw err;
   }
 }
-export async function generateCoverletter({input}:{input:CoverLetterProps}) {
+export async function generateCoverletter({
+  input,
+  coverLetterId,
+}: {
+  input: CoverLetterProps;
+  coverLetterId: string;
+}) {
   try {
     const res = await fetch("/api/ai-coverLetter", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(input),
+      body: JSON.stringify({ input, coverLetterId }),
     });
 
     if (!res.ok) {

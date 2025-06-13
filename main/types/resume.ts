@@ -130,11 +130,12 @@ export type SectionType =
 
 export interface CoverLetterProps {
   fullName: string
+  title?:string
   email: string
   phone: string
   companyName: string
   jobTitle: string
-  hiringManager: string
+  hiringManager?: string
   preferences: string
   content: string
   experience: string
@@ -148,7 +149,7 @@ export interface CoverLetter{
   phone: string
   companyName: string
   jobTitle: string
-  hiringManager: string
+  hiringManager?: string
   preferences: string
   content:string
   experience: string

@@ -143,8 +143,13 @@ export function useCoverLetterCount() {
   });
 }
 export function useGetaiCoverLetter() {
+  const queryclient = useQueryClient();
   return useMutation({
-    mutationFn: ({ input }: { input: CoverLetterProps }) =>
-      generateCoverletter({ input }),
+    mutationFn: ({ input ,coverLetterId }: { input: CoverLetterProps;coverLetterId:string }) =>
+      generateCoverletter({ input ,coverLetterId }),
+        onSuccess: () => {
+      queryclient.invalidateQueries({ queryKey: ["getcoverletterbyid"] });
+    },
   });
+  
 }

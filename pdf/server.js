@@ -7,7 +7,7 @@ import { generateCoverLetter } from "./generate/coverletter.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+const BASE_URL ="http://localhost:3000/";
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -50,7 +50,7 @@ app.post('/generateCl', async (req,res)=>{
     return res.status(400).json({ error: "Missing resumeId or title" });
   }
   try {
-   const fullSlug = `http://localhost:3000/preview/coverLetter/${coverLetterId}`
+   const fullSlug = `${BASE_URL}preview/coverLetter/${coverLetterId}`
     const pdfBuffer = await generateCoverLetter({ slug: fullSlug, title });
 
     res.set({

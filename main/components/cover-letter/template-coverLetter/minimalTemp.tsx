@@ -12,7 +12,6 @@ const minimalTemp = ({
   experience,
   preferences,
 }: CoverLetterTemplateProps) => {
-    console.log("ree",content)
   return (
     <div className="max-w-2xl mx-auto p-6 font-sans text-[14px] text-gray-800 bg-white space-y-6">
       {/* Header */}

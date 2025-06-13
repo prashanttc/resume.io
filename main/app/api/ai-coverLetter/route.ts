@@ -13,8 +13,9 @@ export async function POST(req: Request) {
   if (!userId) {
     return NextResponse.json({ error: "unauthorized" }, { status: 400 });
   }
-  const data  = await req.json();
-    if (!data) {
+  const {input,coverLetterId} = await req.json();
+  const data = input;
+  if (!data) {
     return NextResponse.json({ error: "no data available" }, { status: 400 });
   }
   try {
@@ -58,29 +59,9 @@ The letter should be written in a ${data.preferences} tone and should:
     });
 
     const result = response.choices?.[0]?.message?.content?.trim() || "";
-    if(!result){
-      return NextResponse.json({error:'unable to generate ai response'},{status:400})
-    }
-
-    const saveCoverletter = await prisma.coverLetter.create({
-      data: {
-        title:`${data.fullName}-${data.companyName}-coverLetter`,
-        fullName: data.fullName,
-        userId: userId,
-        jobTitle: data.jobTitle,
-        experience: data.experience,
-        preferences: data.preferences,
-        template: data.template,
-        content: result,
-        companyName: data.companyName,
-        email: data.email,
-        phone: data.phone,
-        hiringManager: data.hiringManager,
-      },
-    });
-    if (!saveCoverletter) {
+    if (!result) {
       return NextResponse.json(
-        { error: "error saving cover letter" },
+        { error: "unable to generate ai response" },
         { status: 400 }
       );
     }
