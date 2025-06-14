@@ -36,7 +36,6 @@ export async function generatePDF({ slug, title }) {
     try {
       await page.setViewport({ width: 1200, height: 1600 });
       await page.emulateMediaType("print");
-
       await page.goto(slug, { waitUntil: "networkidle2", timeout: 30000 });
 
       await page.addStyleTag({

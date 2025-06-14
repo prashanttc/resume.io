@@ -47,10 +47,10 @@ app.post("/generate", async (req, res) => {
 app.post('/generateCl', async (req,res)=>{
     const { coverLetterId, title } =  req.body;
   if (!coverLetterId || !title) {
-    return res.status(400).json({ error: "Missing resumeId or title" });
+    return res.status(400).json({ error: "Missing coverletterId or title" });
   }
   try {
-   const fullSlug = `${BASE_URL}preview/coverLetter/${coverLetterId}`
+   const fullSlug = `http://localhost:3000/preview/cover-letter/${coverLetterId}`
     const pdfBuffer = await generateCoverLetter({ slug: fullSlug, title });
 
     res.set({

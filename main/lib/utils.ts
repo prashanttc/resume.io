@@ -28,7 +28,6 @@ export const downloadPdf = async ({
       },
       body: JSON.stringify({ resumeId, title }),
     });
-    console.log("resse", res);
     if (!res.ok) {
       console.log("res", res);
       throw new Error("Something went wrong");
@@ -67,7 +66,7 @@ export const downloadCoverLetter = async ({
   try {
     onStart?.(); // trigger loading state
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_RENDER_URL!}generateCl`,
+      `http://localhost:5000/generateCl`,
       {
         method: "POST",
         headers: {
@@ -76,7 +75,6 @@ export const downloadCoverLetter = async ({
         body: JSON.stringify({ coverLetterId, title }),
       }
     );
-     console.log("res",res)
     if (!res.ok) {
       throw new Error("Something went wrong");
     }

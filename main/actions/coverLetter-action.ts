@@ -70,6 +70,7 @@ export async function getCoverLetterById(id: string) {
         id,
       },
     });
+    
     if (!coverLetter) {
       throw new Error("no coverLetter found");
     }

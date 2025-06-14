@@ -44,8 +44,8 @@ export function useCreateNewCoverLetter() {
 
 export function useCoverLetterById(id: string) {
   return useQuery({
-    queryKey: ["getcoverletterbyid", id],
     queryFn: () => getCoverLetterById(id),
+    queryKey: ["getcoverletterbyid", id],
   });
 }
 export function useGetResumebyId(id: string) {
@@ -145,11 +145,15 @@ export function useCoverLetterCount() {
 export function useGetaiCoverLetter() {
   const queryclient = useQueryClient();
   return useMutation({
-    mutationFn: ({ input ,coverLetterId }: { input: CoverLetterProps;coverLetterId:string }) =>
-      generateCoverletter({ input ,coverLetterId }),
-        onSuccess: () => {
+    mutationFn: ({
+      input,
+      coverLetterId,
+    }: {
+      input: CoverLetterProps;
+      coverLetterId: string;
+    }) => generateCoverletter({ input, coverLetterId }),
+    onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ["getcoverletterbyid"] });
     },
   });
-  
 }

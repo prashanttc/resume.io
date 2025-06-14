@@ -1,4 +1,4 @@
-import { CoverLetterProps, CoverLetterTemplateProps } from "@/types/resume";
+import { CoverLetterTemplateProps } from "@/types/resume";
 
 const minimalTemp = ({
   fullName,

@@ -2,7 +2,7 @@ import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
 let browser;
-let queue = Promise.resolve(); 
+let queue = Promise.resolve(); // simple serial queue
 
 export async function initBrowser() {
   if (!browser || !browser.isConnected()) {
@@ -21,12 +21,14 @@ export async function initBrowser() {
   return browser;
 }
 
+// Simple concurrency limiter: queues requests serially to avoid too many pages open
 function enqueue(fn) {
-  queue = queue.then(() => fn()).catch(() => {}); 
+  queue = queue.then(() => fn()).catch(() => {}); // ignore errors in queue to not block next tasks
   return queue;
 }
 
-export async function generateCoverLetter({ slug, title }) {
+export async function generatePDF({ slug, title }) {
+  // Wrap the entire operation in queue to limit concurrency
   return enqueue(async () => {
     const browser = await initBrowser();
     const page = await browser.newPage();
@@ -34,7 +36,6 @@ export async function generateCoverLetter({ slug, title }) {
     try {
       await page.setViewport({ width: 1200, height: 1600 });
       await page.emulateMediaType("print");
-
       await page.goto(slug, { waitUntil: "networkidle2", timeout: 30000 });
 
       await page.addStyleTag({
@@ -47,7 +48,7 @@ export async function generateCoverLetter({ slug, title }) {
         `,
       });
 
-      await page.waitForSelector("#resume", { timeout: 15000 });
+      await page.waitForSelector("#coverletter", { timeout: 15000 });
 
       const pdfBuffer = await page.pdf({
         format: "A4",
@@ -55,8 +56,8 @@ export async function generateCoverLetter({ slug, title }) {
       });
       return pdfBuffer;
     } catch (err) {
-      console.error("cover letter generation error:", err);
-      throw err; 
+      console.error("PDF generation error:", err);
+      throw err; // let caller handle error
     } finally {
       await page.close();
     }

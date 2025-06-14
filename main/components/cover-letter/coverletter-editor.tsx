@@ -110,7 +110,7 @@ const ClEditor = ({ data, coverLetterId, refetchData }: ClEditorProps) => {
   const handleExport = async () => {
     await downloadCoverLetter({
       coverLetterId,
-      title: formData.title || "title",
+      title: data.title!,
       onStart: () => setIsDownloading(true),
       onSuccess: () => setIsDownloading(false),
       onError: () => {
